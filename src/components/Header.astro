@@ -1,0 +1,18 @@
+---
+interface Props {
+  active?: 'home' | 'sobre';
+}
+const { active = 'home' } = Astro.props;
+---
+<header class="site">
+  <div class="top">
+    <a href="/" class="brand">
+      <img src="/assets/icone.png" alt="" />
+      <h1>O&nbsp;Cobog<em>ó</em></h1>
+    </a>
+    <nav class="rt">
+      <a href="/" class={active === 'home' ? 'is-active' : ''}>Home</a>
+      <a href="/sobre" class={active === 'sobre' ? 'is-active' : ''}>Sobre</a>
+    </nav>
+  </div>
+</header>

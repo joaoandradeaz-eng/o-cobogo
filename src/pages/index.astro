@@ -1,0 +1,429 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AuthorInsert from '../components/AuthorInsert.astro';
+---
+<BaseLayout title="O Cobogó" active="home" screenLabel="Home">
+
+  <div class="shell">
+    <div class="feed">
+
+      <!-- HERO c12 -->
+      <div class="c12 hero">
+        <article class="card">
+          <div class="tags"><span class="tag" data-cat="ensaio">Ensaio</span></div>
+          <div class="rule"></div>
+          <h2><a href="/a-varanda-como-teoria-politica">A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></a></h2>
+          <p class="dek">Quando a fachada brasileira deixou de respirar — cobogó virou ornamento, varanda virou metragem desperdiçada — perdemos mais que um vocabulário arquitetônico. Este ensaio lê a porosidade da casa como tese política sobre o que uma cidade decide deixar passar…</p>
+          <p class="by">
+            <a href="/sobre" class="by-author">
+              <img src="/assets/joao-andrade-48.jpg" alt="" loading="eager" decoding="async" width="24" height="24" />
+              por <span>João Andrade</span>
+            </a>
+            <span class="dot" aria-hidden="true">·</span>
+            <span class="meta-inline">12 mar 2026 · 14 min</span>
+          </p>
+          <figure class="ph-a"><span class="ph">imagem · fachada cobogó · placeholder</span></figure>
+        </article>
+      </div>
+
+      <!-- 2 cards lado a lado, alinhados via subgrid -->
+      <div class="pair">
+        <article class="card">
+          <div class="tags"><span class="tag" data-cat="ensaio">Ensaio</span></div>
+          <div class="rule"></div>
+          <h2><a href="#">A meritocracia como ficção fundadora: três notas de leitura</a></h2>
+          <p class="dek">Em três livros publicados nos últimos dezoito meses, três autores brasileiros tentam responder à mesma pergunta — por que ainda acreditamos que o mérito explica alguma coisa? Este ensaio lê os três em diálogo…</p>
+          <p class="by">
+            <a href="/sobre" class="by-author">
+              <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+              por <span>João Andrade</span>
+            </a>
+            <span class="dot" aria-hidden="true">·</span>
+            <span class="meta-inline">10 fev 2026 · 9 min</span>
+          </p>
+          <figure class="ph-c"><span class="ph">retrato editorial</span></figure>
+        </article>
+        <article class="card">
+          <div class="tags"><span class="tag" data-cat="critica">Crítica</span></div>
+          <div class="rule"></div>
+          <h2><a href="#">Rosa, hoje: o que sobrou do <em>sertão</em> na imaginação política</a></h2>
+          <p class="dek">Releitura de <em>Grande Sertão: Veredas</em> a partir de uma pergunta deslocada — não o que o sertão era, mas o que a palavra ainda consegue argumentar quando o lugar empírico já não responde por ela…</p>
+          <p class="by">
+            <a href="/sobre" class="by-author">
+              <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+              por <span>João Andrade</span>
+            </a>
+            <span class="dot" aria-hidden="true">·</span>
+            <span class="meta-inline">29 jan 2026 · 12 min</span>
+          </p>
+          <figure class="ph-b"><span class="ph">ensaio · capa</span></figure>
+        </article>
+      </div>
+
+      <!-- 1 grande à esquerda + 3 empilhadas à direita -->
+      <div class="row-1plus3">
+        <div class="big">
+          <div class="tags"><span class="tag" data-cat="reportagem">Reportagem</span></div>
+          <div class="rule"></div>
+          <article class="card">
+            <h2><a href="#">Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></a></h2>
+            <p class="dek">Doze meses gravando a avenida em horários distintos — madrugadas, picos, tardes vazias — para descobrir que a sonoridade do Recife mudou mais do que sua paisagem visível…</p>
+            <p class="by">
+              <a href="/sobre" class="by-author">
+                <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+                por <span>João Andrade</span>
+              </a>
+              <span class="dot" aria-hidden="true">·</span>
+              <span class="meta-inline">19 fev 2026 · 18 min</span>
+            </p>
+            <figure class="ph-d"><span class="ph">paisagem urbana</span></figure>
+          </article>
+        </div>
+        <div class="stack">
+          <div class="tags-spacer" aria-hidden="true"></div>
+          <div class="rule"></div>
+          <div class="stack-body">
+            <header class="stack-head">
+              <h2>Outras <em>leituras</em></h2>
+            </header>
+            <a class="stack-link" href="#">
+              <div class="date">11 Mar<br/>2026</div>
+              <div class="body">
+                <h2>A democracia local não cabe nas plataformas — e talvez seja melhor assim</h2>
+                <p class="dek">As assembleias de bairro perderam o WhatsApp para o ódio organizado e voltaram, sem alarde, para os salões paroquiais…</p>
+                <p class="by">
+                  <span class="by-author">
+                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+                    por <span>João Andrade</span>
+                  </span>
+                </p>
+              </div>
+              <div class="thumb">imagem</div>
+            </a>
+            <a class="stack-link" href="#">
+              <div class="date">04 Mar<br/>2026</div>
+              <div class="body">
+                <h2>Tradução é uma forma de hospitalidade — e está desgastada</h2>
+                <p class="dek">A queda na qualidade das traduções literárias publicadas no Brasil revela algo mais profundo do que cortes de orçamento: uma cultura que perdeu o gosto pela mediação…</p>
+                <p class="by">
+                  <span class="by-author">
+                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+                    por <span>João Andrade</span>
+                  </span>
+                </p>
+              </div>
+              <div class="thumb">imagem</div>
+            </a>
+            <a class="stack-link" href="#">
+              <div class="date">26 Fev<br/>2026</div>
+              <div class="body">
+                <h2>São Paulo já não tem esquinas — tem nós</h2>
+                <p class="dek">A morfologia urbana paulistana se reorganizou ao redor da insegurança. Esquinas viraram ângulos cegos; nós viraram pontos de fricção…</p>
+                <p class="by">
+                  <span class="by-author">
+                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+                    por <span>João Andrade</span>
+                  </span>
+                </p>
+              </div>
+              <div class="thumb">imagem</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSERT: SOBRE O AUTOR -->
+      <AuthorInsert inFeed={true} />
+
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* ========== TAGS de categoria (chips coloridos acima da linha preta) ========== */
+  .tags{
+    display:flex;flex-wrap:wrap;gap:6px;
+  }
+  .tag{
+    display:inline-block;
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;
+    padding:5px 10px;
+    border-radius:2px;line-height:1;
+    white-space:nowrap;
+  }
+  .tag[data-cat="ensaio"]{background:var(--terra-tint);color:var(--terra-deep)}
+  .tag[data-cat="reportagem"]{background:var(--ink);color:var(--paper)}
+  .tag[data-cat="critica"]{background:var(--terra-deep);color:var(--paper)}
+  .tag[data-cat="entrevista"]{background:#D9DCD0;color:#3F4838}
+  .tag[data-cat="memoria"]{background:#E8D7C5;color:#5A3922}
+  .tag[data-cat="cidade-casa"]{background:#D4C9B4;color:#3F2E18}
+
+  /* spacer invisível: reserva a mesma altura das .tags pra manter a
+     linha preta da .stack alinhada com a da .big no row-1plus3 */
+  .tags-spacer{height:22px}
+
+  /* ========== DEK (spoiler de 2-3 linhas) ========== */
+  article.card .dek{
+    font-family:var(--serif);font-style:normal;font-weight:400;
+    font-size:18px;line-height:1.45;color:var(--ink-2);
+  }
+  @media (max-width:980px){
+    article.card .dek{font-size:16px}
+  }
+
+  /* ========== BYLINE: nome italic + data/tempo em mono uppercase ========== */
+  article.card .by .dot{
+    font-style:normal;color:var(--rule-strong);
+  }
+  article.card .by .meta-inline{
+    font-family:var(--mono);font-style:normal;font-weight:500;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);
+  }
+
+  /* ========== FEED (grade editorial 12 col) ========== */
+  main{padding:0}
+  .feed{
+    display:grid;grid-template-columns:repeat(12,1fr);gap:0;
+  }
+  .feed > article,.feed > .insert{
+    padding:var(--pad-y) var(--pad-x);
+  }
+
+  /* card sizing variants — todos com mesmo padding lateral pra alinhar com o resto */
+  .c12{grid-column:span 12;padding:64px var(--pad-x);border-right:none}
+  .c8 {grid-column:span 8; padding:0 var(--pad-x)}
+  .c6 {grid-column:span 6; padding:0 var(--pad-x)}
+  .c4 {grid-column:span 4; padding:0 var(--pad-x)}
+  .c3 {grid-column:span 3; padding:0 var(--pad-x)}
+  @media (max-width:1000px){
+    .c8,.c6{grid-column:span 12;border-right:none}
+    .c4{grid-column:span 6}
+    .c3{grid-column:span 6}
+  }
+  @media (max-width:640px){
+    .c4,.c3{grid-column:span 12;border-right:none}
+  }
+
+  /* ========== card (componente repetido) ========== */
+  article.card{display:flex;flex-direction:column;gap:14px}
+  /* RULE preta como elemento próprio (não mais border-top do h2) */
+  article.card > .rule{
+    height:12px;background:#000;
+    margin-bottom:-2px;
+  }
+  article.card h2{
+    font-family:var(--display);font-weight:500;
+    line-height:1.02;letter-spacing:-.022em;
+    font-variation-settings:"opsz" 48;
+    color:#000;
+  }
+  article.card h2 a{
+    display:inline;color:#000;
+    background-image:linear-gradient(#000,#000);
+    background-repeat:no-repeat;
+    background-size:0 1px;
+    background-position:0 100%;
+    transition:background-size .35s ease;
+  }
+  article.card:hover h2 a{background-size:100% 1px}
+  article.card h2 em{font-style:italic;font-weight:400}
+  article.card .by{
+    font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-2);
+    display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+  }
+  article.card figure{
+    margin-top:6px;position:relative;overflow:hidden;
+    background:var(--paper-2);border:1px solid var(--rule-strong);
+  }
+  article.card figure .ph{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  }
+
+  /* tamanhos do h2 por size */
+  .c12 article.card h2{font-size:68px;font-variation-settings:"opsz" 60;line-height:1.0}
+  .c8  article.card h2{font-size:54px}
+  .c6  article.card h2{font-size:40px}
+  .c4  article.card h2{font-size:30px}
+  .c3  article.card h2{font-size:26px}
+  @media (max-width:980px){
+    .c12 article.card h2{font-size:44px}
+    .c8  article.card h2{font-size:34px}
+    .c6  article.card h2{font-size:28px}
+  }
+
+  /* aspect-ratio das imagens por size */
+  .c12 article.card figure{aspect-ratio:21/9}
+  .c8  article.card figure{aspect-ratio:16/9}
+  .c6  article.card figure{aspect-ratio:4/3}
+  .c4  article.card figure,.c3 article.card figure{aspect-ratio:4/3}
+
+  /* placeholders decorativos para figuras (sem foto real) */
+  .ph-a{background:repeating-linear-gradient(135deg, rgba(27,22,18,.06) 0 1px, transparent 1px 14px), linear-gradient(160deg,var(--paper-3),var(--paper-2))}
+  .ph-b{background:radial-gradient(circle at 30% 40%, var(--terra-tint), transparent 60%), linear-gradient(180deg,var(--paper-3),var(--paper-2))}
+  .ph-c{background:linear-gradient(135deg,#2A241D 0 60%, var(--paper-3) 60% 100%)}
+  .ph-d{background:repeating-linear-gradient(0deg, var(--paper-3) 0 8px, var(--paper-2) 8px 16px)}
+
+  /* by-author italic dentro do .by */
+  .by .by-author{font-style:italic}
+
+  /* ========== PAIR (2 cards lado a lado, alinhados via subgrid) ==========
+     6 trilhos: tags, rule, h2, dek, by, figure — todas as linhas pareiam
+     horizontalmente; row-gap:14px garante espaçamento uniforme entre rows. */
+  .pair{
+    grid-column:span 12;border-right:none;
+    display:grid;grid-template-columns:1fr 1fr;
+    grid-template-rows:repeat(6, auto);
+    column-gap:0;row-gap:14px;
+    padding:48px 0;
+  }
+  .pair > article.card{
+    display:grid;grid-row:1 / span 6;
+    grid-template-rows:subgrid;
+    padding:0 var(--pad-x);
+    row-gap:14px;column-gap:0;
+    border-right:1px solid var(--rule);
+  }
+  .pair > article.card:last-child{border-right:none}
+  .pair > article.card > .tags{align-self:end}
+  .pair > article.card > .rule{align-self:start;margin:0}
+  .pair > article.card h2{align-self:start}
+  .pair > article.card .dek{align-self:start}
+  .pair > article.card .by{align-self:start}
+  .pair > article.card figure{
+    align-self:stretch;margin-top:0;
+    aspect-ratio:4/3;
+  }
+  @media (max-width:880px){
+    .pair{grid-template-columns:1fr;grid-template-rows:none;padding:48px 0 0}
+    .pair > article.card{
+      grid-row:auto;display:flex;flex-direction:column;gap:14px;
+      border-right:none;
+      padding:0 var(--pad-x) 48px;
+    }
+  }
+
+  /* ========== row-1plus3 ==========
+     subgrid de 3 linhas (tags, rule, conteúdo) trava as duas linhas pretas no
+     mesmo Y. O conteúdo da direita determina a altura — a figura da esquerda
+     usa flex:1 pra estender e terminar exatamente onde a última stack-link termina. */
+  .row-1plus3{
+    grid-column:span 12;border-right:none;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto auto 1fr;
+    row-gap:14px;
+    margin-bottom:64px;
+    align-items:stretch;
+  }
+  .row-1plus3 > .big,
+  .row-1plus3 > .stack{
+    display:grid;
+    grid-row:1 / span 3;
+    grid-template-rows:subgrid;
+    padding:48px var(--pad-x);
+  }
+  .row-1plus3 > .stack{border-left:1px solid var(--rule)}
+  .row-1plus3 > .big > .rule,
+  .row-1plus3 > .stack > .rule{
+    height:12px;background:#000;margin:0;
+    align-self:start;
+  }
+  .row-1plus3 > .big > .tags{align-self:end}
+  .row-1plus3 > .stack > .tags-spacer{align-self:end;height:1px}
+
+  /* big = card que estica e termina junto da .stack */
+  .row-1plus3 > .big > article.card{
+    display:flex;flex-direction:column;gap:14px;
+    height:100%;  /* preenche row 3 */
+  }
+  .row-1plus3 > .big > article.card > .rule{display:none}
+  .row-1plus3 > .big article.card h2{font-size:40px;line-height:1.05}
+  @media (max-width:980px){
+    .row-1plus3 > .big article.card h2{font-size:28px}
+  }
+  .row-1plus3 > .big article.card figure{
+    margin-top:0;
+    aspect-ratio:auto;
+    flex:1;min-height:240px;
+  }
+
+  /* stack-body = wrapper de header + links na row 3 */
+  .row-1plus3 > .stack > .stack-body{
+    display:flex;flex-direction:column;
+  }
+
+  /* kicker "OUTRAS LEITURAS" — espelha as tags coloridas do lado esquerdo */
+  .row-1plus3 > .stack .stack-head{
+    margin-bottom:8px;
+    padding-bottom:14px;
+  }
+  .row-1plus3 > .stack .stack-head h2{
+    font-family:var(--mono);font-weight:500;
+    font-size:14px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-3);margin:0;line-height:1;
+  }
+  .row-1plus3 > .stack .stack-head h2 em{
+    font-style:normal;font-weight:500;color:inherit;
+  }
+
+  .row-1plus3 > .stack .stack-link{
+    display:grid;grid-template-columns:64px 1fr 140px;
+    gap:20px;align-items:center;
+    padding:22px 16px;
+    margin:0 -16px;
+    border-radius:2px;
+    transition:background-color .2s ease, color .2s ease;
+    color:#000;
+  }
+  .row-1plus3 > .stack .stack-link:hover{background-color:rgba(27,22,18,.05)}
+  .row-1plus3 > .stack .stack-link:hover h2{color:var(--terra-deep)}
+  .row-1plus3 > .stack .stack-link:hover .thumb{transform:scale(1.04)}
+  .row-1plus3 > .stack .stack-link .date{
+    font-family:var(--mono);font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:500;line-height:1.4;
+  }
+  .row-1plus3 > .stack .stack-link .body{min-width:0;display:flex;flex-direction:column;gap:6px}
+  .row-1plus3 > .stack .stack-link h2{
+    font-size:22px;font-family:var(--display);
+    font-weight:500;line-height:1.15;letter-spacing:-.008em;
+    text-wrap:balance;color:#000;margin:0;
+  }
+  .row-1plus3 > .stack .stack-link .dek{
+    font-family:var(--serif);font-size:14px;line-height:1.4;
+    color:var(--ink-2);margin:0;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .row-1plus3 > .stack .stack-link .by{
+    font-family:var(--serif);font-style:italic;
+    font-size:13px;color:var(--ink-2);margin:0;
+  }
+  /* avatar menor (18px) pra escala do texto 13px italic do stack-link */
+  .row-1plus3 > .stack .stack-link .by .by-author > img{
+    width:18px;height:18px;
+  }
+  .row-1plus3 > .stack .stack-link .thumb{
+    width:140px;height:140px;background:#b89072;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:9px;
+    letter-spacing:.16em;text-transform:uppercase;color:#000a;
+    flex-shrink:0;
+    transition:transform .25s ease;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+  }
+  @media (max-width:880px){
+    .row-1plus3{grid-template-columns:1fr;grid-template-rows:none}
+    .row-1plus3 > .big,
+    .row-1plus3 > .stack{
+      grid-row:auto;display:flex;flex-direction:column;gap:14px;
+    }
+    .row-1plus3 > .stack{border-left:none}
+    .row-1plus3 > .big article.card figure{min-height:0}
+  }
+</style>

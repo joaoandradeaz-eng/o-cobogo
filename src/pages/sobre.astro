@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Sobre · O Cobogó" active="sobre" screenLabel="Sobre">
+
+  <!-- HERO DO AUTOR -->
+  <section class="author-hero">
+    <div class="rule"></div>
+    <div class="label">Sobre o autor</div>
+    <div class="pad">
+      <div class="photo">
+        <picture>
+          <source type="image/webp" srcset="/assets/joao-andrade-360.webp" />
+          <img src="/assets/joao-andrade-360.jpg" alt="Retrato de João Andrade" loading="eager" decoding="async" width="180" height="180" />
+        </picture>
+      </div>
+      <div>
+        <h1>João <em>Andrade</em></h1>
+        <p class="lede">Escreve sobre cidade, cultura e o que passa entre as duas — a varanda, a esquina, o ruído da Conde da Boa&nbsp;Vista.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIOGRAFIA -->
+  <section class="bio">
+    <h2>Biografia</h2>
+    <p><span class="first">João Andrade nasceu em Olinda em 1989</span> e vive no Recife desde sempre, com curtas fugas para Lisboa e São Paulo. Estudou Filosofia e Urbanismo na UFPE — duas formações que nunca conseguiu separar e, com o tempo, deixou de tentar.</p>
+    <p>Escreve sobre o que está entre a casa e a rua: a varanda, a esquina, o cobogó, o ônibus, o ruído de fundo da Avenida Conde da Boa Vista. Acredita que <em>cidade é uma forma de pensar</em>, e que pensar bem exige uma certa hospitalidade — deixar passar o vento sem deixar passar tudo.</p>
+    <p>Antes de O Cobogó, escreveu para a <em>Revista Continente</em>, o suplemento <em>Pernambuco</em> e o <em>jornal A Tarde</em>. É co-autor de <em>Fachada e fôlego</em> (Cepe, 2022) e de <em>Três notas sobre Rosa</em> (Lumme, 2024).</p>
+    <p>Contribui regularmente para esta revista desde a fundação, em 2023. Suas obsessões são poucas e teimosas: João Cabral, Guimarães Rosa, Hannah Arendt, Lina Bo Bardi, e a tese — não muito original, mas verdadeira — de que <em>arquitetura é antes de tudo um problema de tradução</em>.</p>
+    <div class="signature">— j. a.</div>
+  </section>
+
+  <!-- ARQUIVO SELECIONADO -->
+  <section class="arquivo">
+    <div class="head">
+      <h2>Próximas <em>leituras</em></h2>
+      <a href="#" class="more">Arquivo completo (87) →</a>
+    </div>
+
+    <a class="row" href="/a-varanda-como-teoria-politica">
+      <div class="date">12 Mar<br/>2026</div>
+      <h3>A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></h3>
+      <div class="where">ensaio · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">11 Mar<br/>2026</div>
+      <h3>A democracia local não cabe nas plataformas — e talvez seja melhor assim</h3>
+      <div class="where">crônica · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">04 Mar<br/>2026</div>
+      <h3>Tradução é uma forma de hospitalidade — e está desgastada</h3>
+      <div class="where">ensaio · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">26 Fev<br/>2026</div>
+      <h3>São Paulo já não tem esquinas — tem nós</h3>
+      <div class="where">crônica · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">19 Fev<br/>2026</div>
+      <h3>Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></h3>
+      <div class="where">reportagem · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">10 Fev<br/>2026</div>
+      <h3>A meritocracia como ficção fundadora: três notas de leitura</h3>
+      <div class="where">ensaio · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+    <a class="row" href="#">
+      <div class="date">29 Jan<br/>2026</div>
+      <h3>Rosa, hoje: o que sobrou do <em>sertão</em> na imaginação política</h3>
+      <div class="where">ensaio · O Cobogó</div>
+      <div class="thumb">imagem</div>
+    </a>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  /* ========== AUTHOR HERO ========== */
+  .author-hero{
+    max-width:1280px;margin:48px auto 0;
+    padding:0 68px;
+  }
+  /* linha preta inset (acompanha as margens do conteúdo) */
+  .author-hero .rule{
+    height:14px;background:#000;
+  }
+  .author-hero .label{
+    font-family:var(--sans);font-size:13px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;color:#000;
+    padding-top:14px;
+  }
+  .author-hero .pad{
+    padding:32px 0 64px;
+    display:grid;grid-template-columns:auto 1fr;
+    gap:48px;align-items:center;
+    border-bottom:1px solid var(--rule);
+  }
+  .author-hero .photo{
+    width:180px;height:180px;border-radius:50%;
+    overflow:hidden;background:var(--paper-2);
+    border:1px solid var(--ink);position:relative;flex-shrink:0;
+  }
+  .author-hero .photo img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;
+  }
+  .author-hero h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:60px;line-height:1.0;letter-spacing:-.02em;
+    color:#000;margin:0 0 14px;
+  }
+  .author-hero h1 em{font-style:italic;font-weight:400}
+  .author-hero .lede{
+    font-family:var(--serif);font-style:italic;
+    font-size:22px;line-height:1.35;color:var(--ink-2);
+    max-width:48ch;font-weight:400;
+  }
+  @media (max-width:760px){
+    .author-hero{padding:0 20px;margin-top:32px}
+    .author-hero .pad{
+      grid-template-columns:1fr;padding:24px 0 40px;gap:24px;
+    }
+    .author-hero .photo{width:140px;height:140px}
+    .author-hero h1{font-size:48px}
+    .author-hero .lede{font-size:18px}
+  }
+
+  /* ========== BIOGRAFIA ========== */
+  .bio{
+    max-width:1280px;margin:0 auto;
+    padding:64px 68px;
+    border-bottom:1px solid var(--rule);
+  }
+  .bio h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:48px;letter-spacing:-.018em;line-height:1;
+    color:#000;margin-bottom:32px;
+  }
+  .bio h2 em{font-style:italic;font-weight:400}
+  .bio p{
+    font-family:var(--serif);font-size:24px;line-height:1.5;
+    color:var(--ink);margin-bottom:22px;
+    text-wrap:pretty;max-width:64ch;
+  }
+  .bio p em{font-style:italic;color:var(--ink)}
+  .bio p .first{font-family:var(--serif);font-style:italic;color:var(--ink-3)}
+  .bio .signature{
+    margin-top:40px;font-family:var(--serif);
+    font-style:italic;font-size:18px;color:var(--ink-3);
+  }
+  @media (max-width:760px){
+    .bio{padding:48px 20px}
+    .bio h2{font-size:32px}
+    .bio p{font-size:19px}
+  }
+
+  /* ========== ARQUIVO SELECIONADO ========== */
+  .arquivo{
+    max-width:1280px;margin:0 auto;
+    padding:0 68px 64px;
+  }
+  .arquivo .head{
+    padding:60px 0 24px;
+    border-bottom:1px solid var(--ink);
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:0;
+  }
+  .arquivo .head h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:40px;letter-spacing:-.018em;color:#000;
+  }
+  .arquivo .head h2 em{
+    font-style:italic;color:var(--terra-deep);font-weight:400;
+  }
+  .arquivo .head .more{
+    font-family:var(--mono);font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .arquivo a.row{
+    display:grid;grid-template-columns:90px 1fr 200px 96px;
+    gap:24px;align-items:center;
+    padding:28px 0;border-bottom:1px solid var(--rule);
+    transition:background .2s ease, color .2s ease, padding .2s ease;
+    color:#000;
+  }
+  .arquivo a.row:hover{background:#000;color:#fff;padding-left:24px;padding-right:24px}
+  .arquivo a.row:hover .date,
+  .arquivo a.row:hover h3,
+  .arquivo a.row:hover .where,
+  .arquivo a.row:hover .thumb{color:#fff}
+  .arquivo .date{
+    font-family:var(--sans);font-size:13px;
+    letter-spacing:.04em;color:#000;font-weight:500;line-height:1.3;
+  }
+  .arquivo h3{
+    font-family:var(--serif);font-weight:500;
+    font-size:28px;line-height:1.15;letter-spacing:-.005em;
+    text-wrap:balance;color:#000;margin:0;
+  }
+  .arquivo h3 em{font-style:italic;font-weight:400}
+  .arquivo .where{
+    font-family:var(--serif);font-style:italic;font-size:16px;
+    color:var(--ink-3);text-align:right;
+  }
+  .arquivo .thumb{
+    width:96px;height:96px;background:#b89072;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:#000a;
+    flex-shrink:0;
+  }
+  @media (max-width:760px){
+    .arquivo a.row{
+      grid-template-columns:1fr;gap:8px;padding:20px 0;
+    }
+    .arquivo .where{text-align:left}
+    .arquivo .thumb{width:100%;height:80px}
+  }
+</style>

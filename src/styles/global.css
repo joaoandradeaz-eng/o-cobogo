@@ -1,0 +1,236 @@
+/* ============================================================
+   O Cobogó — design tokens e estilos compartilhados
+   ============================================================ */
+
+:root{
+  --paper:#f9f9f6;
+  --paper-2:#EAE1CE;
+  --paper-3:#E0D5BC;
+  --ink:#1B1612;
+  --ink-2:#3A322A;
+  --ink-3:#6B6055;
+  --rule:#1B161222;
+  --rule-strong:#1B161240;
+  --terra:#B85A1F;
+  --terra-deep:#8C3F12;
+  --terra-tint:#E5C9B0;
+  --serif:'Newsreader','Times New Roman',serif;
+  --sans:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --display:var(--serif);
+  --pad-y:48px;
+  --pad-x:28px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:"liga","kern";
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* focus rings visíveis (a11y) */
+:focus-visible{
+  outline:2px solid var(--terra);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* skip link */
+.skip-link{
+  position:absolute;left:-9999px;top:8px;
+  padding:10px 16px;background:#000;color:#fff;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;
+  z-index:100;border-radius:2px;
+}
+.skip-link:focus{left:8px}
+
+.shell{max-width:1280px;margin:0 auto;padding:0 40px}
+@media (max-width:760px){ .shell{padding:0 20px} }
+
+/* ========== PAGE INTRO: tagline + cobogó wall (compartilhado entre páginas) ========== */
+.tagline{
+  max-width:1280px;margin:0 auto;
+  padding:40px 68px 0;
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:40px;flex-wrap:wrap;
+}
+.tagline p{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:28px;line-height:1.25;letter-spacing:-.012em;
+  color:var(--ink);margin:0;
+}
+.tagline p em{font-style:italic;color:var(--terra-deep);font-weight:500}
+.tagline .edition{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  flex-shrink:0;
+}
+@media (max-width:760px){
+  .tagline{padding:32px 20px 24px}
+  .tagline p{font-size:22px}
+}
+
+.cobogo-wall{
+  max-width:1280px;
+  margin:0 auto;
+  padding:4px 68px 16px;
+  background:transparent;
+}
+.cobogo-grid{
+  display:grid;
+  grid-template-columns:repeat(18, 1fr);
+  gap:2px;
+  /* 72 cells / 18 cols = 4 fileiras automáticas; aspect-ratio:1 mantém os tiles quadrados */
+}
+.cobogo-cell{
+  display:block;
+  width:100%;
+  aspect-ratio:1;
+  color:#1E3A8A; /* azul royal padrão; modificadores trocam */
+}
+.cobogo-cell--yellow {color:#D9A52E}
+.cobogo-cell--red    {color:#A83232}
+.cobogo-cell--green  {color:#4F6B3D}
+.cobogo-cell--orange {color:var(--terra)}
+.cobogo-cell--gray   {color:#D8D4CB} /* cinza-quente bem claro, quase branco */
+@media (max-width:760px){
+  .cobogo-wall{padding:16px 20px 8px}
+  .cobogo-grid{grid-template-columns:repeat(9, 1fr); gap:1px}
+}
+
+/* ---------- TAGS de categoria (chips coloridos acima da linha preta) ---------- */
+.tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+.tag{
+  display:inline-block;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  padding:5px 10px;
+  border-radius:2px;line-height:1;
+  white-space:nowrap;
+}
+.tag[data-cat="ensaio"]{background:var(--terra-tint);color:var(--terra-deep)}
+.tag[data-cat="reportagem"]{background:var(--ink);color:var(--paper)}
+.tag[data-cat="critica"]{background:var(--terra-deep);color:var(--paper)}
+.tag[data-cat="entrevista"]{background:#D9DCD0;color:#3F4838}
+.tag[data-cat="memoria"]{background:#E8D7C5;color:#5A3922}
+.tag[data-cat="cidade-casa"]{background:#D4C9B4;color:#3F2E18}
+
+/* ---------- by-author: mini avatar redondo (24px) inline com o nome ---------- */
+.by-author{
+  display:inline-flex;align-items:center;gap:8px;
+  vertical-align:middle;
+}
+.by-author > img{
+  width:24px;height:24px;border-radius:50%;
+  object-fit:cover;object-position:50% 22%;
+  flex-shrink:0;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+}
+.by-author > span{color:var(--ink-3)}
+a.by-author:hover > span{color:#000;text-decoration:underline}
+
+/* ---------- header (preto, igual nas 3 páginas) ---------- */
+header.site{background:#000;border-bottom:1px solid var(--ink)}
+header.site .top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;padding:18px 40px;
+}
+header.site .brand{display:flex;align-items:center;gap:12px}
+header.site .brand img{width:36px;height:36px}
+header.site .brand h1{
+  font-family:var(--serif);font-weight:500;
+  font-size:28px;letter-spacing:-.018em;line-height:1;color:#fff;
+}
+header.site .brand h1 em{font-style:italic;font-weight:400;color:var(--terra-tint)}
+header.site .rt{
+  display:flex;gap:28px;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:#fff;
+}
+header.site .rt a{color:#fff;padding-bottom:4px;border-bottom:1px solid transparent}
+header.site .rt a.is-active{border-bottom-color:var(--terra-tint)}
+header.site .rt a:hover{color:var(--terra-tint)}
+@media (max-width:760px){
+  header.site .top{padding:14px 20px;flex-wrap:wrap;gap:14px}
+  header.site .rt{gap:18px;font-size:10px}
+  header.site .brand h1{font-size:22px}
+  header.site .brand img{width:28px;height:28px}
+}
+
+/* ---------- footer ---------- */
+footer.site{border-top:5px double var(--ink);padding:32px 0 40px;margin-top:0}
+footer.site .foot-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+footer.site .foot-row .lt{
+  font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+}
+footer.site .foot-row .rt{
+  text-align:right;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+}
+@media (max-width:760px){
+  footer.site .foot-row{grid-template-columns:1fr;text-align:center;gap:8px}
+  footer.site .foot-row .rt{text-align:center}
+}
+
+/* ---------- insert "Sobre o autor" (Home + Artigo) ---------- */
+.insert.autor{
+  max-width:1280px;margin:0 auto;
+  padding:0 40px;background:transparent;position:relative;
+}
+.insert.autor .rule{
+  height:12px;background:#000;
+}
+.insert.autor .label{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+  padding:14px 0 0;display:block;
+}
+.insert.autor .pad{
+  padding:24px 0 56px;
+  display:grid;grid-template-columns:auto 1fr;
+  gap:40px;align-items:center;
+}
+.insert.autor .photo{
+  width:160px;height:160px;border-radius:50%;
+  overflow:hidden;background:transparent;flex-shrink:0;
+  position:relative;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+}
+.insert.autor .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+.insert.autor h3{
+  font-family:var(--serif);font-weight:500;
+  font-size:48px;letter-spacing:-.018em;line-height:1.0;
+  color:#000;
+}
+.insert.autor h3 em{font-style:italic;font-weight:400}
+.insert.autor p{
+  margin-top:14px;font-family:var(--serif);font-style:italic;
+  font-size:18px;line-height:1.5;color:var(--ink-2);
+  max-width:54ch;font-weight:400;
+}
+.insert.autor .more{
+  margin-top:22px;display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:#000;
+  border-bottom:1px solid var(--ink);padding:0 0 4px;background:transparent;
+  transition:color .2s ease, border-color .2s ease;
+}
+.insert.autor .more:hover{color:var(--terra-deep);border-color:var(--terra-deep)}
+@media (max-width:760px){
+  .insert.autor{padding:0 20px}
+  .insert.autor .pad{
+    grid-template-columns:1fr;padding:20px 0 40px;gap:24px;
+  }
+  .insert.autor .photo{width:120px;height:120px}
+  .insert.autor h3{font-size:36px}
+}

@@ -1,0 +1,73 @@
+---
+/**
+ * Header padrão de toda página: tagline ("Filtrar a luz...") + parede de cobogó.
+ * Inclui as symbol defs SVG + script de randomização client-side
+ * (a cada page load, 5 tiles ganham cor aleatória e o olho cai dentro do tile cinza).
+ */
+const totalTiles = 72;
+---
+
+<!-- TAGLINE -->
+<section class="tagline">
+  <p>Filtrar a luz, deixar passar o <em>vento</em>.</p>
+</section>
+
+<!-- Symbol defs SVG (cobogo-tile + eye-almond) — usados por <use> abaixo -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="cobogo-tile" viewBox="0 0 240 240">
+    <path fill="currentColor" fill-rule="evenodd" d="
+      M 18 0 H 222 A 18 18 0 0 1 240 18 V 222 A 18 18 0 0 1 222 240 H 18 A 18 18 0 0 1 0 222 V 18 A 18 18 0 0 1 18 0 Z
+      M 38 26 H 202 A 12 12 0 0 1 214 38 V 202 A 12 12 0 0 1 202 214 H 38 A 12 12 0 0 1 26 202 V 38 A 12 12 0 0 1 38 26 Z
+    "/>
+    <path fill="currentColor" d="M 26 26 L 114 26 A 88 88 0 0 1 26 114 Z"/>
+    <path fill="currentColor" d="M 214 26 L 126 26 A 88 88 0 0 0 214 114 Z"/>
+    <path fill="currentColor" d="M 214 214 L 126 214 A 88 88 0 0 1 214 126 Z"/>
+    <path fill="currentColor" d="M 26 214 L 114 214 A 88 88 0 0 0 26 126 Z"/>
+  </symbol>
+
+  <symbol id="eye-almond" viewBox="0 0 240 240">
+    <path d="M 70 120 Q 120 50 170 120 Q 120 190 70 120 Z"
+          fill="#f9f9f6" stroke="#000" stroke-width="3" stroke-linejoin="miter"/>
+    <circle cx="120" cy="120" r="28" fill="#1E3A8A"/>
+    <circle cx="120" cy="120" r="11" fill="#000"/>
+    <circle cx="116" cy="116" r="4" fill="#f9f9f6"/>
+  </symbol>
+</svg>
+
+<section class="cobogo-wall" aria-hidden="true">
+  <div class="cobogo-grid">
+    {Array.from({length: totalTiles}).map(() => (
+      <svg class="cobogo-cell" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <use href="#cobogo-tile"/>
+      </svg>
+    ))}
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const tiles = document.querySelectorAll('.cobogo-cell');
+    if (tiles.length < 6) return;
+
+    const colors = ['yellow', 'red', 'green', 'orange', 'gray'];
+    const indices = Array.from({ length: tiles.length }, (_, i) => i);
+
+    // Fisher–Yates shuffle
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+
+    // 5 primeiros índices recebem cor
+    colors.forEach(function (color, idx) {
+      tiles[indices[idx]].classList.add('cobogo-cell--' + color);
+    });
+
+    // olho vai DENTRO do tile cinza
+    const grayIdx = colors.indexOf('gray');
+    const eyeTile = tiles[indices[grayIdx]];
+    const useEl = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    useEl.setAttribute('href', '#eye-almond');
+    eyeTile.appendChild(useEl);
+  })();
+</script>

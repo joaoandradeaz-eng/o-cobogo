@@ -1,0 +1,44 @@
+---
+/**
+ * Insert "Sobre o autor" usado na Home (dentro do .feed)
+ * e na página do Artigo (depois do corpo).
+ *
+ * Para a página /sobre, ver `.author-hero` em sobre.astro
+ * (estrutura diferente: foto 180px, nome 64px).
+ */
+interface Props {
+  /** se true, envolve em <div class="insert autor"> com grid-column:span 12 (Home) */
+  inFeed?: boolean;
+}
+const { inFeed = false } = Astro.props;
+---
+<div class={inFeed ? 'insert autor in-feed' : 'insert autor'}>
+  <div class="rule"></div>
+  <div class="label">Sobre o autor</div>
+  <div class="pad">
+    <div class="photo">
+      <picture>
+        <source type="image/webp" srcset="/assets/joao-andrade-360.webp" />
+        <img src="/assets/joao-andrade-360.jpg" alt="Retrato de João Andrade" loading="lazy" decoding="async" width="160" height="160" />
+      </picture>
+    </div>
+    <div>
+      <h3>João <em>Andrade</em></h3>
+      <p>
+        Escreve sobre cidade, cultura e o que passa entre as duas. Vive no Recife e contribui regularmente para O Cobogó desde a fundação, em 2023.
+      </p>
+      <a href="/sobre" class="more">Sobre o autor &nbsp;→</a>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  /* variante usada quando o insert está dentro do .feed (Home).
+     O .feed já aplica padding via .feed > .insert (var(--pad-y) var(--pad-x)),
+     então neutralizamos o padding:0 40px do .insert.autor padrão. */
+  .insert.autor.in-feed{
+    grid-column:span 12;
+    border-right:none;
+    padding:var(--pad-y) var(--pad-x);
+  }
+</style>
