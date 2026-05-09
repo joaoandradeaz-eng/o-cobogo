@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
 import { getCollection, render } from 'astro:content';
@@ -56,7 +57,7 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
       <span class="bit byline-author">
         <a href="/sobre" class="by-author">
           <img src="/assets/joao-andrade-48.jpg" alt="" loading="eager" decoding="async" width="24" height="24" />
-          por <span>{data.author}</span>
+          por <span set:html={parseInlineMd(data.author)}></span>
         </a>
       </span>
       <span class="sep">·</span>
@@ -147,12 +148,12 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
     margin-bottom:18px;
   }
   .art-hd h1{
-    font-family:var(--serif);font-weight:500;
+    font-family:var(--serif);font-weight:700;
     font-variation-settings:"opsz" 60;
     font-size:64px;line-height:1.04;letter-spacing:-.02em;
     color:#000;
   }
-  .art-hd h1 em{font-style:italic;font-weight:400}
+  .art-hd h1 em{font-style:normal;font-weight:700}
   .art-hd .dek{
     margin-top:24px;
     font-family:var(--serif);font-style:italic;
@@ -247,8 +248,8 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
   }
   .art-body .col p{margin-bottom:22px}
   .art-body .col p em{font-style:italic}
-  /* dropcap automático no primeiro parágrafo */
-  .art-body .col p:first-of-type::first-letter{
+  /* dropcap automático no primeiro parágrafo (só os diretos do .col, não dentro de blockquote) */
+  .art-body .col > p:first-of-type::first-letter{
     font-family:var(--serif);font-weight:500;
     font-size:140px;line-height:.85;float:left;
     padding:8px 14px 0 0;color:#000;
@@ -259,19 +260,56 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
     color:#000;margin:48px 0 20px;
   }
   .art-body .col h2 em{font-style:italic;font-weight:400}
+  /* blockquote: caixa centralizada com p + cite ambos dentro das bordas */
   .art-body .col blockquote{
-    margin:36px 0;padding:18px 0;
-    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    margin:48px auto;
+    padding:24px 24px 22px;
+    max-width:560px;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    text-align:center;
   }
   .art-body .col blockquote p{
     font-family:var(--serif);font-style:italic;
-    font-size:32px;line-height:1.18;color:#000;
+    font-size:30px;line-height:1.3;color:#000;
     letter-spacing:-.012em;text-wrap:balance;margin:0;
   }
+  /* aspas grandes, mesmo tamanho, dentro do flow do texto */
+  .art-body .col blockquote p::before,
+  .art-body .col blockquote p::after{
+    display:inline-block;
+    font-family:var(--serif);font-style:normal;font-weight:500;
+    font-size:80px;line-height:0;
+    vertical-align:-22px;
+    color:#000;
+  }
+  .art-body .col blockquote p::before{
+    content:"\201C"; /* " */
+    margin-right:2px;
+  }
+  .art-body .col blockquote p::after{
+    content:"\201D"; /* " */
+    margin-left:2px;
+  }
   .art-body .col blockquote cite{
-    display:block;margin-top:14px;
-    font-family:var(--mono);font-style:normal;font-size:11px;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+    display:block;margin-top:18px;
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:14px;line-height:1.4;color:#524C44;
+    letter-spacing:0;text-transform:none;
+  }
+  @media (max-width:760px){
+    .art-body .col blockquote{
+      max-width:100%;
+      padding:20px 16px 18px;
+    }
+    .art-body .col blockquote p{
+      font-size:22px;line-height:1.35;
+    }
+    .art-body .col blockquote p::before,
+    .art-body .col blockquote p::after{
+      font-size:60px;
+      vertical-align:-16px;
+    }
   }
   .art-body .col figure.inline{
     margin:32px 0;
@@ -377,11 +415,11 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
     letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
   }
   .continue h3{
-    font-family:var(--serif);font-weight:500;
+    font-family:var(--serif);font-weight:700;
     font-size:28px;line-height:1.1;letter-spacing:-.005em;
     text-wrap:balance;color:#000;margin:0;
   }
-  .continue h3 em{font-style:italic;font-weight:400}
+  .continue h3 em{font-style:normal;font-weight:700}
   .continue .by{
     font-family:var(--serif);font-style:italic;font-size:15px;
     color:var(--ink-3);margin-top:auto;

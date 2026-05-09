@@ -1,0 +1,47 @@
+---
+import { getSession, isAuthorized } from '../../lib/session';
+
+const session = await getSession(Astro.cookies);
+if (!isAuthorized(session)) {
+  return Astro.redirect('/api/auth/login', 302);
+}
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · O Cobogó</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:0 20px;line-height:1.5}
+    h1{font-size:32px;margin-bottom:8px}
+    .meta{color:#666;font-size:14px;margin-bottom:32px}
+    .card{border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:16px}
+    a.btn{display:inline-block;padding:10px 16px;background:#000;color:#fff;text-decoration:none;border-radius:6px;font-size:14px}
+    a.logout{color:#666;font-size:13px;text-decoration:underline}
+    img.avatar{width:32px;height:32px;border-radius:50%;vertical-align:middle;margin-right:8px}
+  </style>
+</head>
+<body>
+  <h1>Admin</h1>
+  <p class="meta">
+    {session.picture && <img class="avatar" src={session.picture} alt="" />}
+    Logado como <strong>{session.email}</strong>
+    · <a class="logout" href="/api/auth/logout">Sair</a>
+  </p>
+
+  <div class="card">
+    <h2 style="margin-top:0">Fase 1 ✅</h2>
+    <p>Login via Google funcionando. Próximas fases:</p>
+    <ul>
+      <li>Fase 2 — Listagem de artigos (publicados + drafts)</li>
+      <li>Fase 3 — Editor de novo post (TipTap + commit no GitHub)</li>
+      <li>Fase 4 — Editar post existente</li>
+      <li>Fase 5 — Upload de imagens (Cloudinary) + polish</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:32px"><a href="/" style="color:#666">← Voltar pro site</a></p>
+</body>
+</html>

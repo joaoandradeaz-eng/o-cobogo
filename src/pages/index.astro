@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
 ---
@@ -214,7 +215,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
     margin-bottom:-2px;
   }
   article.card h2{
-    font-family:var(--display);font-weight:500;
+    font-family:var(--display);font-weight:700;
     line-height:1.02;letter-spacing:-.022em;
     font-variation-settings:"opsz" 48;
     color:#000;
@@ -228,7 +229,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
     transition:background-size .35s ease;
   }
   article.card:hover h2 a{background-size:100% 1px}
-  article.card h2 em{font-style:italic;font-weight:400}
+  article.card h2 em{font-style:normal;font-weight:700}
   article.card .by{
     font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-2);
     display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
@@ -247,13 +248,13 @@ import AuthorInsert from '../components/AuthorInsert.astro';
   /* tamanhos do h2 por size */
   .c12 article.card h2{font-size:68px;font-variation-settings:"opsz" 60;line-height:1.0}
   .c8  article.card h2{font-size:54px}
-  .c6  article.card h2{font-size:40px}
+  .c6  article.card h2{font-size:76px;line-height:1.03}
   .c4  article.card h2{font-size:30px}
   .c3  article.card h2{font-size:26px}
   @media (max-width:980px){
     .c12 article.card h2{font-size:44px}
     .c8  article.card h2{font-size:34px}
-    .c6  article.card h2{font-size:28px}
+    .c6  article.card h2{font-size:46px}
   }
 
   /* aspect-ratio das imagens por size */
@@ -291,7 +292,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
   .pair > article.card:last-child{border-right:none}
   .pair > article.card > .tags{align-self:end}
   .pair > article.card > .rule{align-self:start;margin:0}
-  .pair > article.card h2{align-self:start}
+  .pair > article.card h2{align-self:start;font-size:34px;line-height:1.12}
   .pair > article.card .dek{align-self:start}
   .pair > article.card .by{align-self:start}
   .pair > article.card figure{
@@ -305,6 +306,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
       border-right:none;
       padding:0 var(--pad-x) 48px;
     }
+    .pair > article.card h2{font-size:24px}
   }
 
   /* ========== row-1plus3 ==========
@@ -391,7 +393,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
   .row-1plus3 > .stack .stack-link .body{min-width:0;display:flex;flex-direction:column;gap:6px}
   .row-1plus3 > .stack .stack-link h2{
     font-size:22px;font-family:var(--display);
-    font-weight:500;line-height:1.15;letter-spacing:-.008em;
+    font-weight:700;line-height:1.15;letter-spacing:-.008em;
     text-wrap:balance;color:#000;margin:0;
   }
   .row-1plus3 > .stack .stack-link .dek{

@@ -14,7 +14,7 @@
   --terra:#B85A1F;
   --terra-deep:#8C3F12;
   --terra-tint:#E5C9B0;
-  --serif:'Newsreader','Times New Roman',serif;
+  --serif:'Bitter','Times New Roman',serif;
   --sans:'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --display:var(--serif);
@@ -93,12 +93,12 @@ img{display:block;max-width:100%}
   display:block;
   width:100%;
   aspect-ratio:1;
-  color:#1E3A8A; /* azul royal padrão; modificadores trocam */
+  color:#3767c3; /* azul padrão; modificadores trocam */
 }
-.cobogo-cell--yellow {color:#D9A52E}
-.cobogo-cell--red    {color:#A83232}
-.cobogo-cell--green  {color:#4F6B3D}
-.cobogo-cell--orange {color:var(--terra)}
+.cobogo-cell--yellow {color:#f6ca47}
+.cobogo-cell--red    {color:#ea3330}
+.cobogo-cell--green  {color:#91b162}
+.cobogo-cell--orange {color:#e58348}
 .cobogo-cell--gray   {color:#D8D4CB} /* cinza-quente bem claro, quase branco */
 @media (max-width:760px){
   .cobogo-wall{padding:16px 20px 8px}
@@ -144,8 +144,16 @@ header.site .top{
   display:flex;align-items:center;justify-content:space-between;
   gap:24px;padding:18px 40px;
 }
-header.site .brand{display:flex;align-items:center}
-header.site .brand img{height:40px;width:auto;display:block}
+header.site .brand{display:flex;align-items:center;gap:14px}
+header.site .brand img{height:56px;display:block}
+/* mostra só o ícone (esquerda da logo) */
+header.site .brand-icon{
+  width:49px;object-fit:cover;object-position:left center;
+}
+/* mostra só o texto (direita da logo) */
+header.site .brand-text{
+  width:115px;object-fit:cover;object-position:right center;
+}
 header.site .rt{
   display:flex;gap:28px;
   font-family:var(--mono);font-size:11px;font-weight:500;
@@ -157,7 +165,10 @@ header.site .rt a:hover{color:var(--terra-tint)}
 @media (max-width:760px){
   header.site .top{padding:14px 20px;flex-wrap:wrap;gap:14px}
   header.site .rt{gap:18px;font-size:10px}
-  header.site .brand img{height:30px;width:auto}
+  header.site .brand{gap:10px}
+  header.site .brand img{height:42px}
+  header.site .brand-icon{width:37px}
+  header.site .brand-text{width:86px}
 }
 
 /* ---------- footer ---------- */
