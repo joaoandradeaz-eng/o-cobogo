@@ -1,10 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import { getSession, isAuthorized } from '../../lib/session';
 
 const session = await getSession(Astro.cookies);
 if (!isAuthorized(session)) {
   return Astro.redirect('/api/auth/login', 302);
 }
+
+const articles = await getCollection('articles');
+articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categoryLabels: Record<string, string> = {
+  'ensaio': 'Ensaio',
+  'reportagem': 'Reportagem',
+  'critica': 'Crítica',
+  'entrevista': 'Entrevista',
+  'memoria': 'Memória',
+  'cidade-casa': 'Cidade & Casa',
+};
+
+const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,34 +29,103 @@ if (!isAuthorized(session)) {
   <title>Admin · O Cobogó</title>
   <meta name="robots" content="noindex, nofollow" />
   <style>
-    body{font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:0 20px;line-height:1.5}
-    h1{font-size:32px;margin-bottom:8px}
-    .meta{color:#666;font-size:14px;margin-bottom:32px}
-    .card{border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:16px}
-    a.btn{display:inline-block;padding:10px 16px;background:#000;color:#fff;text-decoration:none;border-radius:6px;font-size:14px}
-    a.logout{color:#666;font-size:13px;text-decoration:underline}
-    img.avatar{width:32px;height:32px;border-radius:50%;vertical-align:middle;margin-right:8px}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,sans-serif;max-width:920px;margin:0 auto;padding:40px 24px;line-height:1.5;color:#111}
+    header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand h1{font-size:24px;margin:0;font-weight:700}
+    .brand .sub{color:#888;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .session{display:flex;align-items:center;gap:10px;font-size:13px;color:#555}
+    .session img{width:28px;height:28px;border-radius:50%}
+    .session a{color:#666}
+
+    .actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:12px}
+    .actions h2{font-size:18px;margin:0;color:#333}
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:10px 16px;background:#d88854;color:#fff;
+      text-decoration:none;border-radius:6px;font-size:14px;font-weight:600;
+      transition:background .15s ease;
+    }
+    .btn-primary:hover{background:#c47842}
+
+    .list{border:1px solid #e5e5e5;border-radius:8px;overflow:hidden}
+    .row{
+      display:grid;grid-template-columns:1fr auto auto auto;gap:16px;align-items:center;
+      padding:16px 20px;border-top:1px solid #f0f0f0;
+      text-decoration:none;color:inherit;
+      transition:background .12s ease;
+    }
+    .row:first-child{border-top:none}
+    .row:hover{background:#fafafa}
+    .row .meta-col{min-width:0}
+    .row h3{font-size:16px;margin:0 0 4px 0;font-weight:600;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row .dek{font-size:13px;color:#666;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row .cat{
+      font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+      padding:4px 8px;border-radius:4px;background:#f0f0f0;color:#444;
+      white-space:nowrap;
+    }
+    .row .date{font-size:12px;color:#888;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
+    .row .badge-draft{
+      font-size:10px;font-weight:700;letter-spacing:.1em;
+      padding:3px 6px;border-radius:3px;
+      background:#fef3c7;color:#92400e;text-transform:uppercase;
+    }
+
+    .empty{
+      padding:48px 20px;text-align:center;color:#888;
+      border:1px dashed #ddd;border-radius:8px;
+    }
+    .empty p{margin:8px 0}
+    .empty .muted{font-size:13px}
+
+    @media (max-width:640px){
+      .row{grid-template-columns:1fr;gap:6px}
+      .row .meta-col{order:1}
+      .row .cat,.row .date,.row .badge-draft{justify-self:start}
+    }
   </style>
 </head>
 <body>
-  <h1>Admin</h1>
-  <p class="meta">
-    {session.picture && <img class="avatar" src={session.picture} alt="" />}
-    Logado como <strong>{session.email}</strong>
-    · <a class="logout" href="/api/auth/logout">Sair</a>
-  </p>
+  <header class="top">
+    <div class="brand">
+      <h1>O Cobogó</h1>
+      <span class="sub">/admin</span>
+    </div>
+    <div class="session">
+      {session.picture && <img src={session.picture} alt="" />}
+      <span>{session.email}</span>
+      <a href="/api/auth/logout">Sair</a>
+    </div>
+  </header>
 
-  <div class="card">
-    <h2 style="margin-top:0">Fase 1 ✅</h2>
-    <p>Login via Google funcionando. Próximas fases:</p>
-    <ul>
-      <li>Fase 2 — Listagem de artigos (publicados + drafts)</li>
-      <li>Fase 3 — Editor de novo post (TipTap + commit no GitHub)</li>
-      <li>Fase 4 — Editar post existente</li>
-      <li>Fase 5 — Upload de imagens (Cloudinary) + polish</li>
-    </ul>
+  <div class="actions">
+    <h2>{articles.length} {articles.length === 1 ? 'artigo' : 'artigos'}</h2>
+    <a class="btn-primary" href="/admin/novo">+ Novo post</a>
   </div>
 
-  <p style="margin-top:32px"><a href="/" style="color:#666">← Voltar pro site</a></p>
+  {articles.length === 0 ? (
+    <div class="empty">
+      <p><strong>Sem artigos ainda.</strong></p>
+      <p class="muted">Clica em "+ Novo post" pra começar.</p>
+    </div>
+  ) : (
+    <div class="list">
+      {articles.map((article) => (
+        <a class="row" href={`/admin/edit/${article.id}`}>
+          <div class="meta-col">
+            <h3>{article.data.title}</h3>
+            <p class="dek">{article.data.dek}</p>
+          </div>
+          <span class="cat">{categoryLabels[article.data.categories[0]] ?? article.data.categories[0]}</span>
+          <span class="date">{fmtDate.format(article.data.date)}</span>
+          {article.data.draft ? <span class="badge-draft">Rascunho</span> : <span class="badge-draft" style="visibility:hidden">·</span>}
+        </a>
+      ))}
+    </div>
+  )}
+
+  <p style="margin-top:32px;font-size:13px;color:#888"><a href="/" style="color:#888">← Ver site</a></p>
 </body>
 </html>
