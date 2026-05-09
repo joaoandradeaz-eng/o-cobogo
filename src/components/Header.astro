@@ -6,9 +6,8 @@ const { active = 'home' } = Astro.props;
 ---
 <header class="site">
   <div class="top">
-    <a href="/" class="brand">
-      <img src="/assets/icone.png" alt="" />
-      <h1>O&nbsp;Cobog<em>ó</em></h1>
+    <a href="/" class="brand" aria-label="O Cobogó · ir para a home">
+      <img src="/assets/logo.png" alt="O Cobogó" />
     </a>
     <nav class="rt">
       <a href="/" class={active === 'home' ? 'is-active' : ''}>Home</a>

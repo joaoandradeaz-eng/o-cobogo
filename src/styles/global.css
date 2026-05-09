@@ -144,13 +144,8 @@ header.site .top{
   display:flex;align-items:center;justify-content:space-between;
   gap:24px;padding:18px 40px;
 }
-header.site .brand{display:flex;align-items:center;gap:12px}
-header.site .brand img{width:36px;height:36px}
-header.site .brand h1{
-  font-family:var(--serif);font-weight:500;
-  font-size:28px;letter-spacing:-.018em;line-height:1;color:#fff;
-}
-header.site .brand h1 em{font-style:italic;font-weight:400;color:var(--terra-tint)}
+header.site .brand{display:flex;align-items:center}
+header.site .brand img{height:40px;width:auto;display:block}
 header.site .rt{
   display:flex;gap:28px;
   font-family:var(--mono);font-size:11px;font-weight:500;
@@ -162,8 +157,7 @@ header.site .rt a:hover{color:var(--terra-tint)}
 @media (max-width:760px){
   header.site .top{padding:14px 20px;flex-wrap:wrap;gap:14px}
   header.site .rt{gap:18px;font-size:10px}
-  header.site .brand h1{font-size:22px}
-  header.site .brand img{width:28px;height:28px}
+  header.site .brand img{height:30px;width:auto}
 }
 
 /* ---------- footer ---------- */
