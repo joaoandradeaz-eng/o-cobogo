@@ -16,6 +16,17 @@ type CreateBody = {
   bodyHtml?: string;
 };
 
+function todayISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function deriveTitleFromBody(html: string): string {
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  const trimmed = text.slice(0, 60);
+  return trimmed + (text.length > 60 ? '…' : '');
+}
+
 export const POST: APIRoute = async ({ request, cookies }) => {
   const session = await getSession(cookies);
   if (!isAuthorized(session)) {
@@ -29,20 +40,36 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ error: 'invalid json' }), { status: 400 });
   }
 
-  const errors: string[] = [];
-  if (!body.title?.trim()) errors.push('title is required');
-  if (!body.dek?.trim()) errors.push('dek is required');
-  if (!body.categories?.length) errors.push('at least one category is required');
-  if (body.categories?.some((c) => !VALID_CATEGORIES.includes(c))) errors.push('invalid category');
-  if (!body.date?.trim()) errors.push('date is required');
-  if (!body.readTime?.trim()) errors.push('readTime is required');
-  if (!body.bodyHtml?.trim()) errors.push('body is empty');
+  const isDraft = body.draft === true;
+  const titleRaw = body.title?.trim() ?? '';
+  const dekRaw = body.dek?.trim() ?? '';
+  const bodyHtmlRaw = body.bodyHtml?.trim() ?? '';
 
-  if (errors.length) {
-    return new Response(JSON.stringify({ error: errors.join('; ') }), { status: 400 });
+  if (isDraft) {
+    if (!titleRaw && !dekRaw && !bodyHtmlRaw) {
+      return new Response(
+        JSON.stringify({ error: 'preencha pelo menos título, dek ou corpo' }),
+        { status: 400 }
+      );
+    }
+  } else {
+    const errors: string[] = [];
+    if (!titleRaw) errors.push('title is required');
+    if (!dekRaw) errors.push('dek is required');
+    if (!body.categories?.length) errors.push('at least one category is required');
+    if (!bodyHtmlRaw) errors.push('body is empty');
+    if (errors.length) {
+      return new Response(JSON.stringify({ error: errors.join('; ') }), { status: 400 });
+    }
   }
 
-  const slug = slugify(body.title!);
+  if (body.categories?.some((c) => !VALID_CATEGORIES.includes(c))) {
+    return new Response(JSON.stringify({ error: 'invalid category' }), { status: 400 });
+  }
+
+  const titleEffective =
+    titleRaw || deriveTitleFromBody(bodyHtmlRaw) || dekRaw || `rascunho-${Date.now()}`;
+  const slug = slugify(titleEffective);
   if (!slug) {
     return new Response(JSON.stringify({ error: 'could not derive slug from title' }), { status: 400 });
   }
@@ -57,17 +84,17 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 
   const frontmatter: PostFrontmatter = {
-    title: body.title!.trim(),
-    dek: body.dek!.trim(),
-    categories: body.categories!,
-    date: body.date!,
-    readTime: body.readTime!.trim(),
-    draft: body.draft ?? false,
+    title: titleEffective,
+    dek: dekRaw || '...',
+    categories: body.categories?.length ? body.categories : ['ensaio'],
+    date: body.date?.trim() || todayISO(),
+    readTime: body.readTime?.trim() || '1 min',
+    draft: isDraft,
   };
 
-  const markdownBody = htmlToMarkdown(body.bodyHtml!);
+  const markdownBody = bodyHtmlRaw ? htmlToMarkdown(bodyHtmlRaw) : '';
   const fileContent = buildMarkdownFile(frontmatter, markdownBody);
-  const commitMessage = `post: ${frontmatter.title}${frontmatter.draft ? ' (draft)' : ''}`;
+  const commitMessage = `post: ${frontmatter.title}${isDraft ? ' (draft)' : ''}`;
 
   try {
     const result = await createFile(path, fileContent, commitMessage);

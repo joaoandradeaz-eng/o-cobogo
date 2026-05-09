@@ -9,7 +9,7 @@ categories:
   - cidade-casa
   - ensaio
 author: João Andrade
-date: '2026-05-09'
+date: 2026-05-09
 readTime: 5 min
 draft: true
 ---

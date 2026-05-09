@@ -29,7 +29,7 @@ export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): s
     dek: frontmatter.dek,
     categories: frontmatter.categories,
     author: frontmatter.author ?? 'João Andrade',
-    date: frontmatter.date,
+    date: new Date(`${frontmatter.date}T00:00:00Z`),
     readTime: frontmatter.readTime,
   };
   if (frontmatter.draft) data.draft = true;

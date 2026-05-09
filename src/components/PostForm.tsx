@@ -142,7 +142,9 @@ export default function PostForm() {
     }
   };
 
-  const canSubmit =
+  const hasAnyContent = !!(title.trim() || dek.trim() || bodyHtml.trim());
+  const canSaveDraft = hasAnyContent && !submitting;
+  const canPublish =
     title.trim() && dek.trim() && categories.length > 0 && bodyHtml.trim() && !submitting;
 
   return (
@@ -222,14 +224,20 @@ export default function PostForm() {
           <span className={`pf-status ${autosaveStatus}`}>
             {autosaveStatus === 'pending' && 'salvando rascunho local…'}
             {autosaveStatus === 'saved' && '✓ rascunho local salvo'}
-            {autosaveStatus === 'idle' && (canSubmit ? 'pronto pra publicar' : 'preencha título, dek, categoria e corpo')}
+            {autosaveStatus === 'idle' && (
+              canPublish
+                ? 'pronto pra publicar'
+                : canSaveDraft
+                  ? 'rascunho pode ser salvo (faltam campos pra publicar)'
+                  : 'comece a escrever'
+            )}
           </span>
         </div>
         <div className="right">
           <button
             type="button"
             className="pf-btn pf-btn-secondary"
-            disabled={!canSubmit}
+            disabled={!canSaveDraft}
             onClick={() => submit(true)}
           >
             Salvar rascunho
@@ -237,7 +245,7 @@ export default function PostForm() {
           <button
             type="button"
             className="pf-btn pf-btn-primary"
-            disabled={!canSubmit}
+            disabled={!canPublish}
             onClick={() => submit(false)}
           >
             {submitting ? 'Publicando…' : 'Publicar'}
