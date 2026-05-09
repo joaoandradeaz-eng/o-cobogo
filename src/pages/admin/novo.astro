@@ -1,5 +1,6 @@
 ---
 import { getSession, isAuthorized } from '../../lib/session';
+import PostForm from '../../components/PostForm';
 
 const session = await getSession(Astro.cookies);
 if (!isAuthorized(session)) {
@@ -14,17 +15,10 @@ if (!isAuthorized(session)) {
   <title>Novo post · Admin · O Cobogó</title>
   <meta name="robots" content="noindex, nofollow" />
   <style>
-    body{font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:0 24px;line-height:1.5;color:#111}
-    .stub{padding:48px 24px;text-align:center;border:1px dashed #ddd;border-radius:8px;color:#888}
-    .stub h1{color:#111;margin-top:0;font-size:22px}
-    a{color:#666}
+    body{ margin:0; background:#fff; }
   </style>
 </head>
 <body>
-  <div class="stub">
-    <h1>Editor — em breve</h1>
-    <p>Esta página vai ser construída na <strong>Fase 3</strong> (TipTap + commit no GitHub).</p>
-    <p style="margin-top:24px"><a href="/admin">← Voltar pro dashboard</a></p>
-  </div>
+  <PostForm client:only="react" />
 </body>
 </html>
