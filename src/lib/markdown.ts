@@ -70,16 +70,18 @@ turndown.addRule('alignedHeading', {
   },
 });
 
-/* Preserve <img> com posição (img-pos-center/left/right/full).
+/* Preserve <img> com posição (img-pos-center/left/right/full) + width inline.
    Sempre emite raw HTML em vez de markdown ![alt](src) pra manter
-   o atributo data-position e a classe img-pos-N. Block-level (\n\n volta). */
+   data-position, class e style="width:X%". Block-level (\n\n volta). */
 turndown.addRule('positionedImage', {
   filter: 'img',
   replacement: (_, node: any) => {
     const src = node.getAttribute('src') ?? '';
     const alt = (node.getAttribute('alt') ?? '').replace(/"/g, '&quot;');
     const pos = node.getAttribute('data-position') ?? 'center';
-    return `\n\n<img src="${src}" alt="${alt}" data-position="${pos}" class="img-pos-${pos}" />\n\n`;
+    const style = node.getAttribute('style') ?? '';
+    const styleAttr = style ? ` style="${style}"` : '';
+    return `\n\n<img src="${src}" alt="${alt}" data-position="${pos}" class="img-pos-${pos}"${styleAttr} />\n\n`;
   },
 });
 

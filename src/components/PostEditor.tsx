@@ -1,4 +1,4 @@
-import { useEditor, EditorContent, type Editor } from '@tiptap/react';
+import { useEditor, EditorContent, NodeViewWrapper, ReactNodeViewRenderer, type Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
@@ -41,7 +41,76 @@ const HIGHLIGHT_PALETTE = [
   { name: 'Laranja', hex: '#FFC99A' },
 ];
 
-/** Custom Image node with `position` attribute (center | left | right | full) */
+/** NodeView com handle de resize no canto inferior direito */
+function ImageNodeView({ node, updateAttributes, selected }: any) {
+  const { src, alt, position, width } = node.attrs;
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  const startResize = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const startX = e.clientX;
+    const startW = wrap.offsetWidth;
+    const parent = wrap.parentElement;
+    const parentW = parent?.offsetWidth ?? 1000;
+
+    const onMove = (ev: MouseEvent) => {
+      const delta = ev.clientX - startX;
+      const newPx = Math.max(80, Math.min(parentW, startW + delta));
+      const pct = Math.round((newPx / parentW) * 100);
+      updateAttributes({ width: `${pct}%` });
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    document.body.style.cursor = 'se-resize';
+    document.body.style.userSelect = 'none';
+  };
+
+  return (
+    <NodeViewWrapper
+      as="div"
+      className={`img-pos-${position}`}
+      style={{ width: width ?? undefined, position: 'relative', display: 'block' }}
+      ref={wrapRef as any}
+    >
+      <img
+        src={src}
+        alt={alt}
+        draggable={false}
+        style={{ width: '100%', height: 'auto', display: 'block', outline: selected ? '2px solid var(--terra)' : 'none' }}
+      />
+      {selected && (
+        <span
+          className="ed-resize-handle"
+          onMouseDown={startResize}
+          style={{
+            position: 'absolute',
+            right: -7,
+            bottom: -7,
+            width: 14,
+            height: 14,
+            background: 'var(--terra)',
+            border: '2px solid #fff',
+            borderRadius: 3,
+            cursor: 'se-resize',
+            zIndex: 10,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+          }}
+        />
+      )}
+    </NodeViewWrapper>
+  );
+}
+
+/** Custom Image node with `position` (center|left|right|full) and `width` (percent string). */
 const PositionedImage = Image.extend({
   addAttributes() {
     return {
@@ -57,7 +126,17 @@ const PositionedImage = Image.extend({
           };
         },
       },
+      width: {
+        default: null,
+        parseHTML: (el) =>
+          (el as HTMLElement).style.width || el.getAttribute('width') || null,
+        renderHTML: (attrs) =>
+          attrs.width ? { style: `width: ${attrs.width}` } : {},
+      },
     };
+  },
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageNodeView);
   },
 });
 
