@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Editor } from '@tiptap/react';
 import PostEditor from './PostEditor';
 import { TableGridPicker } from './TableExtensions';
+import { ChartModal } from './ChartExtension';
 
 const CATEGORIES = [
   { value: 'ensaio', label: 'Ensaio' },
@@ -119,6 +120,7 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
   const [editorReady, setEditorReady] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [showTablePicker, setShowTablePicker] = useState(false);
+  const [showChartModal, setShowChartModal] = useState(false);
   const initialMountedRef = useRef(false);
   const editorRef = useRef<Editor | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -207,6 +209,15 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
       .chain()
       .focus()
       .insertTable({ rows, cols, withHeaderRow: true })
+      .run();
+  };
+
+  const insertChart = (html: string) => {
+    if (!editorRef.current) return;
+    editorRef.current
+      .chain()
+      .focus()
+      .insertContent({ type: 'chart', attrs: { html } })
       .run();
   };
 
@@ -521,6 +532,14 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
             />
           )}
         </div>
+        <button type="button" onClick={() => setShowChartModal(true)} title="Inserir gráfico (cole SVG/HTML que o Claude gerou pra você)">
+          + Gráfico
+        </button>
+        <ChartModal
+          open={showChartModal}
+          onClose={() => setShowChartModal(false)}
+          onInsert={insertChart}
+        />
         <input
           ref={fileInputRef}
           type="file"

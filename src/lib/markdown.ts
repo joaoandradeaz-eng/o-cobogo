@@ -80,6 +80,19 @@ turndown.addRule('table', {
   },
 });
 
+/* Preserve <div data-chart> com SVG/HTML inline — gráficos hand-crafted.
+   outerHTML mantém SVG, classes, atributos. Block-level. */
+turndown.addRule('chart', {
+  filter: (node: any) =>
+    node.nodeName === 'DIV' &&
+    typeof node.getAttribute === 'function' &&
+    node.hasAttribute('data-chart'),
+  replacement: (_, node: any) => {
+    const html = (node as HTMLElement).outerHTML;
+    return `\n\n${html}\n\n`;
+  },
+});
+
 /* Preserve <img> com posição (img-pos-center/left/right/full) + width inline.
    Sempre emite raw HTML em vez de markdown ![alt](src) pra manter
    data-position, class e style="width:X%". Block-level (\n\n volta). */

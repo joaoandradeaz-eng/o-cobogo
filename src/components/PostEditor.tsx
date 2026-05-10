@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CloudinaryConfig, ImagePosition } from '../lib/cloudinary';
 import { uploadToCloudinary } from '../lib/cloudinary';
 import { StyledTableCell, StyledTableHeader, CellColorPicker } from './TableExtensions';
+import { Chart } from './ChartExtension';
 
 type Props = {
   initialHtml?: string;
@@ -659,6 +660,7 @@ export default function PostEditor({
       TableRow,
       StyledTableHeader,
       StyledTableCell,
+      Chart,
     ],
     content: initialHtml ?? '',
     editorProps: {

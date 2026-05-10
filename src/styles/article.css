@@ -245,6 +245,31 @@
   }
 }
 
+/* === Gráficos inline (.chart wrapper) ===
+   SVGs/HTML hand-crafted (gerados em conversa com Claude) inseridos via
+   "+ Gráfico" no editor. Centralizados, max-width controlado, espaçamento
+   editorial consistente. */
+.art-body .col .chart{
+  margin: 36px auto;
+  max-width: 100%;
+  text-align: center;
+}
+.art-body .col .chart svg{
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.art-body .col .chart figcaption,
+.art-body .col .chart .chart-source{
+  margin-top: 12px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
 /* === Tabelas dentro de .art-body .col === */
 .art-body .col table,
 .art-body .col table.art-table{
