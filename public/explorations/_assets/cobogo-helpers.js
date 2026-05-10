@@ -282,17 +282,22 @@ function buildWallRows(container, rows = 7, tileSize = 14, excludeColorHex = nul
   });
 }
 
-// 1c — Caótico: cada célula com peça e cor independentes
+// 1c — Caótico: cada célula com peça e cor independentes.
+// Cada linha é seu próprio div com white-space:nowrap → o último tile
+// que não cabe inteiro fica VISÍVEL e cortado pela direita (em vez de
+// wrappar pra linha de baixo escondida e deixar gap branco no final).
 function buildWallChaos(container, rows = 7, tileSize = 14) {
   const colors = Object.values(PALETTE);
   const cols = Math.ceil((window.innerWidth + tileSize * 4) / tileSize);
   let html = '';
   for (let r = 0; r < rows; r++) {
+    html += `<div style="height:${tileSize}px;white-space:nowrap;overflow:hidden;font-size:0;line-height:0">`;
     for (let c = 0; c < cols; c++) {
       const piece = randFrom(PIECES);
       const color = randFrom(colors);
       html += `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color:${color};width:${tileSize}px;height:${tileSize}px;display:inline-block;vertical-align:top"><use href="#cobogo-${piece}" width="100" height="100"/></svg>`;
     }
+    html += `</div>`;
   }
   container.innerHTML = html;
   container.style.fontSize = '0';
