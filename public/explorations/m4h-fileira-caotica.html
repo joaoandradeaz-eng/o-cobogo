@@ -12,8 +12,9 @@
       display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:32px; }
     header.site .brand{ font-family:var(--serif); font-weight:700; font-size:22px; letter-spacing:-.01em;
       color: var(--head-text); text-decoration:none;
-      display:flex; align-items:center; gap:10px; }
-    header.site .brand-eye{ width:22px; height:22px; color: var(--head-text); flex-shrink:0; display:block; }
+      display:flex; align-items:center; gap:6px; }
+    /* olho substitui o "O" do wordmark — tamanho ~ cap height do O em Bitter 22px Bold */
+    header.site .brand-eye{ width:20px; height:20px; color: var(--head-text); flex-shrink:0; display:block; }
     header.site .tagline{ font-family:var(--serif); font-style:normal; font-weight:400; font-size:16px;
       line-height:1.3; color: var(--head-dim); text-align:center; max-width:60ch; justify-self:center; }
     header.site .tagline em{ font-style:normal; color:inherit; font-weight:400; }
@@ -34,13 +35,12 @@
   <header class="site">
     <div class="top">
       <a class="brand" href="/explorations/">
+        <!-- olho substitui o "O" do wordmark: almond muito aberto (~circular) -->
         <svg class="brand-eye" viewBox="0 0 100 100" aria-hidden="true">
-          <!-- almond branco (ainda mais aberto) -->
-          <path d="M 4 50 Q 50 -10 96 50 Q 50 110 4 50 Z" fill="currentColor"/>
-          <!-- pupila minimalista navy -->
+          <path d="M 4 50 Q 50 -30 96 50 Q 50 130 4 50 Z" fill="currentColor"/>
           <circle cx="50" cy="50" r="14" fill="#1E3A8A"/>
         </svg>
-        O Cobogó
+        Cobogó
       </a>
       <div class="tagline">Ensaios de um <em>não-candango</em> no Planalto.</div>
       <nav class="nav">
