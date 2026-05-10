@@ -254,6 +254,59 @@ function buildStripe(container, pieceName, colorHex, tileSize = 14) {
   container.style.height = `${tileSize}px`;
 }
 
+// === Variações de paredão (Teste 1) ===
+
+// 1a — Mono: M4d empilhado, mesma peça e cor em N linhas
+function buildWallMono(container, pieceName, colorHex, rows = 7, tileSize = 14) {
+  buildStripe(container, pieceName, colorHex, tileSize);
+  container.style.height = `${rows * tileSize}px`;
+  container.style.backgroundRepeat = 'repeat';
+}
+
+// 1b — Listras: N linhas, cada uma com peça e cor próprias (uniforme dentro)
+function buildWallRows(container, rows = 7, tileSize = 14, excludeColorHex = null) {
+  const colorKeys = Object.keys(PALETTE).filter(k => PALETTE[k] !== excludeColorHex);
+  let html = '';
+  const choices = [];
+  for (let r = 0; r < rows; r++) {
+    const piece = randFrom(PIECES);
+    const colorKey = randFrom(colorKeys);
+    choices.push({ piece, colorKey });
+    html += `<div class="wall-row" style="height:${tileSize}px"></div>`;
+  }
+  container.innerHTML = html;
+  container.style.fontSize = '0';
+  Array.from(container.children).forEach((rowEl, i) => {
+    const c = choices[i];
+    buildStripe(rowEl, c.piece, PALETTE[c.colorKey], tileSize);
+  });
+}
+
+// 1c — Caótico: cada célula com peça e cor independentes
+function buildWallChaos(container, rows = 7, tileSize = 14) {
+  const colors = Object.values(PALETTE);
+  const cols = Math.ceil((window.innerWidth + tileSize * 4) / tileSize);
+  let html = '';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const piece = randFrom(PIECES);
+      const color = randFrom(colors);
+      html += `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color:${color};width:${tileSize}px;height:${tileSize}px;display:inline-block;vertical-align:top"><use href="#cobogo-${piece}" width="100" height="100"/></svg>`;
+    }
+  }
+  container.innerHTML = html;
+  container.style.fontSize = '0';
+  container.style.lineHeight = '0';
+  container.style.height = `${rows * tileSize}px`;
+  container.style.overflow = 'hidden';
+  container.style.width = '100%';
+}
+
+// === Teste 2: fileira caótica (1 linha, peça e cor por célula) ===
+function buildStripeChaos(container, tileSize = 14) {
+  buildWallChaos(container, 1, tileSize);
+}
+
 // Constrói coluna lateral (margem)
 function buildSidebar(container, count = 6) {
   const colorPick = ['catedral', 'planalto', 'brasilia', 'lucio'];
