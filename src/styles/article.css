@@ -109,7 +109,7 @@
   font-family:var(--serif);font-size:22px;line-height:1.55;
   color:var(--ink);text-wrap:pretty;
 }
-.art-body .col p{margin-bottom:22px}
+.art-body .col p{margin-bottom:22px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
 .art-body .col p em{font-style:italic}
 /* footnote refs (sup numbers in body) — clickable, scroll to #nota-N */
 .art-body .col sup{
@@ -135,25 +135,22 @@
 }
 
 /* === Hand-drawn highlight (mark element) ===
-   CSS gradient skewed pra simular pincelada de marcador.
+   SVG path com Bézier irregular nas bordas (top wavy + bottom wavy),
+   sobreposto a um gradient pra dar feel de "duas passadas de marcador".
    box-decoration-break:clone faz funcionar em multi-line. */
 .art-body .col mark,
 .art-body .linha-fina mark{
-  background: transparent;
-  background-image: linear-gradient(
-    104deg,
-    rgba(255, 224, 102, 0) 0.9%,
-    rgba(255, 224, 102, 0.55) 2.4%,
-    rgba(255, 224, 102, 0.6) 5.8%,
-    rgba(255, 224, 102, 0.55) 93%,
-    rgba(255, 224, 102, 0.6) 96%,
-    rgba(255, 224, 102, 0) 98%
-  );
-  background-size: 100% 58%;
-  background-position: 0 88%;
-  background-repeat: no-repeat;
-  padding: 0 2px;
-  margin: 0 -2px;
+  background-color: transparent;
+  background-image:
+    /* layer 1: SVG blob irregular (forma principal da pincelada) */
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 40' preserveAspectRatio='none'%3E%3Cpath d='M3,11 C9,4 22,17 38,7 C56,2 76,16 96,6 C118,2 140,15 162,8 C184,3 206,15 228,8 C250,3 270,16 286,9 C292,11 297,14 298,17 L298,30 C291,36 270,29 248,33 C224,37 202,30 180,32 C156,37 134,29 112,33 C88,37 65,30 46,32 C26,35 8,32 2,29 Z' fill='%23FFE066' fill-opacity='0.55'/%3E%3C/svg%3E"),
+    /* layer 2: streak amarelo-mostarda mais escuro, 2a passada deslocada */
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 30' preserveAspectRatio='none'%3E%3Cpath d='M5,8 C20,3 50,12 90,7 C130,3 170,11 210,8 C245,5 275,11 295,8 L295,18 C275,22 245,18 210,21 C170,24 130,18 90,21 C50,24 20,20 5,17 Z' fill='%23F4C430' fill-opacity='0.32'/%3E%3C/svg%3E");
+  background-size: 100% 78%, 100% 38%;
+  background-position: 0 78%, 0 50%;
+  background-repeat: no-repeat, no-repeat;
+  padding: 0 4px;
+  margin: 0 -4px;
   color: inherit;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
