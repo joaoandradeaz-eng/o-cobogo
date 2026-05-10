@@ -1,0 +1,297 @@
+/* ========== ARTICLE LAYOUT — usado em /[slug] e em /admin/novo, /admin/edit ========== */
+
+/* ========== ARTICLE HEADER ========== */
+.art-hd{max-width:1280px;margin:0 auto;padding:64px 68px 40px}
+.art-hd .tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:14px;
+}
+.art-hd .rule{
+  height:14px;background:#000;
+  margin-bottom:18px;
+}
+.art-hd h1{
+  font-family:var(--serif);font-weight:700;
+  font-variation-settings:"opsz" 60;
+  font-size:64px;line-height:1.04;letter-spacing:-.02em;
+  color:#000;
+}
+.art-hd h1 em{font-style:normal;font-weight:700}
+.art-hd .dek{
+  margin-top:24px;
+  font-family:var(--serif);font-style:italic;
+  font-size:22px;line-height:1.35;color:var(--ink-2);
+  font-weight:400;
+}
+
+/* BYLINE: caixinha cinza claro, serif (mesma família dos títulos) */
+.art-hd .byline{
+  margin-top:40px;
+  padding:18px 24px;
+  background:#efece6;
+  font-family:var(--serif);font-size:17px;line-height:1.45;
+  color:var(--ink-2);
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;
+  letter-spacing:0;text-transform:none;
+}
+.art-hd .byline .bit{display:inline-flex;align-items:center;gap:6px}
+.art-hd .byline .byline-author{font-style:italic}
+.art-hd .byline .byline-author .by-author{font-style:italic}
+.art-hd .byline a{
+  color:#000;font-weight:500;
+  border-bottom:1px solid var(--rule-strong);padding-bottom:1px;
+}
+.art-hd .byline a.by-author{border-bottom:none}
+.art-hd .byline a.by-author > span{color:#000}
+.art-hd .byline a:hover{border-color:#000}
+.art-hd .byline .sep{color:var(--rule-strong)}
+
+@media (max-width:980px){
+  .art-hd h1{font-size:48px}
+  .art-hd .dek{font-size:20px}
+}
+@media (max-width:760px){
+  .art-hd{padding:40px 20px 24px}
+  .art-hd h1{font-size:38px}
+  .art-hd .byline{font-size:14px;gap:4px 10px;padding:14px 18px}
+}
+
+/* ========== HERO IMAGE ========== */
+.art-hero{max-width:1280px;margin:0 auto;padding:0 68px}
+.art-hero figure{
+  position:relative;aspect-ratio:16/8;
+  background:var(--paper-2);border:1px solid var(--rule-strong);
+  overflow:hidden;
+}
+.art-hero figure img{width:100%;height:100%;object-fit:cover;display:block}
+.art-hero .ph{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg, rgba(27,22,18,.06) 0 1px, transparent 1px 14px),
+             linear-gradient(160deg,var(--paper-3),var(--paper-2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.art-hero figcaption{
+  margin-top:14px;padding-bottom:20px;
+  font-family:var(--serif);font-style:normal;font-size:15px;
+  color:#9A938A;text-align:center;
+}
+@media (max-width:760px){ .art-hero{padding:0 20px} }
+
+/* ========== BODY (coluna única, leitura linear) ========== */
+.art-body{
+  max-width:920px;margin:0 auto;
+  padding:64px 68px 64px;
+}
+
+/* LINHA-FINA: bloco acima do texto */
+.art-body .linha-fina{
+  margin-bottom:48px;
+  padding:18px 0 22px;
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+.art-body .linha-fina .label{
+  font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:10px;
+}
+.art-body .linha-fina .v{
+  font-family:var(--serif);font-style:italic;
+  font-size:26px;line-height:1.3;color:#000;
+  text-wrap:balance;
+}
+.art-body .linha-fina .v em{font-weight:500;font-style:italic}
+
+/* coluna central (texto) — corpo do markdown renderizado */
+.art-body .col{
+  font-family:var(--serif);font-size:22px;line-height:1.55;
+  color:var(--ink);text-wrap:pretty;
+}
+.art-body .col p{margin-bottom:22px}
+.art-body .col p em{font-style:italic}
+/* dropcap automático no primeiro parágrafo (só os diretos do .col, não dentro de blockquote) */
+.art-body .col > p:first-of-type::first-letter{
+  font-family:var(--serif);font-weight:500;
+  font-size:140px;line-height:.85;float:left;
+  padding:8px 14px 0 0;color:#000;
+}
+.art-body .col h2{
+  font-family:var(--serif);font-weight:500;
+  font-size:38px;line-height:1.05;letter-spacing:-.018em;
+  color:#000;margin:48px 0 20px;
+}
+.art-body .col h2 em{font-style:italic;font-weight:400}
+/* blockquote: caixa centralizada com p + cite ambos dentro das bordas */
+.art-body .col blockquote{
+  margin:48px auto;
+  padding:24px 24px 22px;
+  max-width:560px;
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  text-align:center;
+}
+.art-body .col blockquote p{
+  font-family:var(--serif);font-style:italic;
+  font-size:30px;line-height:1.3;color:#000;
+  letter-spacing:-.012em;text-wrap:balance;margin:0;
+}
+/* aspas grandes, mesmo tamanho, dentro do flow do texto */
+.art-body .col blockquote p::before,
+.art-body .col blockquote p::after{
+  display:inline-block;
+  font-family:var(--serif);font-style:normal;font-weight:500;
+  font-size:80px;line-height:0;
+  vertical-align:-22px;
+  color:#000;
+}
+.art-body .col blockquote p::before{
+  content:"\201C"; /* " */
+  margin-right:2px;
+}
+.art-body .col blockquote p::after{
+  content:"\201D"; /* " */
+  margin-left:2px;
+}
+.art-body .col blockquote cite{
+  display:block;margin-top:18px;
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:14px;line-height:1.4;color:#524C44;
+  letter-spacing:0;text-transform:none;
+}
+@media (max-width:760px){
+  .art-body .col blockquote{
+    max-width:100%;
+    padding:20px 16px 18px;
+  }
+  .art-body .col blockquote p{
+    font-size:22px;line-height:1.35;
+  }
+  .art-body .col blockquote p::before,
+  .art-body .col blockquote p::after{
+    font-size:60px;
+    vertical-align:-16px;
+  }
+}
+.art-body .col figure.inline{
+  margin:32px 0;
+  border:1px solid var(--rule-strong);background:var(--paper-2);
+  position:relative;aspect-ratio:4/3;
+}
+.art-body .col figure.inline .ph{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  background:repeating-linear-gradient(0deg, var(--paper-3) 0 8px, var(--paper-2) 8px 16px);
+}
+.art-body .col figure.inline figcaption{
+  padding:14px 0 0;
+  font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-3);
+}
+
+/* NOTAS: bloco abaixo do texto */
+.art-body .notas{
+  margin-top:64px;
+  padding-top:28px;
+  border-top:1px solid var(--ink);
+}
+.art-body .notas .label{
+  font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:14px;
+}
+.art-body .notas ol{
+  list-style:none;counter-reset:s;
+}
+.art-body .notas ol li{
+  counter-increment:s;
+  font-family:var(--serif);font-size:16px;line-height:1.5;
+  color:var(--ink-2);
+  padding:14px 0 14px 40px;
+  border-bottom:1px dashed var(--rule);
+  position:relative;
+}
+.art-body .notas ol li:last-child{border-bottom:none}
+.art-body .notas ol li::before{
+  content:counter(s,decimal-leading-zero);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  color:var(--ink-3);
+  position:absolute;left:0;top:16px;
+}
+.art-body .notas ol li em{font-style:italic;color:var(--ink)}
+
+@media (max-width:760px){
+  .art-body{padding:40px 20px}
+  .art-body .col{font-size:19px}
+  .art-body .col h2{font-size:28px}
+  .art-body .col blockquote p{font-size:24px}
+  .art-body .col p:first-of-type::first-letter{font-size:88px}
+  .art-body .linha-fina .v{font-size:21px}
+}
+
+/* ========== INSERT AUTOR no artigo: precisa de margin-top ========== */
+.insert.autor{margin-top:64px}
+
+/* ========== CONTINUE LENDO ========== */
+.continue{
+  max-width:1280px;margin:0 auto;
+  padding:64px 68px 96px;
+  border-top:1px solid var(--rule);
+}
+.continue .head{
+  padding:0 0 24px;border-bottom:1px solid var(--ink);
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:0;
+}
+.continue .head h2{
+  font-family:var(--serif);font-weight:500;
+  font-size:40px;letter-spacing:-.018em;color:#000;
+}
+.continue .head h2 em{
+  font-style:italic;color:var(--terra-deep);font-weight:400;
+}
+.continue .head .more{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.continue .grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  border-bottom:1px solid var(--rule);
+}
+.continue .grid > a{
+  padding:32px 24px 32px 0;
+  border-right:1px solid var(--rule);
+  transition:background .2s ease, color .2s ease, padding .2s ease;
+  color:#000;
+  display:flex;flex-direction:column;gap:14px;
+}
+.continue .grid > a:last-child{border-right:none;padding-right:0}
+.continue .grid > a:not(:first-child){padding-left:24px}
+.continue .grid > a:hover{
+  background-color:rgba(27,22,18,.05);
+}
+.continue .grid > a:hover h3{color:var(--terra-deep)}
+.continue .date{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.continue h3{
+  font-family:var(--serif);font-weight:700;
+  font-size:28px;line-height:1.1;letter-spacing:-.005em;
+  text-wrap:balance;color:#000;margin:0;
+}
+.continue h3 em{font-style:normal;font-weight:700}
+.continue .by{
+  font-family:var(--serif);font-style:italic;font-size:15px;
+  color:var(--ink-3);margin-top:auto;
+}
+@media (max-width:880px){
+  .continue .grid{grid-template-columns:1fr}
+  .continue .grid > a{
+    border-right:none;border-bottom:1px solid var(--rule);
+    padding:24px 0 !important;
+  }
+  .continue .grid > a:last-child{border-bottom:none}
+}

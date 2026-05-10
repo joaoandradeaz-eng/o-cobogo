@@ -14,6 +14,8 @@ type CreateBody = {
   readTime?: string;
   draft?: boolean;
   bodyHtml?: string;
+  linhaFina?: string;
+  notas?: string[];
 };
 
 function todayISO(): string {
@@ -90,6 +92,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     date: body.date?.trim() || todayISO(),
     readTime: body.readTime?.trim() || '1 min',
     draft: isDraft,
+    linhaFina: body.linhaFina?.trim() || undefined,
+    notas: body.notas?.length ? body.notas.map((n) => n.trim()).filter(Boolean) : undefined,
   };
 
   const markdownBody = bodyHtmlRaw ? htmlToMarkdown(bodyHtmlRaw) : '';

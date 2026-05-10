@@ -1,24 +1,16 @@
 ---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleEditor from '../../components/ArticleEditor';
 import { getSession, isAuthorized } from '../../lib/session';
-import PostForm from '../../components/PostForm';
+import '../../styles/article.css';
 
 const session = await getSession(Astro.cookies);
 if (!isAuthorized(session)) {
   return Astro.redirect('/api/auth/login', 302);
 }
+
+const authorName = session.name?.split(' ').slice(0, 2).join(' ') || 'João Andrade';
 ---
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Novo post · Admin · O Cobogó</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <style>
-    body{ margin:0; background:#fff; }
-  </style>
-</head>
-<body>
-  <PostForm client:only="react" />
-</body>
-</html>
+<BaseLayout title="Novo post · Admin · O Cobogó" active="home" screenLabel="Editor">
+  <ArticleEditor client:only="react" authorName={authorName} />
+</BaseLayout>

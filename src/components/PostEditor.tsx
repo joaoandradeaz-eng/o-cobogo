@@ -8,7 +8,9 @@ import { useEffect } from 'react';
 type Props = {
   initialHtml?: string;
   onChange?: (html: string) => void;
+  onEditorReady?: (editor: Editor) => void;
   placeholder?: string;
+  contentClassName?: string;
 };
 
 function ToolbarButton({
@@ -32,9 +34,9 @@ function ToolbarButton({
       title={title}
       style={{
         border: 'none',
-        background: active ? '#111' : 'transparent',
-        color: active ? '#fff' : '#fff',
-        opacity: active ? 1 : 0.7,
+        background: active ? '#fff' : 'transparent',
+        color: active ? '#111' : '#fff',
+        opacity: active ? 1 : 0.85,
         padding: '6px 10px',
         cursor: 'pointer',
         fontSize: 13,
@@ -112,21 +114,23 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
   );
 }
 
-export default function PostEditor({ initialHtml, onChange, placeholder }: Props) {
+export default function PostEditor({
+  initialHtml,
+  onChange,
+  onEditorReady,
+  placeholder,
+  contentClassName,
+}: Props) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: { levels: [2, 3] },
-      }),
+      StarterKit.configure({ heading: { levels: [2, 3] } }),
       Link.configure({ openOnClick: false, autolink: true }),
-      Placeholder.configure({
-        placeholder: placeholder ?? 'Escreva aqui…',
-      }),
+      Placeholder.configure({ placeholder: placeholder ?? 'Comece a escrever…' }),
     ],
     content: initialHtml ?? '',
     editorProps: {
       attributes: {
-        class: 'tiptap-prose',
+        class: contentClassName ?? '',
       },
     },
     onUpdate: ({ editor }) => {
@@ -134,31 +138,21 @@ export default function PostEditor({ initialHtml, onChange, placeholder }: Props
     },
   });
 
-  useEffect(() => () => editor?.destroy(), [editor]);
+  useEffect(() => {
+    if (editor) onEditorReady?.(editor);
+    return () => editor?.destroy();
+  }, [editor]);
 
   if (!editor) return null;
 
   return (
     <>
       <style>{`
-        .tiptap-prose{
-          outline:none; min-height:60vh;
-          font-family: 'Source Serif 4', Georgia, serif;
-          font-size: 21px; line-height: 1.65; color:#222;
-        }
-        .tiptap-prose p{ margin: 0 0 1.2em; }
-        .tiptap-prose h2{ font-family: system-ui, sans-serif; font-size: 32px; margin: 1.5em 0 .4em; line-height:1.15; }
-        .tiptap-prose h3{ font-family: system-ui, sans-serif; font-size: 24px; margin: 1.2em 0 .3em; line-height:1.2; }
-        .tiptap-prose blockquote{
-          border-left: 3px solid #d88854; padding-left: 16px;
-          color:#555; font-style: italic; margin: 1em 0;
-        }
-        .tiptap-prose a{ color:#d88854; text-decoration:underline; }
-        .tiptap-prose ul,.tiptap-prose ol{ padding-left: 1.5em; margin: 0 0 1.2em; }
-        .tiptap-prose strong{ font-weight: 700; }
-        .tiptap-prose em{ font-style: italic; }
-        .tiptap-prose p.is-editor-empty:first-child::before{
-          content: attr(data-placeholder); float:left; color:#bbb; pointer-events:none; height:0;
+        .ProseMirror{ outline: none; min-height: 60vh; }
+        .ProseMirror p.is-editor-empty:first-child::before{
+          content: attr(data-placeholder);
+          float:left; color:#bbb; pointer-events:none; height:0;
+          font-style: italic;
         }
       `}</style>
       <BubbleMenu editor={editor}>
