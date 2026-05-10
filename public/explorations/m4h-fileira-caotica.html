@@ -13,8 +13,8 @@
     header.site .brand{ font-family:var(--serif); font-weight:700; font-size:22px; letter-spacing:-.01em;
       color: var(--head-text); text-decoration:none;
       display:flex; align-items:center; gap:6px; }
-    /* olho substitui o "O" do wordmark — tamanho ~ cap height do O em Bitter 22px Bold */
-    header.site .brand-eye{ width:20px; height:20px; color: var(--head-text); flex-shrink:0; display:block; }
+    /* "O" letterform (ring) substitui o O do wordmark — mesma altura do font-size */
+    header.site .brand-eye{ width:22px; height:22px; color: var(--head-text); flex-shrink:0; display:block; }
     header.site .tagline{ font-family:var(--serif); font-style:normal; font-weight:400; font-size:16px;
       line-height:1.3; color: var(--head-dim); text-align:center; max-width:60ch; justify-self:center; }
     header.site .tagline em{ font-style:normal; color:inherit; font-weight:400; }
@@ -35,11 +35,11 @@
   <header class="site">
     <div class="top">
       <a class="brand" href="/explorations/">
-        <!-- olho substitui o "O": quase circular, só com pontinhas nas laterais
-             pupila adapta a cor (clara em headers de texto preto, escura em branco) -->
+        <!-- "O" letterform (ring sem fill) substitui o O do wordmark
+             pupila adapta a cor conforme contraste do header -->
         <svg class="brand-eye" viewBox="0 0 100 100" aria-hidden="true">
-          <path d="M 4 50 Q 50 -50 96 50 Q 50 150 4 50 Z" fill="currentColor"/>
-          <circle cx="50" cy="50" r="18" style="fill: var(--head-pupil, #1E3A8A)"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="12"/>
+          <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
         </svg>
         Cobogó
       </a>
