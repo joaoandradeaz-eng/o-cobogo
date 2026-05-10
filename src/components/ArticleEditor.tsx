@@ -174,6 +174,26 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
     setCategories((cur) => (cur.includes(value) ? cur.filter((c) => c !== value) : [...cur, value]));
   };
 
+  const renumberSupsInBody = (deletedIdx: number) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const html = editor.getHTML();
+    const newHtml = html.replace(/<sup>(\d+)<\/sup>/g, (_match, n: string) => {
+      const num = parseInt(n, 10);
+      if (num === deletedIdx + 1) return ''; // remove orphaned sup
+      if (num > deletedIdx + 1) return `<sup>${num - 1}</sup>`;
+      return `<sup>${num}</sup>`;
+    });
+    if (newHtml !== html) {
+      editor.commands.setContent(newHtml);
+    }
+  };
+
+  const removeNotaAt = (idx: number) => {
+    renumberSupsInBody(idx);
+    setNotas((cur) => cur.filter((_, j) => j !== idx));
+  };
+
   const insertFootnote = () => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -601,8 +621,8 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
                     <button
                       type="button"
                       className="del"
-                      title="Remover nota (não remove o sup do corpo — apague manual)"
-                      onClick={() => setNotas((cur) => cur.filter((_, j) => j !== i))}
+                      title="Remover nota (e renumerar os sups no corpo)"
+                      onClick={() => removeNotaAt(i)}
                     >
                       ×
                     </button>
