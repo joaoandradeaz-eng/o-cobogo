@@ -10,6 +10,7 @@ export type PostFrontmatter = {
   author?: string;
   draft?: boolean;
   linhaFina?: string;
+  linhaFinaLabel?: string;
   notas?: string[];
   heroImage?: string;
   heroCaption?: string;
@@ -21,6 +22,13 @@ const turndown = new TurndownService({
   codeBlockStyle: 'fenced',
   emDelimiter: '*',
   strongDelimiter: '**',
+});
+
+/* Preserve <sup>N</sup> footnote anchors as raw HTML in markdown so the published view
+   can render them clickable. Turndown discards unknown tags by default. */
+turndown.addRule('superscript', {
+  filter: ['sup'],
+  replacement: (content) => `<sup>${content}</sup>`,
 });
 
 export function htmlToMarkdown(html: string): string {
@@ -39,6 +47,7 @@ export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): s
   if (frontmatter.heroImage) data.heroImage = frontmatter.heroImage;
   if (frontmatter.heroCaption) data.heroCaption = frontmatter.heroCaption;
   if (frontmatter.linhaFina) data.linhaFina = frontmatter.linhaFina;
+  if (frontmatter.linhaFinaLabel !== undefined) data.linhaFinaLabel = frontmatter.linhaFinaLabel;
   if (frontmatter.notas?.length) data.notas = frontmatter.notas;
   if (frontmatter.draft) data.draft = true;
   return matter.stringify(body + '\n', data);

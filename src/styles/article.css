@@ -111,6 +111,28 @@
 }
 .art-body .col p{margin-bottom:22px}
 .art-body .col p em{font-style:italic}
+/* footnote refs (sup numbers in body) — clickable, scroll to #nota-N */
+.art-body .col sup{
+  color: var(--terra);
+  font-weight: 600;
+  font-size: 0.7em;
+  padding: 0 1px;
+  vertical-align: super;
+  line-height: 0;
+}
+.art-body .col sup:hover{
+  color: var(--terra-deep);
+  text-decoration: underline;
+}
+.art-body .col sup:focus-visible{
+  outline: 2px solid var(--terra);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.art-body .notas ol li.nota-flash{
+  background: rgba(184, 90, 31, 0.12);
+  transition: background .25s ease;
+}
 /* dropcap automático no primeiro parágrafo (só os diretos do .col, não dentro de blockquote) */
 .art-body .col > p:first-of-type::first-letter{
   font-family:var(--serif);font-weight:500;

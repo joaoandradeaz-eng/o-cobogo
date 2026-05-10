@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { Editor } from '@tiptap/react';
 import PostEditor from './PostEditor';
 
 const CATEGORIES = [
@@ -10,7 +11,7 @@ const CATEGORIES = [
   { value: 'cidade-casa', label: 'Cidade & Casa' },
 ] as const;
 
-const STORAGE_KEY = 'ocobogo_draft_v2';
+const STORAGE_KEY = 'ocobogo_draft_v3';
 
 const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
@@ -36,6 +37,7 @@ type Snapshot = {
   date: string;
   readTime: string;
   linhaFina: string;
+  linhaFinaLabel: string;
   notas: string[];
   bodyHtml: string;
   savedAt: number;
@@ -103,6 +105,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
   const [date, setDate] = useState(todayISO());
   const [readTime, setReadTime] = useState('5 min');
   const [linhaFina, setLinhaFina] = useState('');
+  const [linhaFinaLabel, setLinhaFinaLabel] = useState('Linha-fina');
   const [showLinhaFina, setShowLinhaFina] = useState(false);
   const [notas, setNotas] = useState<string[]>([]);
   const [bodyHtml, setBodyHtml] = useState('');
@@ -113,6 +116,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
   const [restoredFromDraft, setRestoredFromDraft] = useState(false);
   const [editorReady, setEditorReady] = useState(false);
   const initialMountedRef = useRef(false);
+  const editorRef = useRef<Editor | null>(null);
 
   // Restore from localStorage on mount
   useEffect(() => {
@@ -129,6 +133,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
         setDate(draft.date || todayISO());
         setReadTime(draft.readTime || '5 min');
         setLinhaFina(draft.linhaFina || '');
+        setLinhaFinaLabel(draft.linhaFinaLabel ?? 'Linha-fina');
         setShowLinhaFina(!!draft.linhaFina);
         setNotas(draft.notas || []);
         setBodyHtml(draft.bodyHtml);
@@ -147,11 +152,11 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
     if (!title && !bodyHtml && !dek) return;
     setAutosaveStatus('pending');
     const t = setTimeout(() => {
-      saveDraft({ title, dek, categories, date, readTime, linhaFina, notas, bodyHtml });
+      saveDraft({ title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml });
       setAutosaveStatus('saved');
     }, 1500);
     return () => clearTimeout(t);
-  }, [title, dek, categories, date, readTime, linhaFina, notas, bodyHtml]);
+  }, [title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml]);
 
   // beforeunload
   useEffect(() => {
@@ -167,6 +172,27 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
 
   const toggleCategory = (value: string) => {
     setCategories((cur) => (cur.includes(value) ? cur.filter((c) => c !== value) : [...cur, value]));
+  };
+
+  const insertFootnote = () => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const n = notas.length + 1;
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: 'text',
+        text: String(n),
+        marks: [{ type: 'superscript' }],
+      })
+      .unsetMark('superscript')
+      .run();
+    setNotas((cur) => [...cur, '']);
+    requestAnimationFrame(() => {
+      const target = document.getElementById(`nota-edit-${n}`);
+      target?.focus();
+    });
   };
 
   const submit = async (draft: boolean) => {
@@ -185,6 +211,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           draft,
           bodyHtml,
           linhaFina: showLinhaFina && linhaFina.trim() ? linhaFina : undefined,
+          linhaFinaLabel: showLinhaFina && linhaFina.trim() ? linhaFinaLabel.trim() : undefined,
           notas: notas.filter((n) => n.trim()).length ? notas.filter((n) => n.trim()) : undefined,
         }),
       });
@@ -210,12 +237,11 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
     title.trim() && dek.trim() && categories.length > 0 && bodyHtml.trim() && !submitting;
 
   const dateBR = formatDateBR(date);
-  const primaryCat = categories[0] ?? 'ensaio';
 
   return (
     <>
       <style>{`
-        /* === sticky admin bar (fora do art-layout) === */
+        /* === sticky admin bar === */
         .ed-stickybar{
           position:sticky; top:0; z-index:50;
           background:rgba(249,249,246,.94);
@@ -242,7 +268,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
         .ed-btn-primary{ background:var(--terra); color:#fff; }
         .ed-btn-primary:hover:not(:disabled){ background:var(--terra-deep); }
 
-        /* === second toolbar: insert special blocks === */
+        /* === insert tools toolbar === */
         .ed-tools{
           display:flex; align-items:center; gap:8px;
           padding: 8px 24px;
@@ -270,7 +296,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           border-radius:4px; color:#900; font-size:13px; font-family: var(--serif);
         }
 
-        /* === inline editable inputs styled like the article === */
+        /* === inline editable styles === */
         .ed-tags{
           display:flex; flex-wrap:wrap; gap:6px;
           margin-bottom:14px;
@@ -287,7 +313,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           font-family:var(--serif); font-weight:700;
           font-variation-settings:"opsz" 60;
           font-size:64px; line-height:1.04; letter-spacing:-.02em;
-          color:#000; overflow:hidden;
+          color:#000; overflow:hidden; box-sizing: border-box; display: block;
         }
         textarea.ed-h1::placeholder{ color:#bbb; font-style: italic; font-weight: 500; }
         @media (max-width:980px){ textarea.ed-h1{ font-size:48px; } }
@@ -298,12 +324,12 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           margin-top:24px;
           font-family:var(--serif); font-style:italic;
           font-size:22px; line-height:1.35; color:var(--ink-2); font-weight:400;
-          overflow:hidden;
+          overflow:hidden; box-sizing: border-box; display: block;
         }
         textarea.ed-dek::placeholder{ color:#bbb; }
         @media (max-width:980px){ textarea.ed-dek{ font-size:20px; } }
 
-        /* admin meta panel inside the byline (date/readTime inputs) */
+        /* admin meta panel */
         .ed-meta-panel{
           margin-top: 14px;
           padding: 10px 14px;
@@ -321,12 +347,22 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           background:#fff; border-radius:3px; color: var(--ink);
         }
 
-        /* linha-fina editing */
+        /* linha-fina label editing */
+        .art-body .linha-fina .ed-linhafina-label{
+          font-family:var(--mono); font-size:10.5px;
+          letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+          background: transparent; border: none; outline: none; padding: 0;
+          margin-bottom: 10px; width: 220px;
+        }
+        .art-body .linha-fina .ed-linhafina-label::placeholder{ color:#ccc; }
+
+        /* linha-fina value editing — width:100% sem balance */
         .art-body .linha-fina .ed-linhafina{
           width:100%; resize:none; border:none; outline:none; padding:0; background:transparent;
           font-family:var(--serif); font-style:italic;
-          font-size:26px; line-height:1.3; color:#000; text-wrap:balance;
-          overflow:hidden;
+          font-size:26px; line-height:1.3; color:#000;
+          overflow:hidden; box-sizing: border-box; display: block;
+          /* NOTA: text-wrap:balance removido aqui — atrapalha o feedback visual da edição */
         }
         .art-body .linha-fina .ed-linhafina::placeholder{ color:#bbb; }
         @media (max-width:760px){
@@ -343,17 +379,13 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
         .art-body .linha-fina .ed-linhafina-actions button:hover{ color: var(--terra-deep); }
 
         /* notas editing */
-        .art-body .notas .ed-notas-empty{
-          font-family: var(--serif); font-style: italic; color: var(--ink-3);
-          padding: 14px 0;
-        }
         .art-body .notas .ed-nota-row{
           display:flex; align-items:flex-start; gap:8px;
         }
         .art-body .notas .ed-nota-row textarea{
           flex:1; resize:none; border:none; outline:none; background:transparent;
           font-family:var(--serif); font-size:16px; line-height:1.5; color:var(--ink-2);
-          padding:0; overflow:hidden;
+          padding:0; overflow:hidden; box-sizing: border-box;
         }
         .art-body .notas .ed-nota-row textarea::placeholder{ color:#bbb; font-style: italic; }
         .art-body .notas .ed-nota-row button.del{
@@ -361,15 +393,14 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           cursor: pointer; font-size: 14px; padding: 0 4px;
         }
         .art-body .notas .ed-nota-row button.del:hover{ color: #b00; }
-        .art-body .notas .ed-add-nota{
-          margin-top: 12px; padding: 0;
-          background: none; border: none;
-          font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
-          text-transform: uppercase; color: var(--ink-3); cursor: pointer;
-        }
-        .art-body .notas .ed-add-nota:hover{ color: var(--terra-deep); }
 
-        /* hide drop-cap & make focus state subtle in edit mode */
+        /* sup styling no editor — visualmente igual ao publicado */
+        .art-body .col sup{
+          color: var(--terra);
+          font-weight: 600;
+          padding: 0 1px;
+        }
+
         .art-body .col.ProseMirror{ caret-color: var(--terra); }
       `}</style>
 
@@ -417,11 +448,8 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
         >
           {showLinhaFina ? '✓ Linha-fina' : '+ Linha-fina'}
         </button>
-        <button
-          type="button"
-          onClick={() => setNotas((cur) => [...cur, ''])}
-        >
-          + Nota
+        <button type="button" onClick={insertFootnote} title="Inserir nota numerada na posição do cursor">
+          + Nota (no cursor)
         </button>
         <span style={{ marginLeft: 'auto', opacity: 0.6 }}>
           (selecione texto pra B/I/link/H2/quote)
@@ -514,12 +542,19 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
       <section className="art-body">
         {showLinhaFina && (
           <aside className="linha-fina">
-            <div className="label">Linha-fina</div>
+            <input
+              type="text"
+              className="ed-linhafina-label"
+              value={linhaFinaLabel}
+              onChange={(e) => setLinhaFinaLabel(e.target.value)}
+              placeholder="(rótulo opcional — apague pra esconder)"
+              aria-label="Rótulo da linha-fina"
+            />
             <AutoTextarea
               className="ed-linhafina"
               value={linhaFina}
               onChange={setLinhaFina}
-              placeholder="Frase-âncora em itálico (use *asteriscos* pra dar mais ênfase a uma palavra)…"
+              placeholder="Frase-âncora em itálico (use *asteriscos* pra mais ênfase)…"
               ariaLabel="Linha-fina"
             />
             <div className="ed-linhafina-actions">
@@ -534,6 +569,7 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
           <PostEditor
             initialHtml={bodyHtml}
             onChange={setBodyHtml}
+            onEditorReady={(ed) => { editorRef.current = ed; }}
             placeholder="Comece a escrever…"
             contentClassName="col"
           />
@@ -546,18 +582,26 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
               {notas.map((nota, i) => (
                 <li key={i}>
                   <div className="ed-nota-row">
-                    <AutoTextarea
+                    <textarea
+                      id={`nota-edit-${i + 1}`}
+                      ref={(el) => {
+                        if (el) {
+                          el.style.height = 'auto';
+                          el.style.height = el.scrollHeight + 'px';
+                        }
+                      }}
                       value={nota}
-                      onChange={(v) =>
-                        setNotas((cur) => cur.map((n, j) => (j === i ? v : n)))
+                      onChange={(e) =>
+                        setNotas((cur) => cur.map((n, j) => (j === i ? e.target.value : n)))
                       }
                       placeholder="Texto da nota (use *asteriscos* pra itálico)…"
-                      ariaLabel={`Nota ${i + 1}`}
+                      aria-label={`Nota ${i + 1}`}
+                      rows={1}
                     />
                     <button
                       type="button"
                       className="del"
-                      title="Remover nota"
+                      title="Remover nota (não remove o sup do corpo — apague manual)"
                       onClick={() => setNotas((cur) => cur.filter((_, j) => j !== i))}
                     >
                       ×
@@ -566,13 +610,6 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
                 </li>
               ))}
             </ol>
-            <button
-              type="button"
-              className="ed-add-nota"
-              onClick={() => setNotas((cur) => [...cur, ''])}
-            >
-              + adicionar nota
-            </button>
           </aside>
         )}
       </section>

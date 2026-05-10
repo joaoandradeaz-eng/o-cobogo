@@ -15,6 +15,7 @@ type CreateBody = {
   draft?: boolean;
   bodyHtml?: string;
   linhaFina?: string;
+  linhaFinaLabel?: string;
   notas?: string[];
 };
 
@@ -93,6 +94,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     readTime: body.readTime?.trim() || '1 min',
     draft: isDraft,
     linhaFina: body.linhaFina?.trim() || undefined,
+    linhaFinaLabel: body.linhaFinaLabel,
     notas: body.notas?.length ? body.notas.map((n) => n.trim()).filter(Boolean) : undefined,
   };
 

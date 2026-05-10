@@ -35,6 +35,8 @@ const articles = defineCollection({
     heroCaption: z.string().optional(),
     /** Linha-fina: kicker em destaque acima do corpo do texto. Use *itálico* livremente. */
     linhaFina: z.string().optional(),
+    /** Rótulo da linha-fina. Padrão: "Linha-fina". String vazia ou undefined → não renderiza rótulo. */
+    linhaFinaLabel: z.string().optional(),
     /** Notas de rodapé / referências. Cada string é uma nota. Use *itálico* livremente. */
     notas: z.array(z.string()).optional(),
     /** Se true, não publica o artigo (não aparece em listagens nem é renderizado). */

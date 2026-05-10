@@ -3,6 +3,7 @@ import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import Superscript from '@tiptap/extension-superscript';
 import { useEffect } from 'react';
 
 type Props = {
@@ -126,6 +127,7 @@ export default function PostEditor({
       StarterKit.configure({ heading: { levels: [2, 3] } }),
       Link.configure({ openOnClick: false, autolink: true }),
       Placeholder.configure({ placeholder: placeholder ?? 'Comece a escrever…' }),
+      Superscript,
     ],
     content: initialHtml ?? '',
     editorProps: {

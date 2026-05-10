@@ -85,7 +85,9 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
 
     {data.linhaFina && (
       <aside class="linha-fina">
-        <div class="label">Linha-fina</div>
+        {data.linhaFinaLabel !== '' && (
+          <div class="label">{data.linhaFinaLabel ?? 'Linha-fina'}</div>
+        )}
         <div class="v" set:html={parseInlineMd(data.linhaFina)}></div>
       </aside>
     )}
@@ -98,8 +100,8 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
       <aside class="notas">
         <div class="label">Notas</div>
         <ol>
-          {data.notas.map((nota) => (
-            <li set:html={parseInlineMd(nota)} />
+          {data.notas.map((nota, i) => (
+            <li id={`nota-${i + 1}`} set:html={parseInlineMd(nota)} />
           ))}
         </ol>
       </aside>
@@ -134,5 +136,27 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
       </a>
     </div>
   </section>
+
+  <script is:inline>
+    /* Footnote anchors: sup no corpo → scroll suave até #nota-N */
+    document.querySelectorAll('.art-body .col sup').forEach((sup) => {
+      const num = sup.textContent?.trim();
+      if (!num || !/^\d+$/.test(num)) return;
+      sup.style.cursor = 'pointer';
+      sup.setAttribute('role', 'link');
+      sup.setAttribute('tabindex', '0');
+      const go = () => {
+        const target = document.getElementById('nota-' + num);
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('nota-flash');
+        setTimeout(() => target.classList.remove('nota-flash'), 1800);
+      };
+      sup.addEventListener('click', go);
+      sup.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      });
+    });
+  </script>
 
 </BaseLayout>
