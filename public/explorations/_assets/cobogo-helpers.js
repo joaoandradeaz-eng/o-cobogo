@@ -207,6 +207,53 @@ function buildBuntingOnLine(container, count = 8, matchColorHex = null, matchCou
   container.innerHTML = html;
 }
 
+// Pares header×fileira que combinam visualmente (regras do João):
+// - cinza (concreto/chumbo/niemeyer) ↔ vermelho (catedral)
+// - azul (brasília) ↔ amarelo (lúcio)
+// - verde (planalto) ↔ cinza
+// - amarelo ↔ cinza
+// - azul ↔ cinza
+const COLOR_PAIRS = [
+  // cinza ↔ vermelho
+  ['concreto','catedral'], ['chumbo','catedral'], ['niemeyer','catedral'],
+  ['catedral','concreto'], ['catedral','chumbo'], ['catedral','niemeyer'],
+  // azul ↔ amarelo
+  ['brasilia','lucio'], ['lucio','brasilia'],
+  // verde ↔ cinza
+  ['concreto','planalto'], ['chumbo','planalto'], ['niemeyer','planalto'],
+  ['planalto','concreto'], ['planalto','chumbo'], ['planalto','niemeyer'],
+  // amarelo ↔ cinza
+  ['concreto','lucio'], ['chumbo','lucio'], ['niemeyer','lucio'],
+  ['lucio','concreto'], ['lucio','chumbo'], ['lucio','niemeyer'],
+  // azul ↔ cinza
+  ['concreto','brasilia'], ['chumbo','brasilia'], ['niemeyer','brasilia'],
+  ['brasilia','concreto'], ['brasilia','chumbo'], ['brasilia','niemeyer'],
+];
+
+function pickColorPair() {
+  return randFrom(COLOR_PAIRS);
+}
+
+// Constrói uma fileira edge-to-edge de cobogós idênticos em cor única.
+// Renderiza como background-image SVG tileado (1 elemento DOM, performance ok).
+function buildStripe(container, pieceName, colorHex, tileSize = 14) {
+  const symbol = document.getElementById(`cobogo-${pieceName}`);
+  if (!symbol) return;
+  const viewBox = symbol.getAttribute('viewBox') || '0 0 100 100';
+  // Pega o conteúdo do symbol e troca currentColor pela cor real
+  const inner = symbol.innerHTML.replace(/currentColor/g, colorHex);
+  // Constrói SVG standalone
+  const svgTile = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${inner}</svg>`;
+  const encoded = encodeURIComponent(svgTile)
+    .replace(/'/g, '%27').replace(/"/g, '%22');
+  const dataUri = `data:image/svg+xml;utf8,${encoded}`;
+  container.style.backgroundImage = `url("${dataUri}")`;
+  container.style.backgroundSize = `${tileSize}px ${tileSize}px`;
+  container.style.backgroundRepeat = 'repeat-x';
+  container.style.backgroundPosition = '0 center';
+  container.style.height = `${tileSize}px`;
+}
+
 // Constrói coluna lateral (margem)
 function buildSidebar(container, count = 6) {
   const colorPick = ['catedral', 'planalto', 'brasilia', 'lucio'];
