@@ -128,15 +128,24 @@ function buildBunting(container, count = 8) {
 }
 
 // Paleta de cores possíveis pro header colorido + texto em alto contraste +
-// pupila do olho (clara qdo letra é escura, escura qdo letra é clara)
+// pupila escolhida pra contrastar tanto com o bg quanto com o ring do O.
+// Como o O é vazado (stroke sem fill), a pupila fica em cima do bg do header
+// — não pode ser igual ao bg (some) nem igual ao ring (perde a função de pupila).
 const HEADER_PALETTE = {
-  catedral: { bg: '#C73838', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
-  planalto: { bg: '#3A6B47', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
-  brasilia: { bg: '#2B3F6E', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
-  chumbo:   { bg: '#5C5A56', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
-  niemeyer: { bg: '#1A1A1A', text: '#f9f9f6',  dim: 'rgba(249,249,246,.6)',  pupil: '#1E3A8A' },
-  lucio:    { bg: '#E8A945', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#A8C5E8' },
-  concreto: { bg: '#A8A8A8', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#A8C5E8' },
+  // bg vermelho + ring branco → pupila lúcio (amarelo) destaca em ambos
+  catedral: { bg: '#C73838', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#E8A945' },
+  // bg verde + ring branco → pupila lúcio (amarelo)
+  planalto: { bg: '#3A6B47', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#E8A945' },
+  // bg navy + ring branco → pupila lúcio (clássico complementar)
+  brasilia: { bg: '#2B3F6E', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#E8A945' },
+  // bg cinza médio + ring branco → pupila catedral (vermelho)
+  chumbo:   { bg: '#5C5A56', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#C73838' },
+  // bg quase preto + ring paper → pupila lúcio (amarelo pop em fundo escuro)
+  niemeyer: { bg: '#1A1A1A', text: '#f9f9f6',  dim: 'rgba(249,249,246,.6)',  pupil: '#E8A945' },
+  // bg amarelo + ring escuro → pupila brasília (navy clássico em amarelo)
+  lucio:    { bg: '#E8A945', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#2B3F6E' },
+  // bg cinza claro + ring escuro → pupila catedral (vermelho pop)
+  concreto: { bg: '#A8A8A8', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#C73838' },
 };
 
 function pickHeaderColor() {

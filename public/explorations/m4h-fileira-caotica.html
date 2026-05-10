@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>M4h · Fileira Caótica · O Cobogó</title>
-  <link rel="stylesheet" href="_assets/base.css?v=4" />
+  <link rel="stylesheet" href="_assets/base.css?v=5" />
   <style>
     :root{ --head-bg: var(--ink); --head-text:#f9f9f6; --head-dim:rgba(249,249,246,.6); }
     header.site{ background: var(--head-bg); color: var(--head-text); }
@@ -35,10 +35,10 @@
   <header class="site">
     <div class="top">
       <a class="brand" href="/explorations/">
-        <!-- "O" letterform (ring sem fill) substitui o O do wordmark
-             pupila adapta a cor conforme contraste do header -->
+        <!-- "O" letterform (elipse sutil ~7% mais alto que largo, tipográfico)
+             pupila escolhida por header pra contrastar com bg + ring -->
         <svg class="brand-eye" viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="12"/>
+          <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
           <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
         </svg>
         Cobogó
@@ -75,7 +75,7 @@
     </span>
   </nav>
 
-  <script src="_assets/cobogo-helpers.js?v=4"></script>
+  <script src="_assets/cobogo-helpers.js?v=5"></script>
   <script>
     document.addEventListener('cobogo:ready', () => {
       // Header random (paleta cheia, com contraste calibrado)
