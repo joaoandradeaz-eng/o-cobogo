@@ -90,6 +90,43 @@ function buildPunctuation(targets) {
   });
 }
 
+// Constrói uma "fita pendurada" — linha horizontal com peças penduradas em
+// ângulos variados, cordões de comprimentos diferentes, tamanhos diferentes.
+// Uma das peças recebe o olho.
+function buildBunting(container, count = 8) {
+  // pesos: concreto/chumbo/niemeyer dominam, paleta colorida só como acento
+  const weighted = [
+    'concreto','concreto','concreto','concreto','concreto',
+    'chumbo','chumbo','chumbo',
+    'niemeyer','niemeyer',
+    'catedral','planalto','brasilia','lucio',
+  ];
+  const eyeIdx = randInt(1, count - 2);
+
+  let html = '<div class="bunting-line"></div><div class="bunting-pieces">';
+
+  for (let i = 0; i < count; i++) {
+    const tilt = (Math.random() - 0.5) * 16; // -8 a +8 graus
+    const size = randInt(28, 44);
+    const stringHeight = randInt(14, 28);
+    const colorName = randFrom(weighted);
+    const color = PALETTE[colorName];
+    const piece = randFrom(PIECES);
+
+    html += `<span class="bunting-piece" style="transform:rotate(${tilt.toFixed(2)}deg)">`;
+    html += `<span class="bunting-string" style="height:${stringHeight}px"></span>`;
+    html += `<span class="bunting-tile" style="position:relative;display:block">`;
+    html += pieceSvg(piece, color, size);
+    if (i === eyeIdx) {
+      html += `<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22%;height:22%;background:${PALETTE.niemeyer};border-radius:50%"></span>`;
+    }
+    html += `</span></span>`;
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 // Constrói coluna lateral (margem)
 function buildSidebar(container, count = 6) {
   const colorPick = ['catedral', 'planalto', 'brasilia', 'lucio'];
