@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M4c · Fita na Linha · O Cobogó</title>
+  <link rel="stylesheet" href="_assets/base.css" />
+  <style>
+    /* Header colorido — bg + texto definidos via CSS vars (JS preenche no load) */
+    :root{
+      --head-bg: var(--ink);
+      --head-text: #f9f9f6;
+      --head-dim: rgba(249,249,246,.6);
+    }
+    header.site{
+      background: var(--head-bg);
+      color: var(--head-text);
+      transition: background .25s ease, color .25s ease;
+    }
+    header.site .top{
+      max-width: 1280px; margin: 0 auto;
+      padding: 22px 68px 18px;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: 32px;
+    }
+    /* Wordmark sem símbolo, no contraste do header */
+    header.site .brand{
+      font-family: var(--serif); font-weight: 700;
+      font-size: 22px; letter-spacing: -.01em;
+      color: var(--head-text); text-decoration: none;
+    }
+    /* Tagline roman, dim do header (mesma cor do nav) */
+    header.site .tagline{
+      font-family: var(--serif); font-style: normal; font-weight: 400;
+      font-size: 16px; line-height: 1.3; color: var(--head-dim);
+      text-align: center; max-width: 60ch; justify-self: center;
+    }
+    header.site .tagline em{ font-style: normal; color: inherit; font-weight: 400; }
+    header.site .nav{
+      display: flex; gap: 24px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--head-dim);
+    }
+    header.site .nav a{
+      color: var(--head-dim); text-decoration: none;
+      padding-bottom: 4px; border-bottom: 1px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
+    header.site .nav a:hover{ color: var(--head-text); }
+
+    /* Fita na linha — peças sentam ON the line, line passa pelo centro vertical */
+    .bunting{
+      position: relative;
+      max-width: 1280px; margin: 0 auto;
+      padding: 24px 68px 16px;
+      height: 84px;
+      display: flex;
+      align-items: center;
+    }
+    .bunting-line{
+      position: absolute;
+      top: 50%;
+      left: 68px; right: 68px;
+      height: 1px;
+      background: var(--rule-strong);
+      z-index: 0;
+    }
+    .bunting-pieces{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .bunting-piece{
+      display: flex;
+      align-items: center;
+      transform-origin: center;
+    }
+    .bunting-tile{ background: transparent; }
+
+    @media (max-width:760px){
+      header.site .top{ padding: 14px 20px; grid-template-columns: 1fr auto; gap: 12px; }
+      header.site .tagline{ grid-column: 1 / -1; text-align: left; font-size: 14px; }
+      .bunting{ padding: 16px 20px 14px; height: 72px; }
+      .bunting-line{ left: 20px; right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site">
+    <div class="top">
+      <a class="brand" href="/explorations/">O Cobogó</a>
+      <div class="tagline">Ensaios de um <em>não-candango</em> no Planalto.</div>
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#">Sobre</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="bunting" id="bunting" aria-hidden="true"></section>
+
+  <section class="preview-hero" style="padding-top: 32px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <span class="tag">Ensaio</span>
+    </div>
+    <div class="blackrule"></div>
+    <h2>A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></h2>
+    <p class="dek">Sobre o cobogó, o ar-condicionado e a hipótese de que a casa brasileira fechou os olhos quando fechou as paredes.</p>
+    <div class="figure">imagem · placeholder</div>
+  </section>
+
+  <nav class="mock-nav" aria-label="Mockups">
+    <span class="label">M4c · Fita na Linha · header colorido (paleta) + 8 cobogós ON the line + 1-2 combinam com header + 1 olho</span>
+    <span class="links">
+      <a href="index.html">↑ visão geral</a>
+      <a href="m1-parede-discreta.html">M1</a>
+      <a href="m2-parede-modernista.html">M2</a>
+      <a href="m3-sem-parede.html">M3</a>
+      <a href="m4-pontuacao.html">M4</a>
+      <a href="m4b-fita-pendurada.html">M4b</a>
+      <a class="active" href="m4c-fita-na-linha.html">M4c</a>
+      <a href="m5-margem-lateral.html">M5</a>
+    </span>
+  </nav>
+
+  <script src="_assets/cobogo-helpers.js"></script>
+  <script>
+    document.addEventListener('cobogo:ready', () => {
+      // 1. Sorteia uma cor da paleta pra header
+      const headerKey = pickHeaderColor();
+      applyHeaderColor(headerKey);
+      // 2. Constrói a fita garantindo 1-2 peças com a mesma cor
+      const matchCount = (Math.random() < 0.5) ? 1 : 2;
+      buildBuntingOnLine(
+        document.getElementById('bunting'),
+        8,
+        HEADER_PALETTE[headerKey].bg,
+        matchCount
+      );
+    });
+  </script>
+</body>
+</html>

@@ -127,6 +127,86 @@ function buildBunting(container, count = 8) {
   container.innerHTML = html;
 }
 
+// Paleta de cores possíveis pro header colorido + texto em alto contraste
+const HEADER_PALETTE = {
+  catedral: { bg: '#C73838', text: '#fff', dim: 'rgba(255,255,255,.65)' },
+  planalto: { bg: '#3A6B47', text: '#fff', dim: 'rgba(255,255,255,.65)' },
+  brasilia: { bg: '#2B3F6E', text: '#fff', dim: 'rgba(255,255,255,.65)' },
+  chumbo:   { bg: '#5C5A56', text: '#fff', dim: 'rgba(255,255,255,.65)' },
+  niemeyer: { bg: '#1A1A1A', text: '#f9f9f6', dim: 'rgba(249,249,246,.6)' },
+  lucio:    { bg: '#E8A945', text: '#1A1A1A', dim: 'rgba(26,26,26,.55)' },
+  concreto: { bg: '#A8A8A8', text: '#1A1A1A', dim: 'rgba(26,26,26,.55)' },
+};
+
+function pickHeaderColor() {
+  const keys = Object.keys(HEADER_PALETTE);
+  return keys[randInt(0, keys.length - 1)];
+}
+
+function applyHeaderColor(colorName) {
+  const c = HEADER_PALETTE[colorName];
+  if (!c) return;
+  document.documentElement.style.setProperty('--head-bg', c.bg);
+  document.documentElement.style.setProperty('--head-text', c.text);
+  document.documentElement.style.setProperty('--head-dim', c.dim);
+}
+
+// Constrói "fita na linha" — linha passa pelo centro das peças (miçangas no fio).
+// Sem cordão pendurado. Mais cor (paleta cheia, peso equilibrado).
+// Se matchColorHex é passado, garante que `matchCount` peças usem essa cor.
+function buildBuntingOnLine(container, count = 8, matchColorHex = null, matchCount = 2) {
+  // paleta cheia, com peso pra dar vida (cores quentes/saturadas mais comuns)
+  const lifePool = [
+    'concreto','concreto',
+    'chumbo','chumbo',
+    'niemeyer',
+    'catedral','catedral','catedral',
+    'planalto','planalto','planalto',
+    'brasilia','brasilia','brasilia',
+    'lucio','lucio','lucio',
+  ];
+
+  // índices pra peças que combinam com o header
+  const matchIndices = new Set();
+  while (matchColorHex && matchIndices.size < matchCount && matchIndices.size < count) {
+    matchIndices.add(randInt(0, count - 1));
+  }
+
+  // olho: índice diferente dos matching (pra não sumir nenhum sinal)
+  let eyeIdx = randInt(0, count - 1);
+  let attempts = 0;
+  while (matchIndices.has(eyeIdx) && attempts < 10) {
+    eyeIdx = randInt(0, count - 1);
+    attempts++;
+  }
+
+  let html = '<div class="bunting-line"></div><div class="bunting-pieces">';
+
+  for (let i = 0; i < count; i++) {
+    const tilt = (Math.random() - 0.5) * 16; // -8 a +8 graus
+    const size = randInt(30, 46);
+
+    let color;
+    if (matchIndices.has(i)) {
+      color = matchColorHex;
+    } else {
+      color = PALETTE[randFrom(lifePool)];
+    }
+    const piece = randFrom(PIECES);
+
+    html += `<span class="bunting-piece" style="transform:rotate(${tilt.toFixed(2)}deg)">`;
+    html += `<span class="bunting-tile" style="position:relative;display:block">`;
+    html += pieceSvg(piece, color, size);
+    if (i === eyeIdx) {
+      html += `<span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22%;height:22%;background:${PALETTE.niemeyer};border-radius:50%;box-shadow:0 0 0 2px ${PALETTE.lucio}"></span>`;
+    }
+    html += `</span></span>`;
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 // Constrói coluna lateral (margem)
 function buildSidebar(container, count = 6) {
   const colorPick = ['catedral', 'planalto', 'brasilia', 'lucio'];
