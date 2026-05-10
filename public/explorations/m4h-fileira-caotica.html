@@ -11,19 +11,27 @@
     header.site .top{ max-width:1280px; margin:0 auto; padding:22px 68px 18px;
       display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:32px; }
     header.site .brand{ font-family:var(--serif); font-weight:700; font-size:22px; letter-spacing:-.01em;
-      color: var(--head-text); text-decoration:none;
-      display:flex; align-items:center; gap:6px; }
-    /* "O" letterform (ring) substitui o O do wordmark — mesma altura do font-size */
-    header.site .brand-eye{ width:22px; height:22px; color: var(--head-text); flex-shrink:0; display:block; }
+      color: var(--head-text); text-decoration:none; }
     header.site .tagline{ font-family:var(--serif); font-style:normal; font-weight:400; font-size:16px;
       line-height:1.3; color: var(--head-dim); text-align:center; max-width:60ch; justify-self:center; }
+    /* olho antes da tagline — 16px, matching font-size da frase */
+    header.site .tagline-eye{ width:16px; height:16px; color: var(--head-text);
+      display:inline-block; vertical-align:middle; margin-right:6px; margin-top:-2px; }
     header.site .tagline em{ font-style:normal; color:inherit; font-weight:400; }
     header.site .nav{ display:flex; gap:24px; font-family:var(--mono); font-size:11px; font-weight:500;
       letter-spacing:.16em; text-transform:uppercase; color: var(--head-dim); }
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    .stripe{ width:100%; background-color: transparent; }
+    .stripe{ width:100%; background-color: transparent; position:relative; }
+    /* linha branca atravessando os quadrados, edge-to-edge, grossura média */
+    .stripe::before{
+      content:''; position:absolute;
+      top:50%; left:0; right:0;
+      height:3px; background:#fff;
+      transform: translateY(-50%);
+      z-index:2; pointer-events:none;
+    }
 
     @media (max-width:760px){
       header.site .top{ padding:14px 20px; grid-template-columns:1fr auto; gap:12px; }
@@ -34,16 +42,14 @@
 <body>
   <header class="site">
     <div class="top">
-      <a class="brand" href="/explorations/">
-        <!-- "O" letterform (elipse sutil ~7% mais alto que largo, tipográfico)
-             pupila escolhida por header pra contrastar com bg + ring -->
-        <svg class="brand-eye" viewBox="0 0 100 100" aria-hidden="true">
+      <a class="brand" href="/explorations/">O Cobogó</a>
+      <div class="tagline">
+        <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
           <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
           <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
         </svg>
-        Cobogó
-      </a>
-      <div class="tagline">Ensaios de um <em>não-candango</em> no Planalto.</div>
+        Ensaios de um <em>não-candango</em> no Planalto.
+      </div>
       <nav class="nav">
         <a class="active" href="#">Home</a>
         <a href="#">Sobre</a>
