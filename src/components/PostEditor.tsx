@@ -27,6 +27,14 @@ const COLOR_PALETTE = [
   { name: 'Bordô',     hex: '#6B2C2C' },
 ];
 
+const HIGHLIGHT_PALETTE = [
+  { name: 'Amarelo', hex: '#FFE066' },
+  { name: 'Rosa',    hex: '#FFB3D1' },
+  { name: 'Verde',   hex: '#B3E6B3' },
+  { name: 'Azul',    hex: '#B3DFF5' },
+  { name: 'Laranja', hex: '#FFC99A' },
+];
+
 function ToolbarButton({
   active,
   onClick,
@@ -179,8 +187,87 @@ function ColorPopover({
   );
 }
 
+function HighlightPopover({
+  editor,
+  onClose,
+}: {
+  editor: Editor;
+  onClose: () => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const currentColor = (editor.getAttributes('highlight').color ?? '').toLowerCase();
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+    };
+    setTimeout(() => document.addEventListener('mousedown', handler), 0);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [onClose]);
+
+  const apply = (color: string) => {
+    editor.chain().focus().setHighlight({ color }).run();
+    onClose();
+  };
+
+  const remove = () => {
+    editor.chain().focus().unsetHighlight().run();
+    onClose();
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseDown={(e) => e.preventDefault()}
+      style={{
+        position: 'absolute',
+        top: 'calc(100% + 6px)',
+        left: 0,
+        background: '#fff',
+        border: '1px solid #ddd',
+        borderRadius: 6,
+        padding: 10,
+        boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+        zIndex: 100,
+        minWidth: 220,
+      }}
+    >
+      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: '#666', marginBottom: 8 }}>
+        Marcador
+      </div>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+        {HIGHLIGHT_PALETTE.map((c) => (
+          <button
+            key={c.hex}
+            type="button"
+            onMouseDown={(e) => { e.preventDefault(); apply(c.hex); }}
+            title={c.name}
+            style={{
+              width: 28, height: 22, borderRadius: 3,
+              background: c.hex, cursor: 'pointer',
+              border: currentColor === c.hex.toLowerCase() ? '2px solid #000' : '1px solid #ccc',
+            }}
+          />
+        ))}
+      </div>
+      <button
+        type="button"
+        onMouseDown={(e) => { e.preventDefault(); remove(); }}
+        style={{
+          width: '100%', fontSize: 11, padding: '4px 0', cursor: 'pointer',
+          borderRadius: 3, border: 'none', background: 'transparent', color: '#888',
+          textAlign: 'left',
+        }}
+      >
+        × remover marcador
+      </button>
+    </div>
+  );
+}
+
 function BubbleToolbar({ editor }: { editor: Editor }) {
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showHighlightPicker, setShowHighlightPicker] = useState(false);
   const currentColor = editor.getAttributes('textStyle').color ?? '#1B1612';
 
   const setLink = () => {
@@ -229,12 +316,15 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
         />
         {showColorPicker && <ColorPopover editor={editor} onClose={() => setShowColorPicker(false)} />}
       </div>
-      <ToolbarButton
-        active={editor.isActive('highlight')}
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-        label={<span style={{ background: 'rgba(255,224,102,.7)', padding: '0 3px', borderRadius: 2, color: '#222', fontWeight: 600 }}>abc</span>}
-        title="Realçar (marcador)"
-      />
+      <div style={{ position: 'relative' }}>
+        <ToolbarButton
+          active={editor.isActive('highlight')}
+          onClick={() => setShowHighlightPicker((v) => !v)}
+          label={<span style={{ background: 'rgba(255,224,102,.7)', padding: '0 3px', borderRadius: 2, color: '#222', fontWeight: 600 }}>abc</span>}
+          title="Marcador (escolha cor)"
+        />
+        {showHighlightPicker && <HighlightPopover editor={editor} onClose={() => setShowHighlightPicker(false)} />}
+      </div>
       <ToolbarButton
         active={editor.isActive('link')}
         onClick={setLink}
@@ -318,7 +408,7 @@ export default function PostEditor({
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
       Color,
-      Highlight.configure({ multicolor: false }),
+      Highlight.configure({ multicolor: true }),
     ],
     content: initialHtml ?? '',
     editorProps: {
