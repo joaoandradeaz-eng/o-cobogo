@@ -133,6 +133,47 @@
   background: rgba(184, 90, 31, 0.12);
   transition: background .25s ease;
 }
+
+/* === Hand-drawn highlight (mark element) ===
+   CSS gradient skewed pra simular pincelada de marcador.
+   box-decoration-break:clone faz funcionar em multi-line. */
+.art-body .col mark,
+.art-body .linha-fina mark{
+  background: transparent;
+  background-image: linear-gradient(
+    104deg,
+    rgba(255, 224, 102, 0) 0.9%,
+    rgba(255, 224, 102, 0.55) 2.4%,
+    rgba(255, 224, 102, 0.6) 5.8%,
+    rgba(255, 224, 102, 0.55) 93%,
+    rgba(255, 224, 102, 0.6) 96%,
+    rgba(255, 224, 102, 0) 98%
+  );
+  background-size: 100% 58%;
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+  padding: 0 2px;
+  margin: 0 -2px;
+  color: inherit;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* === Cor de texto (span style="color:...") já passa direto via inline style === */
+/* === Alinhamento (text-align inline) já passa direto via inline style === */
+
+/* === Lista quando dentro de .col — usa estilo padrão da art-body === */
+.art-body .col ul,
+.art-body .col ol{
+  margin: 0 0 22px 0;
+  padding-left: 1.5em;
+}
+.art-body .col ul li,
+.art-body .col ol li{
+  margin-bottom: 8px;
+}
+.art-body .col ul{ list-style: disc; }
+.art-body .col ol{ list-style: decimal; }
 /* dropcap automático no primeiro parágrafo (só os diretos do .col, não dentro de blockquote) */
 .art-body .col > p:first-of-type::first-letter{
   font-family:var(--serif);font-weight:500;
