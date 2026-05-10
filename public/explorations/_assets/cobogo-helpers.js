@@ -127,15 +127,16 @@ function buildBunting(container, count = 8) {
   container.innerHTML = html;
 }
 
-// Paleta de cores possíveis pro header colorido + texto em alto contraste
+// Paleta de cores possíveis pro header colorido + texto em alto contraste +
+// pupila do olho (clara qdo letra é escura, escura qdo letra é clara)
 const HEADER_PALETTE = {
-  catedral: { bg: '#C73838', text: '#fff', dim: 'rgba(255,255,255,.65)' },
-  planalto: { bg: '#3A6B47', text: '#fff', dim: 'rgba(255,255,255,.65)' },
-  brasilia: { bg: '#2B3F6E', text: '#fff', dim: 'rgba(255,255,255,.65)' },
-  chumbo:   { bg: '#5C5A56', text: '#fff', dim: 'rgba(255,255,255,.65)' },
-  niemeyer: { bg: '#1A1A1A', text: '#f9f9f6', dim: 'rgba(249,249,246,.6)' },
-  lucio:    { bg: '#E8A945', text: '#1A1A1A', dim: 'rgba(26,26,26,.55)' },
-  concreto: { bg: '#A8A8A8', text: '#1A1A1A', dim: 'rgba(26,26,26,.55)' },
+  catedral: { bg: '#C73838', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
+  planalto: { bg: '#3A6B47', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
+  brasilia: { bg: '#2B3F6E', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
+  chumbo:   { bg: '#5C5A56', text: '#fff',     dim: 'rgba(255,255,255,.65)', pupil: '#1E3A8A' },
+  niemeyer: { bg: '#1A1A1A', text: '#f9f9f6',  dim: 'rgba(249,249,246,.6)',  pupil: '#1E3A8A' },
+  lucio:    { bg: '#E8A945', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#A8C5E8' },
+  concreto: { bg: '#A8A8A8', text: '#1A1A1A',  dim: 'rgba(26,26,26,.55)',    pupil: '#A8C5E8' },
 };
 
 function pickHeaderColor() {
@@ -149,6 +150,7 @@ function applyHeaderColor(colorName) {
   document.documentElement.style.setProperty('--head-bg', c.bg);
   document.documentElement.style.setProperty('--head-text', c.text);
   document.documentElement.style.setProperty('--head-dim', c.dim);
+  document.documentElement.style.setProperty('--head-pupil', c.pupil);
 }
 
 // Constrói "fita na linha" — linha passa pelo centro das peças (miçangas no fio).
