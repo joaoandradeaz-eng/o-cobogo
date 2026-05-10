@@ -1,0 +1,99 @@
+/* O Cobogó · base styles compartilhada pelos mockups de exploração */
+
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  /* paleta editorial (igual ao site) */
+  --paper:#f9f9f6;
+  --paper-2:#EAE1CE;
+  --ink:#1B1612;
+  --ink-2:#3A322A;
+  --ink-3:#6B6055;
+  --rule:#1B161222;
+  --rule-strong:#1B161240;
+  --terra:#B85A1F;
+  --terra-deep:#8C3F12;
+  --terra-tint:#E5C9B0;
+
+  /* paleta modernista cobogó */
+  --cobogo-concreto:#A8A8A8;
+  --cobogo-catedral:#C73838;
+  --cobogo-planalto:#3A6B47;
+  --cobogo-brasilia:#2B3F6E;
+  --cobogo-chumbo:#5C5A56;
+  --cobogo-niemeyer:#1A1A1A;
+  --cobogo-lucio:#E8A945;
+
+  --serif:'Bitter','Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%}
+
+/* faixa fixa de navegação entre mockups (no fim da página) */
+.mock-nav{
+  position:fixed; left:0; right:0; bottom:0;
+  background:var(--ink); color:#fff;
+  padding:10px 20px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.12em; text-transform:uppercase;
+  z-index:1000;
+  box-shadow:0 -2px 12px rgba(0,0,0,.1);
+}
+.mock-nav .label{ color:#888; }
+.mock-nav .links{ display:flex; gap:18px; }
+.mock-nav a{ color:#fff; text-decoration:none; opacity:.5; transition:opacity .15s; padding:2px 4px; }
+.mock-nav a:hover{ opacity:1; }
+.mock-nav a.active{ opacity:1; border-bottom:1px solid var(--terra-tint); }
+
+/* placeholder do hero card (representação simplificada) */
+.preview-hero{
+  max-width:1280px; margin:0 auto;
+  padding:48px 68px 80px;
+}
+.preview-hero .tag{
+  display:inline-block;
+  font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase;
+  padding:5px 10px; border-radius:2px; margin-bottom:14px;
+  background:var(--terra-tint); color:var(--terra-deep);
+}
+.preview-hero .blackrule{
+  height:14px; background:#000; margin-bottom:18px;
+}
+.preview-hero h2{
+  font-family:var(--serif); font-weight:700;
+  font-variation-settings:"opsz" 60;
+  font-size:64px; line-height:1.04; letter-spacing:-.02em;
+  color:#000; max-width:18ch;
+}
+.preview-hero h2 em{ font-style:italic; font-weight:700; }
+.preview-hero .dek{
+  margin-top:20px;
+  font-family:var(--serif); font-style:italic;
+  font-size:22px; line-height:1.35; color:var(--ink-2);
+  max-width:60ch;
+}
+.preview-hero .figure{
+  margin-top:32px; aspect-ratio:21/9;
+  background:repeating-linear-gradient(135deg, rgba(27,22,18,.06) 0 1px, transparent 1px 14px),
+             linear-gradient(160deg,#E0D5BC,#EAE1CE);
+  border:1px solid var(--rule-strong);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+}
+@media (max-width:760px){
+  .preview-hero{ padding:32px 20px 80px; }
+  .preview-hero h2{ font-size:38px; }
+  .preview-hero .dek{ font-size:18px; }
+}

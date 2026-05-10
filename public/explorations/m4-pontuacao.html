@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M4 · Pontuação Rítmica · O Cobogó</title>
+  <link rel="stylesheet" href="_assets/base.css" />
+  <style>
+    /* Header — paper, peça cobogó como assinatura ao lado do nome */
+    header.site{
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+    }
+    header.site .top{
+      max-width: 1280px; margin: 0 auto;
+      padding: 22px 68px 18px;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: 32px;
+    }
+    header.site .brand{
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--serif); font-weight: 700;
+      font-size: 22px; letter-spacing: -.01em; color: #000;
+    }
+    header.site .brand .punct{ width: 22px; height: 22px; }
+    header.site .tagline{
+      font-family: var(--serif); font-style: italic;
+      font-size: 17px; line-height: 1.3; color: var(--ink-2);
+      text-align: center; max-width: 60ch; justify-self: center;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    header.site .tagline em{ color: var(--terra-deep); font-weight: 500; }
+    header.site .tagline .punct-ornament{ width: 18px; height: 18px; }
+    header.site .nav{
+      display: flex; gap: 24px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+    }
+    header.site .nav a{ color: var(--ink-3); text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid transparent; }
+    header.site .nav a.active{ color: var(--ink); border-bottom-color: var(--terra); }
+
+    /* Faixa de "respiro" entre header e hero — peça-pontuação no centro como rule */
+    .breathing-rule{
+      max-width: 1280px; margin: 0 auto;
+      padding: 32px 68px;
+      display: flex; align-items: center; gap: 18px;
+    }
+    .breathing-rule .line{ flex: 1; height: 1px; background: var(--rule); }
+    .breathing-rule .punct-center{ width: 28px; height: 28px; }
+
+    @media (max-width:760px){
+      header.site .top{ padding: 14px 20px; grid-template-columns: 1fr auto; gap: 12px; }
+      header.site .tagline{ grid-column: 1 / -1; text-align: left; font-size: 15px; justify-content: flex-start; }
+      .breathing-rule{ padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site">
+    <div class="top">
+      <a class="brand" href="/explorations/">
+        <span class="punct" id="punct-brand" aria-hidden="true"></span>
+        O Cobogó
+      </a>
+      <div class="tagline">
+        Ensaios de um <em>não-candango</em> no Planalto.
+        <span class="punct-ornament" id="punct-tagline" aria-hidden="true"></span>
+      </div>
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#">Sobre</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="breathing-rule" aria-hidden="true">
+    <span class="line"></span>
+    <span class="punct-center" id="punct-center"></span>
+    <span class="line"></span>
+  </div>
+
+  <section class="preview-hero" style="padding-top: 16px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <span class="tag">Ensaio</span>
+    </div>
+    <div class="blackrule"></div>
+    <h2>A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></h2>
+    <p class="dek">Sobre o cobogó, o ar-condicionado e a hipótese de que a casa brasileira fechou os olhos quando fechou as paredes.</p>
+    <div class="figure">imagem · placeholder</div>
+  </section>
+
+  <nav class="mock-nav" aria-label="Mockups">
+    <span class="label">M4 · Pontuação Rítmica · 3 peças isoladas (selo no nome + ornamento na tagline + rule decorativa)</span>
+    <span class="links">
+      <a href="index.html">↑ visão geral</a>
+      <a href="m1-parede-discreta.html">M1</a>
+      <a href="m2-parede-modernista.html">M2</a>
+      <a href="m3-sem-parede.html">M3</a>
+      <a class="active" href="m4-pontuacao.html">M4</a>
+      <a href="m5-margem-lateral.html">M5</a>
+    </span>
+  </nav>
+
+  <script src="_assets/cobogo-helpers.js"></script>
+  <script>
+    document.addEventListener('cobogo:ready', () => {
+      buildPunctuation([
+        { selector: '#punct-brand',   color: 'var(--terra-deep)',     size: 22 },
+        { selector: '#punct-tagline', color: 'var(--cobogo-chumbo)',  size: 18 },
+        { selector: '#punct-center',  color: 'var(--cobogo-concreto)', size: 28 },
+      ]);
+    });
+  </script>
+</body>
+</html>

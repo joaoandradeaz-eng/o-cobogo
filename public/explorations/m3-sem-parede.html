@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M3 · Sem Parede · O Cobogó</title>
+  <link rel="stylesheet" href="_assets/base.css" />
+  <style>
+    /* Header — paper, tagline em destaque (vira a "vinheta"), 1 selo cobogó pequeno discreto */
+    header.site{
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+    }
+    header.site .top{
+      max-width: 1280px; margin: 0 auto;
+      padding: 28px 68px 22px;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: 32px;
+    }
+    header.site .brand{
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--serif); font-weight: 700;
+      font-size: 24px; letter-spacing: -.01em; color: #000;
+    }
+    header.site .brand .seal{ width: 26px; height: 26px; }
+    header.site .tagline{
+      font-family: var(--serif); font-style: italic; font-weight: 400;
+      font-size: 19px; line-height: 1.3; color: var(--ink-2);
+      text-align: center; max-width: 60ch; justify-self: center;
+    }
+    header.site .tagline em{ color: var(--terra-deep); font-weight: 500; }
+    header.site .nav{
+      display: flex; gap: 24px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+    }
+    header.site .nav a{ color: var(--ink-3); text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid transparent; }
+    header.site .nav a.active{ color: var(--ink); border-bottom-color: var(--terra); }
+
+    /* edição corrente — abaixo do header, fileira mono discreta */
+    .edition-line{
+      max-width: 1280px; margin: 0 auto;
+      padding: 14px 68px 10px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+      border-bottom: 1px solid var(--rule);
+    }
+    .edition-line .center{ font-style: normal; }
+
+    /* Preview hero — bastante ar acima, aposta no tipográfico */
+    .preview-hero{ padding-top: 72px; }
+
+    @media (max-width:760px){
+      header.site .top{ padding: 18px 20px 14px; grid-template-columns: 1fr auto; gap: 12px; }
+      header.site .tagline{ grid-column: 1 / -1; text-align: left; font-size: 16px; }
+      .edition-line{ padding: 10px 20px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site">
+    <div class="top">
+      <a class="brand" href="/explorations/">
+        <span class="seal" id="seal" aria-hidden="true"></span>
+        O Cobogó
+      </a>
+      <div class="tagline">Ensaios de um <em>não-candango</em> no Planalto.</div>
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#">Sobre</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="edition-line">
+    <span>Edição III · Mai MMXXVI</span>
+    <span class="center">Recife · São Paulo · Lisboa</span>
+    <span>09 ensaios · 14 leituras</span>
+  </div>
+
+  <section class="preview-hero">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <span class="tag">Ensaio</span>
+    </div>
+    <div class="blackrule"></div>
+    <h2>A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></h2>
+    <p class="dek">Sobre o cobogó, o ar-condicionado e a hipótese de que a casa brasileira fechou os olhos quando fechou as paredes.</p>
+    <div class="figure">imagem · placeholder</div>
+  </section>
+
+  <nav class="mock-nav" aria-label="Mockups">
+    <span class="label">M3 · Sem Parede · header silencioso + tagline + selo cobogó (1 peça mini) + edição</span>
+    <span class="links">
+      <a href="index.html">↑ visão geral</a>
+      <a href="m1-parede-discreta.html">M1</a>
+      <a href="m2-parede-modernista.html">M2</a>
+      <a class="active" href="m3-sem-parede.html">M3</a>
+      <a href="m4-pontuacao.html">M4</a>
+      <a href="m5-margem-lateral.html">M5</a>
+    </span>
+  </nav>
+
+  <script src="_assets/cobogo-helpers.js"></script>
+  <script>
+    document.addEventListener('cobogo:ready', () => {
+      // Selo mini ao lado do nome — peça aleatória em terra-deep, dose mínima
+      buildPunctuation([
+        { selector: '#seal', piece: null, color: 'var(--terra-deep)', size: 26 },
+      ]);
+    });
+  </script>
+</body>
+</html>

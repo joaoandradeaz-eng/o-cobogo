@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Explorações de header e entrada · O Cobogó</title>
+  <link rel="stylesheet" href="_assets/base.css" />
+  <style>
+    .wrap{
+      max-width: 980px; margin: 0 auto;
+      padding: 64px 32px 100px;
+    }
+    h1{
+      font-family: var(--serif); font-weight: 700;
+      font-size: 36px; line-height: 1.1; letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+    h1 em{ color: var(--terra-deep); font-style: italic; font-weight: 500; }
+    .lede{
+      font-family: var(--serif); font-style: italic; font-size: 18px;
+      color: var(--ink-2); max-width: 60ch; margin-bottom: 48px;
+    }
+    .meta{
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--ink-3); margin-bottom: 8px;
+    }
+    .grid{
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width:760px){ .grid{ grid-template-columns: 1fr; } }
+    .card{
+      display: block; background: #fff; border: 1px solid var(--rule);
+      padding: 24px; text-decoration: none; color: inherit;
+      transition: border-color .15s, transform .15s;
+    }
+    .card:hover{ border-color: var(--terra); transform: translateY(-2px); }
+    .card .label{
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--terra-deep); font-weight: 600; margin-bottom: 10px;
+    }
+    .card h3{
+      font-family: var(--serif); font-weight: 600;
+      font-size: 22px; line-height: 1.15; margin-bottom: 8px; color: #000;
+    }
+    .card .desc{
+      font-family: var(--serif); font-size: 14px; line-height: 1.5;
+      color: var(--ink-2);
+    }
+    .card .open{
+      margin-top: 12px;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--terra);
+    }
+    .legend{
+      margin-top: 56px; padding-top: 28px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif); font-size: 14px; line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .legend strong{ font-weight: 600; color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">explorações · header + entrada</div>
+    <h1>5 caminhos para a <em>porta de entrada</em> do site</h1>
+    <p class="lede">Mockups standalone — nada do site real foi tocado. Abre cada um, compara, diz qual direção (ou mistura) faz sentido. Toda parede usa as 7 peças oficiais + paleta Modernista de Brasília. Recarrega a página de cada mockup pra ver o ritual de randomização.</p>
+
+    <div class="grid">
+      <a class="card" href="m1-parede-discreta.html">
+        <div class="label">M1 · cuidado, mais conservadora</div>
+        <h3>Parede discreta · concreto</h3>
+        <div class="desc">Header papel + tagline migrada. 1 fileira de 14 peças, todas em <strong>concreto</strong> só. Uma peça random ganha cor (catedral/planalto/brasília/lúcio), outra recebe um pequeno olho. Mantém o ritual de randomização atual mas em volume e cor muito mais baixos.</div>
+        <div class="open">→ abrir m1</div>
+      </a>
+
+      <a class="card" href="m2-parede-modernista.html">
+        <div class="label">M2 · paleta nova inteira, ainda parede</div>
+        <h3>Parede modernista</h3>
+        <div class="desc">Header papel + tagline. 2 fileiras × 8 = 16 peças. Cada uma com cor da paleta Modernista, mas com <strong>pesos</strong>: concreto e chumbo dominam, catedral/planalto/brasília/lúcio são acentos raros. Variedade de peças. Olho com halo.</div>
+        <div class="open">→ abrir m2</div>
+      </a>
+
+      <a class="card" href="m3-sem-parede.html">
+        <div class="label">M3 · o mais silencioso</div>
+        <h3>Sem parede</h3>
+        <div class="desc">Header papel + tagline em destaque + um único <strong>selo cobogó pequeno</strong> (26px) ao lado do nome. Linha mono de "edição corrente". Aposta no tipográfico e no respiro. Risco: pode descaracterizar.</div>
+        <div class="open">→ abrir m3</div>
+      </a>
+
+      <a class="card" href="m4-pontuacao.html">
+        <div class="label">M4 · cobogó como pontuação</div>
+        <h3>Pontuação rítmica</h3>
+        <div class="desc"><strong>3 peças isoladas</strong> em pontos estratégicos: selo no nome, ornamento ao fim da tagline, e uma peça-rule decorativa entre header e hero. Sem parede contínua. Identidade preservada por insistência, não por densidade.</div>
+        <div class="open">→ abrir m4</div>
+      </a>
+
+      <a class="card" href="m5-margem-lateral.html" style="grid-column:1/-1">
+        <div class="label">M5 · cobogó como moldura</div>
+        <h3>Margem lateral</h3>
+        <div class="desc">Cobogó migra do topo pra <strong>coluna vertical à esquerda</strong> (80px de largura, 6 peças empilhadas). O conteúdo principal fica desviado pra direita. Conceito: cobogó vira costela do site, não vinheta de cabeçalho. Em mobile vira faixa horizontal automaticamente.</div>
+        <div class="open">→ abrir m5</div>
+      </a>
+    </div>
+
+    <div class="legend">
+      <strong>Como ler:</strong> cada mockup recarrega randomizando peças e cores (mantendo o ritual atual). O hero do artigo abaixo é só representação simplificada do conteúdo real — fontes, paleta, espaçamentos e tipografia já são os reais. Nada do site em produção foi tocado: tudo vive em <code style="font-family:var(--mono);font-size:13px">/explorations/</code>.
+      <br/><br/>
+      <strong>Próximo passo:</strong> você responde "M3 com tagline maior" ou "M1 mas com paleta de M2" ou "todos errados, vamos pra outra direção". Daí monto a versão final em código de produção numa branch separada do Vercel pra você ver em ambiente real antes de mergear.
+    </div>
+  </div>
+</body>
+</html>
