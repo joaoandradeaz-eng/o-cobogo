@@ -195,6 +195,48 @@
 /* === Cor de texto (span style="color:...") já passa direto via inline style === */
 /* === Alinhamento (text-align inline) já passa direto via inline style === */
 
+/* === Imagens posicionadas (img.img-pos-{center,left,right,full}) === */
+.art-body .col img{
+  max-width: 100%;
+  height: auto;
+}
+.art-body .col img.img-pos-center{
+  display: block;
+  margin: 32px auto;
+}
+.art-body .col img.img-pos-left{
+  float: left;
+  max-width: 50%;
+  margin: 6px 28px 12px 0;
+  shape-outside: margin-box;
+}
+.art-body .col img.img-pos-right{
+  float: right;
+  max-width: 50%;
+  margin: 6px 0 12px 28px;
+  shape-outside: margin-box;
+}
+.art-body .col img.img-pos-full{
+  display: block;
+  width: 100%;
+  margin: 36px 0;
+}
+/* clearfix: empurra parágrafos seguintes pra baixo de floats que sobraram */
+.art-body .col h2,
+.art-body .col h3,
+.art-body .col blockquote{
+  clear: both;
+}
+@media (max-width:760px){
+  .art-body .col img.img-pos-left,
+  .art-body .col img.img-pos-right{
+    float: none;
+    max-width: 100%;
+    display: block;
+    margin: 24px auto;
+  }
+}
+
 /* === Lista quando dentro de .col — usa estilo padrão da art-body === */
 .art-body .col ul,
 .art-body .col ol{

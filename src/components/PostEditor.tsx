@@ -8,7 +8,10 @@ import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
 import { useEffect, useRef, useState } from 'react';
+import type { CloudinaryConfig, ImagePosition } from '../lib/cloudinary';
+import { uploadToCloudinary } from '../lib/cloudinary';
 
 type Props = {
   initialHtml?: string;
@@ -16,13 +19,16 @@ type Props = {
   onEditorReady?: (editor: Editor) => void;
   placeholder?: string;
   contentClassName?: string;
+  cloudinary?: CloudinaryConfig;
+  onUploadStart?: () => void;
+  onUploadEnd?: (success: boolean) => void;
 };
 
 const COLOR_PALETTE = [
-  { name: 'Preto',     hex: '#1B1612' }, // ink
-  { name: 'Cinza',     hex: '#6B6055' }, // ink-3
-  { name: 'Terra',     hex: '#B85A1F' }, // brand
-  { name: 'Terra escuro', hex: '#8C3F12' }, // terra-deep
+  { name: 'Preto',     hex: '#1B1612' },
+  { name: 'Cinza',     hex: '#6B6055' },
+  { name: 'Terra',     hex: '#B85A1F' },
+  { name: 'Terra escuro', hex: '#8C3F12' },
   { name: 'Navy',      hex: '#1E3A8A' },
   { name: 'Bordô',     hex: '#6B2C2C' },
 ];
@@ -34,6 +40,26 @@ const HIGHLIGHT_PALETTE = [
   { name: 'Azul',    hex: '#B3DFF5' },
   { name: 'Laranja', hex: '#FFC99A' },
 ];
+
+/** Custom Image node with `position` attribute (center | left | right | full) */
+const PositionedImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      position: {
+        default: 'center',
+        parseHTML: (el) => el.getAttribute('data-position') ?? 'center',
+        renderHTML: (attrs) => {
+          const pos = attrs.position ?? 'center';
+          return {
+            'data-position': pos,
+            class: `img-pos-${pos}`,
+          };
+        },
+      },
+    };
+  },
+});
 
 function ToolbarButton({
   active,
@@ -392,13 +418,65 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
   );
 }
 
+function ImageToolbar({ editor }: { editor: Editor }) {
+  const currentPos = (editor.getAttributes('image').position ?? 'center') as ImagePosition;
+  const setPos = (p: ImagePosition) => {
+    editor.chain().focus().updateAttributes('image', { position: p }).run();
+  };
+  const remove = () => {
+    editor.chain().focus().deleteSelection().run();
+  };
+  return (
+    <div
+      style={{
+        display: 'flex',
+        gap: 1,
+        background: '#111',
+        borderRadius: 6,
+        padding: 4,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      }}
+    >
+      <ToolbarButton active={currentPos === 'center'} onClick={() => setPos('center')} label="◉ centro" title="Centralizada" />
+      <ToolbarButton active={currentPos === 'left'} onClick={() => setPos('left')} label="◧ esq" title="Esquerda (text-wrap)" />
+      <ToolbarButton active={currentPos === 'right'} onClick={() => setPos('right')} label="◨ dir" title="Direita (text-wrap)" />
+      <ToolbarButton active={currentPos === 'full'} onClick={() => setPos('full')} label="▭ full" title="Largura cheia" />
+      <div style={{ width: 1, background: '#333', margin: '4px 2px' }} />
+      <ToolbarButton onClick={remove} label="× remover" title="Remover imagem" />
+    </div>
+  );
+}
+
 export default function PostEditor({
   initialHtml,
   onChange,
   onEditorReady,
   placeholder,
   contentClassName,
+  cloudinary,
+  onUploadStart,
+  onUploadEnd,
 }: Props) {
+  const cloudinaryRef = useRef(cloudinary);
+  cloudinaryRef.current = cloudinary;
+
+  const uploadFile = async (file: File, editor: Editor) => {
+    const cfg = cloudinaryRef.current;
+    if (!cfg?.cloudName || !cfg?.uploadPreset) {
+      alert('Cloudinary não configurado nas env vars do Vercel.');
+      return;
+    }
+    onUploadStart?.();
+    try {
+      const url = await uploadToCloudinary(file, cfg);
+      editor.chain().focus().setImage({ src: url }).run();
+      onUploadEnd?.(true);
+    } catch (err: any) {
+      alert(`Upload falhou: ${err?.message ?? err}`);
+      onUploadEnd?.(false);
+    }
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [2, 3] } }),
@@ -409,10 +487,31 @@ export default function PostEditor({
       TextStyle,
       Color,
       Highlight.configure({ multicolor: true }),
+      PositionedImage.configure({ inline: false, allowBase64: false }),
     ],
     content: initialHtml ?? '',
     editorProps: {
       attributes: { class: contentClassName ?? '' },
+      handleDrop(view, event, _slice, moved) {
+        if (moved) return false;
+        const files = Array.from(event.dataTransfer?.files ?? []);
+        const images = files.filter((f) => f.type.startsWith('image/'));
+        if (images.length === 0) return false;
+        event.preventDefault();
+        images.forEach((file) => uploadFile(file, editor!));
+        return true;
+      },
+      handlePaste(view, event) {
+        const items = Array.from(event.clipboardData?.items ?? []);
+        const imageItems = items.filter((it) => it.type.startsWith('image/'));
+        if (imageItems.length === 0) return false;
+        event.preventDefault();
+        imageItems.forEach((it) => {
+          const f = it.getAsFile();
+          if (f) uploadFile(f, editor!);
+        });
+        return true;
+      },
     },
     onUpdate: ({ editor }) => {
       onChange?.(editor.getHTML());
@@ -435,9 +534,20 @@ export default function PostEditor({
           float:left; color:#bbb; pointer-events:none; height:0;
           font-style: italic;
         }
+        .ProseMirror img{ max-width:100%; height:auto; }
+        .ProseMirror img.ProseMirror-selectednode{ outline: 2px solid var(--terra); }
       `}</style>
-      <BubbleMenu editor={editor}>
+      <BubbleMenu
+        editor={editor}
+        shouldShow={({ editor, from, to }) => from !== to && !editor.isActive('image')}
+      >
         <BubbleToolbar editor={editor} />
+      </BubbleMenu>
+      <BubbleMenu
+        editor={editor}
+        shouldShow={({ editor }) => editor.isActive('image')}
+      >
+        <ImageToolbar editor={editor} />
       </BubbleMenu>
       <EditorContent editor={editor} />
     </>

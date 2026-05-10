@@ -28,6 +28,7 @@ function formatDateBR(iso: string): string {
 
 type Props = {
   authorName?: string;
+  cloudinary?: { cloudName: string; uploadPreset: string };
 };
 
 type Snapshot = {
@@ -98,7 +99,7 @@ function AutoTextarea({
   );
 }
 
-export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
+export default function ArticleEditor({ authorName = 'João Andrade', cloudinary }: Props) {
   const [title, setTitle] = useState('');
   const [dek, setDek] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
@@ -115,8 +116,10 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
   const [autosaveStatus, setAutosaveStatus] = useState<'idle' | 'saved' | 'pending'>('idle');
   const [restoredFromDraft, setRestoredFromDraft] = useState(false);
   const [editorReady, setEditorReady] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const initialMountedRef = useRef(false);
   const editorRef = useRef<Editor | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Restore from localStorage on mount
   useEffect(() => {
@@ -192,6 +195,28 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
   const removeNotaAt = (idx: number) => {
     renumberSupsInBody(idx);
     setNotas((cur) => cur.filter((_, j) => j !== idx));
+  };
+
+  const triggerImageUpload = () => fileInputRef.current?.click();
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || !editorRef.current) return;
+    if (!cloudinary?.cloudName || !cloudinary?.uploadPreset) {
+      alert('Cloudinary não configurado nas env vars do Vercel.');
+      return;
+    }
+    setUploading(true);
+    try {
+      const { uploadToCloudinary } = await import('../lib/cloudinary');
+      const url = await uploadToCloudinary(file, cloudinary);
+      editorRef.current.chain().focus().setImage({ src: url }).run();
+    } catch (err: any) {
+      alert(`Upload falhou: ${err?.message ?? err}`);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const insertFootnote = () => {
@@ -471,8 +496,18 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
         <button type="button" onClick={insertFootnote} title="Inserir nota numerada na posição do cursor">
           + Nota (no cursor)
         </button>
+        <button type="button" onClick={triggerImageUpload} disabled={uploading} title="Subir imagem (ou cole/arraste no editor)">
+          {uploading ? '⏳ subindo…' : '+ Imagem'}
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileSelected}
+          style={{ display: 'none' }}
+        />
         <span style={{ marginLeft: 'auto', opacity: 0.6 }}>
-          (selecione texto pra B/I/link/H2/quote)
+          (selecione texto pra B/I/link/H2/quote · arraste/cole imagens direto)
         </span>
       </div>
 
@@ -592,6 +627,9 @@ export default function ArticleEditor({ authorName = 'João Andrade' }: Props) {
             onEditorReady={(ed) => { editorRef.current = ed; }}
             placeholder="Comece a escrever…"
             contentClassName="col"
+            cloudinary={cloudinary}
+            onUploadStart={() => setUploading(true)}
+            onUploadEnd={() => setUploading(false)}
           />
         )}
 

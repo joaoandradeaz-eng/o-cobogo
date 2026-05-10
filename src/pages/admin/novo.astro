@@ -10,7 +10,12 @@ if (!isAuthorized(session)) {
 }
 
 const authorName = session.name?.split(' ').slice(0, 2).join(' ') || 'João Andrade';
+
+const cloudinary = {
+  cloudName: import.meta.env.CLOUDINARY_CLOUD_NAME ?? '',
+  uploadPreset: import.meta.env.CLOUDINARY_UPLOAD_PRESET ?? '',
+};
 ---
 <BaseLayout title="Novo post · Admin · O Cobogó" active="home" screenLabel="Editor">
-  <ArticleEditor client:only="react" authorName={authorName} />
+  <ArticleEditor client:only="react" authorName={authorName} cloudinary={cloudinary} />
 </BaseLayout>
