@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Editor } from '@tiptap/react';
 import PostEditor from './PostEditor';
+import { TableGridPicker } from './TableExtensions';
 
 const CATEGORIES = [
   { value: 'ensaio', label: 'Ensaio' },
@@ -117,6 +118,7 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
   const [restoredFromDraft, setRestoredFromDraft] = useState(false);
   const [editorReady, setEditorReady] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [showTablePicker, setShowTablePicker] = useState(false);
   const initialMountedRef = useRef(false);
   const editorRef = useRef<Editor | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -198,6 +200,15 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
   };
 
   const triggerImageUpload = () => fileInputRef.current?.click();
+
+  const insertTable = (rows: number, cols: number) => {
+    if (!editorRef.current) return;
+    editorRef.current
+      .chain()
+      .focus()
+      .insertTable({ rows, cols, withHeaderRow: true })
+      .run();
+  };
 
   const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -499,6 +510,17 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
         <button type="button" onClick={triggerImageUpload} disabled={uploading} title="Subir imagem (ou cole/arraste no editor)">
           {uploading ? '⏳ subindo…' : '+ Imagem'}
         </button>
+        <div style={{ position: 'relative' }}>
+          <button type="button" onClick={() => setShowTablePicker((v) => !v)} title="Inserir tabela (escolha tamanho)">
+            + Tabela
+          </button>
+          {showTablePicker && (
+            <TableGridPicker
+              onSelect={(r, c) => insertTable(r, c)}
+              onClose={() => setShowTablePicker(false)}
+            />
+          )}
+        </div>
         <input
           ref={fileInputRef}
           type="file"
@@ -507,7 +529,7 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
           style={{ display: 'none' }}
         />
         <span style={{ marginLeft: 'auto', opacity: 0.6 }}>
-          (selecione texto pra B/I/link/H2/quote · arraste/cole imagens direto)
+          (selecione texto pra B/I/link/H2/quote · arraste/cole imagens direto · clica numa célula pra ver controles da tabela)
         </span>
       </div>
 

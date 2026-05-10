@@ -245,6 +245,55 @@
   }
 }
 
+/* === Tabelas dentro de .art-body .col === */
+.art-body .col table,
+.art-body .col table.art-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--ink);
+  table-layout: fixed;
+}
+.art-body .col table th,
+.art-body .col table td{
+  border: 1px solid var(--ink);
+  padding: 10px 14px;
+  vertical-align: top;
+  text-align: left;
+}
+.art-body .col table th{
+  font-weight: 600;
+  background: #efece6;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.art-body .col table p{
+  margin: 0;
+  text-align: inherit;
+  hyphens: none;
+}
+/* Resize handle do TipTap (entre colunas) — só editor */
+.art-body .col table .column-resize-handle{
+  position: absolute; right: -2px; top: 0; bottom: -2px;
+  width: 4px; background: var(--terra); pointer-events: none;
+}
+.art-body .col table.art-table.resize-cursor{ cursor: col-resize; }
+/* Selected cell (TipTap aplica .selectedCell em multi-seleção) */
+.art-body .col table .selectedCell{
+  background: rgba(184, 90, 31, 0.08);
+}
+@media (max-width:760px){
+  .art-body .col table{
+    font-size: 14px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
 /* === Lista quando dentro de .col — usa estilo padrão da art-body === */
 .art-body .col ul,
 .art-body .col ol{

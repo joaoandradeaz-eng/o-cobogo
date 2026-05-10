@@ -70,6 +70,16 @@ turndown.addRule('alignedHeading', {
   },
 });
 
+/* Preserve <table> COMPLETA como raw HTML — markdown padrão não suporta
+   cell colors, alinhamento custom, bordas variadas. Block-level. */
+turndown.addRule('table', {
+  filter: ['table'],
+  replacement: (_, node: any) => {
+    const html = (node as HTMLElement).outerHTML;
+    return `\n\n${html}\n\n`;
+  },
+});
+
 /* Preserve <img> com posição (img-pos-center/left/right/full) + width inline.
    Sempre emite raw HTML em vez de markdown ![alt](src) pra manter
    data-position, class e style="width:X%". Block-level (\n\n volta). */

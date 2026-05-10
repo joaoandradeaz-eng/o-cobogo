@@ -9,9 +9,11 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
+import { Table, TableRow } from '@tiptap/extension-table';
 import { useEffect, useRef, useState } from 'react';
 import type { CloudinaryConfig, ImagePosition } from '../lib/cloudinary';
 import { uploadToCloudinary } from '../lib/cloudinary';
+import { StyledTableCell, StyledTableHeader, CellColorPicker } from './TableExtensions';
 
 type Props = {
   initialHtml?: string;
@@ -497,6 +499,92 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
   );
 }
 
+function TableToolbar({ editor }: { editor: Editor }) {
+  const [showColor, setShowColor] = useState(false);
+  const cellNode = editor.isActive('tableHeader') ? 'tableHeader' : 'tableCell';
+  const cellAttrs = editor.getAttributes(cellNode);
+  const align = (cellAttrs.cellAlign ?? null) as string | null;
+  const borders = (cellAttrs.borders ?? '1111') as string;
+
+  const setAlign = (a: 'left' | 'center' | 'right' | null) => {
+    editor
+      .chain()
+      .focus()
+      .updateAttributes('tableCell', { cellAlign: a })
+      .updateAttributes('tableHeader', { cellAlign: a })
+      .run();
+  };
+
+  const toggleBorder = (idx: 0 | 1 | 2 | 3) => {
+    const arr = borders.split('');
+    arr[idx] = arr[idx] === '1' ? '0' : '1';
+    const next = arr.join('');
+    editor
+      .chain()
+      .focus()
+      .updateAttributes('tableCell', { borders: next })
+      .updateAttributes('tableHeader', { borders: next })
+      .run();
+  };
+
+  const sep = <div style={{ width: 1, background: '#333', margin: '4px 2px' }} />;
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        background: '#111',
+        borderRadius: 6,
+        padding: 4,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        position: 'relative',
+        maxWidth: 560,
+      }}
+    >
+      {/* Row 1: estrutura */}
+      <div style={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()} label="+ row ↑" title="Adicionar linha acima" />
+        <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} label="+ row ↓" title="Adicionar linha abaixo" />
+        <ToolbarButton onClick={() => editor.chain().focus().addColumnBefore().run()} label="+ col ←" title="Adicionar coluna à esquerda" />
+        <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} label="+ col →" title="Adicionar coluna à direita" />
+        {sep}
+        <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} label="− row" title="Deletar linha" />
+        <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} label="− col" title="Deletar coluna" />
+        <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} label="× tabela" title="Deletar tabela inteira" />
+        {sep}
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHeaderRow().run()} label="header" title="Toggle linha de cabeçalho" />
+      </div>
+      {/* Row 2: estilo da célula */}
+      <div style={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <div style={{ position: 'relative' }}>
+          <ToolbarButton
+            active={!!cellAttrs.backgroundColor}
+            onClick={() => setShowColor((v) => !v)}
+            label={
+              <span style={{ background: cellAttrs.backgroundColor ?? '#fff', padding: '0 5px', borderRadius: 2, color: '#222', fontWeight: 600, border: '1px solid #ddd' }}>
+                pintar
+              </span>
+            }
+            title="Cor de fundo da célula"
+          />
+          {showColor && <CellColorPicker editor={editor} onClose={() => setShowColor(false)} />}
+        </div>
+        {sep}
+        <ToolbarButton active={align === 'left'} onClick={() => setAlign('left')} label="⬅" title="Alinhar à esquerda" />
+        <ToolbarButton active={align === 'center'} onClick={() => setAlign('center')} label="↔" title="Centralizar" />
+        <ToolbarButton active={align === 'right'} onClick={() => setAlign('right')} label="➡" title="Alinhar à direita" />
+        {sep}
+        <ToolbarButton active={borders[0] === '0'} onClick={() => toggleBorder(0)} label="▔ top" title="Toggle borda superior" />
+        <ToolbarButton active={borders[1] === '0'} onClick={() => toggleBorder(1)} label="▕ dir" title="Toggle borda direita" />
+        <ToolbarButton active={borders[2] === '0'} onClick={() => toggleBorder(2)} label="▁ btm" title="Toggle borda inferior" />
+        <ToolbarButton active={borders[3] === '0'} onClick={() => toggleBorder(3)} label="▏ esq" title="Toggle borda esquerda" />
+      </div>
+    </div>
+  );
+}
+
 function ImageToolbar({ editor }: { editor: Editor }) {
   const currentPos = (editor.getAttributes('image').position ?? 'center') as ImagePosition;
   const setPos = (p: ImagePosition) => {
@@ -567,6 +655,10 @@ export default function PostEditor({
       Color,
       Highlight.configure({ multicolor: true }),
       PositionedImage.configure({ inline: false, allowBase64: false }),
+      Table.configure({ resizable: true, HTMLAttributes: { class: 'art-table' } }),
+      TableRow,
+      StyledTableHeader,
+      StyledTableCell,
     ],
     content: initialHtml ?? '',
     editorProps: {
@@ -627,6 +719,14 @@ export default function PostEditor({
         shouldShow={({ editor }) => editor.isActive('image')}
       >
         <ImageToolbar editor={editor} />
+      </BubbleMenu>
+      <BubbleMenu
+        editor={editor}
+        shouldShow={({ editor, from, to }) =>
+          from === to && (editor.isActive('tableCell') || editor.isActive('tableHeader'))
+        }
+      >
+        <TableToolbar editor={editor} />
       </BubbleMenu>
       <EditorContent editor={editor} />
     </>
