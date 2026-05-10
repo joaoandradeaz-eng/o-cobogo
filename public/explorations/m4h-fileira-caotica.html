@@ -67,10 +67,11 @@
   <script src="_assets/cobogo-helpers.js"></script>
   <script>
     document.addEventListener('cobogo:ready', () => {
-      // Header fixo: niemeyer (cinza bem escuro) com letras paper
-      applyHeaderColor('niemeyer');
-      // Quadrados um pouco maiores: 14 → 18
-      buildStripeChaos(document.getElementById('stripe'), 18);
+      // Header random (paleta cheia, com contraste calibrado)
+      const headerKey = pickHeaderColor();
+      applyHeaderColor(headerKey);
+      // Quadrados maiores: 14 → 28 (dobro)
+      buildStripeChaos(document.getElementById('stripe'), 28);
     });
   </script>
 </body>
