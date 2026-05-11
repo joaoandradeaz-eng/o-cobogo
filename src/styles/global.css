@@ -74,7 +74,9 @@ img{display:block;max-width:100%}
 .stripe{width:100%;background-color:transparent}
 
 @media (max-width:760px){
-  .tagline-strip{padding:16px 20px 12px;font-size:14px}
+  /* sem parede no mobile — tagline ganha mais espaço como única peça visual antes do conteúdo */
+  .tagline-strip{padding:32px 20px 36px;font-size:16px}
+  .wall-section{display:none}
 }
 
 /* ---------- TAGS de categoria (chips coloridos acima da linha preta) ---------- */
@@ -116,15 +118,10 @@ header.site .top{
   display:flex;align-items:center;justify-content:space-between;
   gap:24px;padding:18px 40px;
 }
-header.site .brand{display:flex;align-items:center;gap:14px}
-header.site .brand img{height:56px;display:block}
-/* mostra só o ícone (esquerda da logo) */
-header.site .brand-icon{
-  width:49px;object-fit:cover;object-position:left center;
-}
-/* mostra só o texto (direita da logo) */
-header.site .brand-text{
-  width:115px;object-fit:cover;object-position:right center;
+header.site .brand{
+  font-family:var(--serif);font-weight:700;
+  font-size:22px;letter-spacing:-.01em;
+  color:#fff;text-decoration:none;
 }
 header.site .rt{
   display:flex;gap:28px;
@@ -135,12 +132,9 @@ header.site .rt a{color:#fff;padding-bottom:4px;border-bottom:1px solid transpar
 header.site .rt a.is-active{border-bottom-color:var(--terra-tint)}
 header.site .rt a:hover{color:var(--terra-tint)}
 @media (max-width:760px){
-  header.site .top{padding:14px 20px;flex-wrap:wrap;gap:14px}
+  header.site .top{padding:14px 20px}
   header.site .rt{gap:18px;font-size:10px}
-  header.site .brand{gap:10px}
-  header.site .brand img{height:42px}
-  header.site .brand-icon{width:37px}
-  header.site .brand-text{width:86px}
+  header.site .brand{font-size:20px}
 }
 
 /* ---------- footer ---------- */
