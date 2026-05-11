@@ -23,15 +23,7 @@
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    .stripe{ width:100%; background-color: transparent; position:relative; }
-    /* linha branca atravessando os quadrados, edge-to-edge, grossura média */
-    .stripe::before{
-      content:''; position:absolute;
-      top:50%; left:0; right:0;
-      height:3px; background:#fff;
-      transform: translateY(-50%);
-      z-index:2; pointer-events:none;
-    }
+    .stripe{ width:100%; background-color: transparent; }
 
     @media (max-width:760px){
       header.site .top{ padding:14px 20px; grid-template-columns:1fr auto; gap:12px; }
@@ -87,8 +79,8 @@
       // Header random (paleta cheia, com contraste calibrado)
       const headerKey = pickHeaderColor();
       applyHeaderColor(headerKey);
-      // 18px, último tile fica cortado pela direita (sem gap branco no fim)
-      buildStripeChaos(document.getElementById('stripe'), 18);
+      // Parede mono: só Grade, só concreto, 7 linhas, 36px (dobro do último teste)
+      buildWallMono(document.getElementById('stripe'), 'grade', PALETTE.concreto, 7, 36);
     });
   </script>
 </body>
