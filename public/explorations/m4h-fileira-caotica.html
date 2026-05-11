@@ -18,29 +18,29 @@
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    /* Wall section: parede de cobogós + tagline sobreposta */
-    .wall-section{ position:relative; margin-top:54px; }
-    .stripe{ width:100%; background-color: transparent; }
-    .tagline-on-wall{
-      position:absolute; top:50%; left:50%;
-      transform: translate(-50%, -50%);
-      background: var(--paper);
-      padding: 22px 40px;
-      font-family: var(--serif); font-style:normal; font-weight:400;
-      font-size:18px; line-height:1.35;
-      color: var(--ink-2); text-align:center;
-      max-width: 60ch; z-index: 3;
+    /* Tagline acima da parede como título — minimalista */
+    .tagline-strip{
+      max-width: 1280px; margin: 0 auto;
+      padding: 32px 68px 24px;
+      text-align: center;
+      font-family: var(--serif); font-style: italic; font-weight: 400;
+      font-size: 22px; line-height: 1.3;
+      color: var(--ink-3);
     }
-    .tagline-on-wall em{ font-style:italic; color: var(--terra-deep); font-weight:500; }
-    .tagline-on-wall .tagline-eye{
-      width:18px; height:18px; color: var(--ink);
-      display:inline-block; vertical-align:middle;
-      margin-right:8px; margin-top:-2px;
+    .tagline-strip em{ font-style: italic; color: var(--terra-deep); font-weight: 500; }
+    .tagline-strip .tagline-eye{
+      width: 20px; height: 20px; color: var(--ink-2);
+      display: inline-block; vertical-align: middle;
+      margin-right: 8px; margin-top: -3px;
     }
 
+    /* Wall section: parede de cobogós com sombra do Congresso + sol atrás */
+    .wall-section{ position: relative; }
+    .stripe{ width: 100%; background-color: transparent; }
+
     @media (max-width:760px){
-      header.site .top{ padding:14px 20px; grid-template-columns:auto auto; gap:12px; }
-      .tagline-on-wall{ padding:16px 24px; font-size:15px; max-width:85%; }
+      header.site .top{ padding:14px 20px; gap:12px; }
+      .tagline-strip{ padding: 20px 20px 16px; font-size: 17px; }
     }
   </style>
 </head>
@@ -55,15 +55,16 @@
     </div>
   </header>
 
+  <div class="tagline-strip">
+    <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
+      <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
+    </svg>
+    Ensaios de um <em>não-candango</em> no Planalto.
+  </div>
+
   <section class="wall-section">
     <div class="stripe" id="stripe" aria-hidden="true"></div>
-    <div class="tagline-on-wall">
-      <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
-        <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
-        <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
-      </svg>
-      Ensaios de um <em>não-candango</em> no Planalto.
-    </div>
   </section>
 
   <section class="preview-hero" style="padding-top: 48px">
@@ -97,7 +98,8 @@
       const stripe = document.getElementById('stripe');
       const TILE = 36;
       const ROWS = 7;
-      const NAVY = '#2B3F6E';
+      const DARK = '#1A1A1A';     // niemeyer — cinza bem escuro
+      const SUN  = '#E07A3B';     // laranja de fim de tarde
 
       // Camada 1 (topo): Grade cobogó em concreto, tileado
       const symbol = document.getElementById('cobogo-grade');
@@ -106,12 +108,13 @@
       const gradeSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${gradeInner}</svg>`;
       const gradeUri = `data:image/svg+xml;utf8,${encodeURIComponent(gradeSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
 
-      // Camada 2 (atrás): Sombra do Congresso Nacional em navy
+      // Camada 2 (atrás): Congresso em cinza escuro + sol de fim de tarde
+      // - Sol laranja (atrás de tudo)
       // - Plataforma horizontal (base longa)
-      // - Câmara dos Deputados (bowl/cuia opens up) — esquerda
+      // - Senado Federal (bola/dome convexo) — ESQUERDA
       // - Duas torres gêmeas — centro
-      // - Senado Federal (dome convexo) — direita
-      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><g fill='${NAVY}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 L 180 170 Q 255 290 330 170 L 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 A 75 60 0 0 1 820 240 Z'/></g></svg>`;
+      // - Câmara dos Deputados (bowl raso, mais estrutura) — DIREITA
+      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><circle cx='550' cy='180' r='85' fill='${SUN}'/><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
       const congressUri = `data:image/svg+xml;utf8,${encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
 
       // Empilhamento: Grade no topo (tileado), Congresso atrás (full stretched)
