@@ -1,73 +1,70 @@
 ---
 /**
- * Header padrão de toda página: tagline ("Filtrar a luz...") + parede de cobogó.
- * Inclui as symbol defs SVG + script de randomização client-side
- * (a cada page load, 5 tiles ganham cor aleatória e o olho cai dentro do tile cinza).
+ * Page intro: tagline-strip + parede de cobogós Grade com sombra do
+ * Congresso Nacional vista através dos furos.
+ *
+ * Tagline (serif 17px cinza-chumbo) com olho azul royal (almond + pingo
+ * branco) sentado acima da parede como subtítulo.
+ *
+ * Parede: bg-image em duas camadas — Grade tileado em cinza claro #cdcfd6
+ * por cima, silhueta do Congresso em niemeyer #1A1A1A atrás. Tiles 44px
+ * em 7 linhas no desktop, 36px em 5 linhas no mobile.
  */
-const totalTiles = 72;
 ---
 
-<!-- TAGLINE -->
-<section class="tagline">
-  <p>Ensaios de um não-candango no <em>Planalto</em>.</p>
-</section>
+<!-- Tagline strip acima da parede -->
+<div class="tagline-strip">
+  <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="#4169E1"/>
+    <circle cx="50" cy="50" r="14" fill="#FFFFFF"/>
+  </svg>
+  Ensaios de um <em>não-candango</em> no Planalto.
+</div>
 
-<!-- Symbol defs SVG (cobogo-tile + eye-almond) — usados por <use> abaixo -->
+<!-- Symbol def do Grade cobogó (inline, usado pelo script abaixo via getElementById) -->
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="cobogo-tile" viewBox="0 0 240 240">
-    <path fill="currentColor" fill-rule="evenodd" d="
-      M 18 0 H 222 A 18 18 0 0 1 240 18 V 222 A 18 18 0 0 1 222 240 H 18 A 18 18 0 0 1 0 222 V 18 A 18 18 0 0 1 18 0 Z
-      M 38 26 H 202 A 12 12 0 0 1 214 38 V 202 A 12 12 0 0 1 202 214 H 38 A 12 12 0 0 1 26 202 V 38 A 12 12 0 0 1 38 26 Z
-    "/>
-    <path fill="currentColor" d="M 26 26 L 114 26 A 88 88 0 0 1 26 114 Z"/>
-    <path fill="currentColor" d="M 214 26 L 126 26 A 88 88 0 0 0 214 114 Z"/>
-    <path fill="currentColor" d="M 214 214 L 126 214 A 88 88 0 0 1 214 126 Z"/>
-    <path fill="currentColor" d="M 26 214 L 114 214 A 88 88 0 0 0 26 126 Z"/>
-  </symbol>
-
-  <symbol id="eye-almond" viewBox="0 0 240 240">
-    <path d="M 70 120 Q 120 50 170 120 Q 120 190 70 120 Z"
-          fill="#f9f9f6" stroke="#000" stroke-width="3" stroke-linejoin="miter"/>
-    <circle cx="120" cy="120" r="28" fill="#1E3A8A"/>
-    <circle cx="120" cy="120" r="11" fill="#000"/>
-    <circle cx="116" cy="116" r="4" fill="#f9f9f6"/>
+  <symbol id="cobogo-grade" viewBox="0 0 177 177" preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(0,177) scale(0.1,-0.1)" fill-rule="evenodd">
+      <path fill="currentColor" fill-rule="evenodd" d="M10 885 l0 -885 880 0 880 0 0 885 0 885 -880 0 -880 0 0 -885z m400 610 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -130 0 -130 0 0 125 0 125 130 0 130 0 0 -125z m400 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m-1220 -410 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -130 0 -130 0 0 125 0 125 130 0 130 0 0 -125z m400 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m-1220 -405 l0 -130 -125 0 -125 0 0 130 0 130 125 0 125 0 0 -130z m408 3 l-3 -128 -125 0 -125 0 -3 114 c-1 63 0 121 2 128 4 10 37 13 131 13 l126 0 -3 -127z m402 -3 l0 -130 -125 0 -125 0 0 130 0 130 125 0 125 0 0 -130z m410 0 l0 -130 -125 0 -125 0 0 130 0 130 125 0 125 0 0 -130z m-1220 -405 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -130 0 -130 0 0 125 0 125 130 0 130 0 0 -125z m400 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z m410 0 l0 -125 -125 0 -125 0 0 125 0 125 125 0 125 0 0 -125z"/>
+    </g>
   </symbol>
 </svg>
 
-<section class="cobogo-wall" aria-hidden="true">
-  <div class="cobogo-grid">
-    {Array.from({length: totalTiles}).map(() => (
-      <svg class="cobogo-cell" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-        <use href="#cobogo-tile"/>
-      </svg>
-    ))}
-  </div>
+<section class="wall-section">
+  <div class="stripe" id="stripe" aria-hidden="true"></div>
 </section>
 
 <script is:inline>
-  (function () {
-    const tiles = document.querySelectorAll('.cobogo-cell');
-    if (tiles.length < 6) return;
+  (function() {
+    const stripe = document.getElementById('stripe');
+    if (!stripe) return;
 
-    const colors = ['yellow', 'red', 'green', 'orange', 'gray'];
-    const indices = Array.from({ length: tiles.length }, (_, i) => i);
+    const isMobile = window.innerWidth < 760;
+    const TILE = isMobile ? 36 : 44;
+    const ROWS = isMobile ? 5 : 7;
+    const DARK = '#1A1A1A';      // niemeyer (cinza bem escuro)
+    const TILE_COLOR = '#cdcfd6'; // cinza-frio claro
 
-    // Fisher–Yates shuffle
-    for (let i = indices.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [indices[i], indices[j]] = [indices[j], indices[i]];
-    }
+    // Camada 1 (topo): Grade cobogó em cinza claro, tileado
+    const symbol = document.getElementById('cobogo-grade');
+    if (!symbol) return;
+    const viewBox = symbol.getAttribute('viewBox') || '0 0 177 177';
+    const gradeInner = symbol.innerHTML.replace(/currentColor/g, TILE_COLOR);
+    const gradeSvg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" + viewBox + "'>" + gradeInner + "</svg>";
+    const gradeUri = "data:image/svg+xml;utf8," + encodeURIComponent(gradeSvg).replace(/'/g, '%27').replace(/"/g, '%22');
 
-    // 5 primeiros índices recebem cor
-    colors.forEach(function (color, idx) {
-      tiles[indices[idx]].classList.add('cobogo-cell--' + color);
-    });
+    // Camada 2 (atrás): silhueta do Congresso Nacional
+    // - Plataforma horizontal (base longa)
+    // - Senado Federal (dome convexo) — ESQUERDA
+    // - Duas torres gêmeas — centro
+    // - Câmara dos Deputados (bowl raso, mais estrutura) — DIREITA
+    const congressSvg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><g fill='" + DARK + "'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>";
+    const congressUri = "data:image/svg+xml;utf8," + encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22');
 
-    // olho vai DENTRO do tile cinza
-    const grayIdx = colors.indexOf('gray');
-    const eyeTile = tiles[indices[grayIdx]];
-    const useEl = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    useEl.setAttribute('href', '#eye-almond');
-    eyeTile.appendChild(useEl);
+    stripe.style.backgroundImage = 'url("' + gradeUri + '"), url("' + congressUri + '")';
+    stripe.style.backgroundSize = TILE + 'px ' + TILE + 'px, 100% 100%';
+    stripe.style.backgroundRepeat = 'repeat, no-repeat';
+    stripe.style.backgroundPosition = '0 0, center center';
+    stripe.style.height = (ROWS * TILE) + 'px';
   })();
 </script>
