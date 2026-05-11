@@ -18,16 +18,16 @@
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    /* Tagline acima da parede como título — minimalista */
+    /* Tagline acima da parede — sem itálico, tudo cinza, sempre */
     .tagline-strip{
       max-width: 1280px; margin: 0 auto;
       padding: 32px 68px 24px;
       text-align: center;
-      font-family: var(--serif); font-style: italic; font-weight: 400;
+      font-family: var(--serif); font-style: normal; font-weight: 400;
       font-size: 22px; line-height: 1.3;
       color: var(--ink-3);
     }
-    .tagline-strip em{ font-style: italic; color: var(--terra-deep); font-weight: 500; }
+    .tagline-strip em{ font-style: normal; color: inherit; font-weight: 400; }
     .tagline-strip .tagline-eye{
       width: 20px; height: 20px; color: var(--ink-2);
       display: inline-block; vertical-align: middle;
@@ -58,7 +58,7 @@
   <div class="tagline-strip">
     <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
       <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
-      <circle cx="50" cy="50" r="14" style="fill: var(--head-pupil, #1E3A8A)"/>
+      <circle cx="50" cy="50" r="14" fill="#2B3F6E"/>
     </svg>
     Ensaios de um <em>não-candango</em> no Planalto.
   </div>
