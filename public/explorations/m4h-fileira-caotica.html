@@ -76,11 +76,35 @@
   <script src="_assets/cobogo-helpers.js?v=5"></script>
   <script>
     document.addEventListener('cobogo:ready', () => {
-      // Header random (paleta cheia, com contraste calibrado)
-      const headerKey = pickHeaderColor();
-      applyHeaderColor(headerKey);
-      // Parede mono: só Grade, só concreto, 7 linhas, 36px (dobro do último teste)
-      buildWallMono(document.getElementById('stripe'), 'grade', PALETTE.concreto, 7, 36);
+      // Header sempre Brasília navy
+      applyHeaderColor('brasilia');
+
+      const stripe = document.getElementById('stripe');
+      const TILE = 36;
+      const ROWS = 7;
+      const NAVY = '#2B3F6E';
+
+      // Camada 1 (topo): Grade cobogó em concreto, tileado
+      const symbol = document.getElementById('cobogo-grade');
+      const viewBox = symbol.getAttribute('viewBox') || '0 0 100 100';
+      const gradeInner = symbol.innerHTML.replace(/currentColor/g, PALETTE.concreto);
+      const gradeSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${gradeInner}</svg>`;
+      const gradeUri = `data:image/svg+xml;utf8,${encodeURIComponent(gradeSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
+
+      // Camada 2 (atrás): Sombra do Congresso Nacional em navy
+      // - Plataforma horizontal (base longa)
+      // - Câmara dos Deputados (bowl/cuia opens up) — esquerda
+      // - Duas torres gêmeas — centro
+      // - Senado Federal (dome convexo) — direita
+      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><g fill='${NAVY}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 L 180 170 Q 255 290 330 170 L 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 A 75 60 0 0 1 820 240 Z'/></g></svg>`;
+      const congressUri = `data:image/svg+xml;utf8,${encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
+
+      // Empilhamento: Grade no topo (tileado), Congresso atrás (full stretched)
+      stripe.style.backgroundImage = `url("${gradeUri}"), url("${congressUri}")`;
+      stripe.style.backgroundSize = `${TILE}px ${TILE}px, 100% 100%`;
+      stripe.style.backgroundRepeat = 'repeat, no-repeat';
+      stripe.style.backgroundPosition = '0 0, center center';
+      stripe.style.height = `${ROWS * TILE}px`;
     });
   </script>
 </body>
