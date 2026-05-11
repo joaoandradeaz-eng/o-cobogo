@@ -87,8 +87,10 @@
       applyHeaderColor('brasilia');
 
       const stripe = document.getElementById('stripe');
-      const TILE = 44;
-      const ROWS = 7;
+      // No mobile a figura fica achatada: menos linhas + tile menor
+      const isMobile = window.innerWidth < 760;
+      const TILE = isMobile ? 32 : 44;
+      const ROWS = isMobile ? 4 : 7;
       const DARK = '#1A1A1A';      // niemeyer — cinza bem escuro
       const TILE_COLOR = '#cdcfd6'; // cinza-frio pros cobogós Grade
 
