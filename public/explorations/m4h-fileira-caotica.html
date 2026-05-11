@@ -114,7 +114,7 @@
       // - Senado Federal (bola/dome convexo) — ESQUERDA
       // - Duas torres gêmeas — centro
       // - Câmara dos Deputados (bowl raso, mais estrutura) — DIREITA
-      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><circle cx='550' cy='180' r='85' fill='${SUN}'/><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
+      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><circle cx='550' cy='180' r='42' fill='${SUN}'/><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
       const congressUri = `data:image/svg+xml;utf8,${encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
 
       // Empilhamento: Grade no topo (tileado), Congresso atrás (full stretched)
