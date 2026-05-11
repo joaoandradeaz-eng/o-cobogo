@@ -2,6 +2,18 @@
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
+import { getCollection } from 'astro:content';
+
+// Tags carregadas da collection — cores e nomes resolvidos dinamicamente
+const allTags = await getCollection('tags');
+const tagsBySlug = new Map(allTags.map((t) => [t.id, t.data]));
+function tagStyle(slug: string): string {
+  const t = tagsBySlug.get(slug);
+  return t ? `background:${t.color};color:${t.textColor}` : '';
+}
+function tagLabel(slug: string): string {
+  return tagsBySlug.get(slug)?.name ?? slug;
+}
 ---
 <BaseLayout title="O Cobogó" active="home" screenLabel="Home">
 
@@ -11,7 +23,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
       <!-- HERO c12 -->
       <div class="c12 hero">
         <article class="card">
-          <div class="tags"><span class="tag" data-cat="ensaio">Ensaio</span></div>
+          <div class="tags"><span class="tag" style={tagStyle('ensaio')}>{tagLabel('ensaio')}</span></div>
           <div class="rule"></div>
           <h2><a href="/a-varanda-como-teoria-politica">A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></a></h2>
           <p class="dek">Quando a fachada brasileira deixou de respirar — cobogó virou ornamento, varanda virou metragem desperdiçada — perdemos mais que um vocabulário arquitetônico. Este ensaio lê a porosidade da casa como tese política sobre o que uma cidade decide deixar passar…</p>
@@ -30,7 +42,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
       <!-- 2 cards lado a lado, alinhados via subgrid -->
       <div class="pair">
         <article class="card">
-          <div class="tags"><span class="tag" data-cat="ensaio">Ensaio</span></div>
+          <div class="tags"><span class="tag" style={tagStyle('ensaio')}>{tagLabel('ensaio')}</span></div>
           <div class="rule"></div>
           <h2><a href="#">A meritocracia como ficção fundadora: três notas de leitura</a></h2>
           <p class="dek">Em três livros publicados nos últimos dezoito meses, três autores brasileiros tentam responder à mesma pergunta — por que ainda acreditamos que o mérito explica alguma coisa? Este ensaio lê os três em diálogo…</p>
@@ -45,7 +57,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
           <figure class="ph-c"><span class="ph">retrato editorial</span></figure>
         </article>
         <article class="card">
-          <div class="tags"><span class="tag" data-cat="critica">Crítica</span></div>
+          <div class="tags"><span class="tag" style={tagStyle('critica')}>{tagLabel('critica')}</span></div>
           <div class="rule"></div>
           <h2><a href="#">Rosa, hoje: o que sobrou do <em>sertão</em> na imaginação política</a></h2>
           <p class="dek">Releitura de <em>Grande Sertão: Veredas</em> a partir de uma pergunta deslocada — não o que o sertão era, mas o que a palavra ainda consegue argumentar quando o lugar empírico já não responde por ela…</p>
@@ -64,7 +76,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
       <!-- 1 grande à esquerda + 3 empilhadas à direita -->
       <div class="row-1plus3">
         <div class="big">
-          <div class="tags"><span class="tag" data-cat="reportagem">Reportagem</span></div>
+          <div class="tags"><span class="tag" style={tagStyle('reportagem')}>{tagLabel('reportagem')}</span></div>
           <div class="rule"></div>
           <article class="card">
             <h2><a href="#">Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></a></h2>
@@ -153,12 +165,7 @@ import AuthorInsert from '../components/AuthorInsert.astro';
     border-radius:2px;line-height:1;
     white-space:nowrap;
   }
-  .tag[data-cat="ensaio"]{background:var(--terra-tint);color:var(--terra-deep)}
-  .tag[data-cat="reportagem"]{background:var(--ink);color:var(--paper)}
-  .tag[data-cat="critica"]{background:var(--terra-deep);color:var(--paper)}
-  .tag[data-cat="entrevista"]{background:#D9DCD0;color:#3F4838}
-  .tag[data-cat="memoria"]{background:#E8D7C5;color:#5A3922}
-  .tag[data-cat="cidade-casa"]{background:#D4C9B4;color:#3F2E18}
+  /* cores das tags vêm via style inline da collection (sem hardcode) */
 
   /* spacer invisível: reserva a mesma altura das .tags pra manter a
      linha preta da .stack alinhada com a da .big no row-1plus3 */

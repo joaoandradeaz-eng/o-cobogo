@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleEditor from '../../components/ArticleEditor';
 import { getSession, isAuthorized } from '../../lib/session';
@@ -15,7 +16,22 @@ const cloudinary = {
   cloudName: import.meta.env.CLOUDINARY_CLOUD_NAME ?? '',
   uploadPreset: import.meta.env.CLOUDINARY_UPLOAD_PRESET ?? '',
 };
+
+// Tags ordenadas pra mostrar no editor (lê da collection — refresca a cada deploy)
+const tagsCollection = await getCollection('tags');
+tagsCollection.sort((a, b) => {
+  const oa = a.data.order ?? 100;
+  const ob = b.data.order ?? 100;
+  if (oa !== ob) return oa - ob;
+  return a.data.name.localeCompare(b.data.name);
+});
+const tags = tagsCollection.map((t) => ({
+  value: t.id,
+  label: t.data.name,
+  color: t.data.color,
+  textColor: t.data.textColor,
+}));
 ---
 <BaseLayout title="Novo post · Admin · O Cobogó" active="home" screenLabel="Editor">
-  <ArticleEditor client:only="react" authorName={authorName} cloudinary={cloudinary} />
+  <ArticleEditor client:only="react" authorName={authorName} cloudinary={cloudinary} tags={tags} />
 </BaseLayout>

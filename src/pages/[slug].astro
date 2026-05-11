@@ -17,15 +17,17 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 const { data } = article;
 
-// labels visíveis das categorias (chave em kebab-case → label em português)
-const categoryLabels: Record<string, string> = {
-  'ensaio': 'Ensaio',
-  'reportagem': 'Reportagem',
-  'critica': 'Crítica',
-  'entrevista': 'Entrevista',
-  'memoria': 'Memória',
-  'cidade-casa': 'Cidade & Casa',
-};
+// Carrega todas as tags da collection — usado pra resolver labels e cores dinamicamente
+const allTags = await getCollection('tags');
+const tagsBySlug = new Map(allTags.map((t) => [t.id, t.data]));
+
+type TagInfo = { name: string; color: string; textColor: string };
+function getTagInfo(slug: string): TagInfo {
+  const t = tagsBySlug.get(slug);
+  if (t) return { name: t.name, color: t.color, textColor: t.textColor };
+  // Fallback se a tag foi deletada mas o artigo ainda a referencia
+  return { name: slug, color: '#eee', textColor: '#666' };
+}
 
 // converte *texto* (markdown emphasis) em <em>texto</em>; usado em campos de frontmatter
 function parseInlineMd(text: string): string {
@@ -46,9 +48,12 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
   <!-- ARTICLE HEADER -->
   <header class="art-hd">
     <div class="tags">
-      {data.categories.map((cat) => (
-        <span class="tag" data-cat={cat}>{categoryLabels[cat] ?? cat}</span>
-      ))}
+      {data.categories.map((cat) => {
+        const ti = getTagInfo(cat);
+        return (
+          <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>{ti.name}</span>
+        );
+      })}
     </div>
     <div class="rule"></div>
     <h1 set:html={titleHtml}></h1>

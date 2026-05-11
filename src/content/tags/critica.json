@@ -1,0 +1,9 @@
+{
+  "name": "Crítica",
+  "color": "#8C3F12",
+  "textColor": "#f9f9f6",
+  "parent": null,
+  "description": "Releitura de obras e fenômenos culturais.",
+  "piece": "circulos",
+  "order": 3
+}

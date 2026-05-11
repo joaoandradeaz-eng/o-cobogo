@@ -4,14 +4,7 @@ import PostEditor from './PostEditor';
 import { TableGridPicker } from './TableExtensions';
 import { ChartModal } from './ChartExtension';
 
-const CATEGORIES = [
-  { value: 'ensaio', label: 'Ensaio' },
-  { value: 'reportagem', label: 'Reportagem' },
-  { value: 'critica', label: 'Crítica' },
-  { value: 'entrevista', label: 'Entrevista' },
-  { value: 'memoria', label: 'Memória' },
-  { value: 'cidade-casa', label: 'Cidade & Casa' },
-] as const;
+type TagOption = { value: string; label: string; color?: string; textColor?: string };
 
 const STORAGE_KEY = 'ocobogo_draft_v3';
 
@@ -31,6 +24,8 @@ function formatDateBR(iso: string): string {
 type Props = {
   authorName?: string;
   cloudinary?: { cloudName: string; uploadPreset: string };
+  /** Tags disponíveis (vêm do server, lidas de src/content/tags/) */
+  tags?: TagOption[];
 };
 
 type Snapshot = {
@@ -101,7 +96,7 @@ function AutoTextarea({
   );
 }
 
-export default function ArticleEditor({ authorName = 'João Andrade', cloudinary }: Props) {
+export default function ArticleEditor({ authorName = 'João Andrade', cloudinary, tags = [] }: Props) {
   const [title, setTitle] = useState('');
   const [dek, setDek] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
@@ -560,17 +555,29 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
       {/* ========= ARTICLE HEADER ========= */}
       <header className="art-hd">
         <div className="ed-tags tags">
-          {CATEGORIES.map((cat) => (
-            <span
-              key={cat.value}
-              className={`tag ${categories.includes(cat.value) ? 'on' : ''}`}
-              data-cat={cat.value}
-              onClick={() => toggleCategory(cat.value)}
-              title={categories.includes(cat.value) ? 'Remover categoria' : 'Adicionar categoria'}
-            >
-              {cat.label}
+          {tags.length === 0 ? (
+            <span style={{ fontSize: 12, color: '#888', fontFamily: 'ui-monospace, monospace' }}>
+              nenhuma tag definida ainda. crie em <a href="/admin/tags/novo" style={{ color: 'var(--terra)' }}>/admin/tags/novo</a>
             </span>
-          ))}
+          ) : (
+            tags.map((cat) => {
+              const isOn = categories.includes(cat.value);
+              const styleAttr = isOn && cat.color
+                ? { background: cat.color, color: cat.textColor ?? '#000' }
+                : undefined;
+              return (
+                <span
+                  key={cat.value}
+                  className={`tag ${isOn ? 'on' : ''}`}
+                  style={styleAttr}
+                  onClick={() => toggleCategory(cat.value)}
+                  title={isOn ? 'Remover categoria' : 'Adicionar categoria'}
+                >
+                  {cat.label}
+                </span>
+              );
+            })
+          )}
         </div>
         <div className="rule"></div>
 

@@ -94,12 +94,7 @@ img{display:block;max-width:100%}
   border-radius:2px;line-height:1;
   white-space:nowrap;
 }
-.tag[data-cat="ensaio"]{background:var(--terra-tint);color:var(--terra-deep)}
-.tag[data-cat="reportagem"]{background:var(--ink);color:var(--paper)}
-.tag[data-cat="critica"]{background:var(--terra-deep);color:var(--paper)}
-.tag[data-cat="entrevista"]{background:#D9DCD0;color:#3F4838}
-.tag[data-cat="memoria"]{background:#E8D7C5;color:#5A3922}
-.tag[data-cat="cidade-casa"]{background:#D4C9B4;color:#3F2E18}
+/* cores das tags vêm via style inline da collection (definido em src/content/tags/*.json) */
 
 /* ---------- by-author: mini avatar redondo (24px) inline com o nome ---------- */
 .by-author{

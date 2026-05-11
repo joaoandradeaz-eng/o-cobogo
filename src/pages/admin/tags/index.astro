@@ -1,0 +1,242 @@
+---
+import { getCollection } from 'astro:content';
+import { getSession, isAuthorized } from '../../../lib/session';
+import CobogoSymbols from '../../../components/CobogoSymbols.astro';
+
+const session = await getSession(Astro.cookies);
+if (!isAuthorized(session)) {
+  return Astro.redirect('/api/auth/login', 302);
+}
+
+const tags = await getCollection('tags');
+const articles = await getCollection('articles');
+
+// Contagem de artigos por tag
+const articleCount = new Map<string, number>();
+for (const a of articles) {
+  for (const slug of a.data.categories) {
+    articleCount.set(slug, (articleCount.get(slug) ?? 0) + 1);
+  }
+}
+
+// Sort: por ordem, depois nome
+tags.sort((a, b) => {
+  const oa = a.data.order ?? 100;
+  const ob = b.data.order ?? 100;
+  if (oa !== ob) return oa - ob;
+  return a.data.name.localeCompare(b.data.name);
+});
+
+// Agrupa por parent (tags de topo primeiro, depois filhos sob seus pais)
+const topLevel = tags.filter((t) => !t.data.parent);
+const childrenByParent = new Map<string, typeof tags>();
+for (const t of tags) {
+  if (t.data.parent) {
+    const list = childrenByParent.get(t.data.parent) ?? [];
+    list.push(t);
+    childrenByParent.set(t.data.parent, list);
+  }
+}
+
+// "Órfãs": tags que apontam pra um parent que não existe mais
+const allSlugs = new Set(tags.map((t) => t.id));
+const orphans = tags.filter((t) => t.data.parent && !allSlugs.has(t.data.parent));
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tags · Admin · O Cobogó</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,sans-serif;max-width:920px;margin:0 auto;padding:40px 24px;line-height:1.5;color:#111}
+    header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;gap:16px}
+    .brand{display:flex;align-items:baseline;gap:12px}
+    .brand h1{font-size:24px;margin:0;font-weight:700}
+    .brand .sub{color:#888;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .breadcrumb a{color:#888;text-decoration:none;font-size:13px}
+    .breadcrumb a:hover{color:#111}
+
+    .actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:12px}
+    .actions h2{font-size:18px;margin:0;color:#333}
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:10px 16px;background:#d88854;color:#fff;
+      text-decoration:none;border-radius:6px;font-size:14px;font-weight:600;
+    }
+    .btn-primary:hover{background:#c47842}
+
+    .tag-list{border:1px solid #e5e5e5;border-radius:8px;overflow:hidden}
+    .tag-row{
+      display:grid;grid-template-columns:auto 32px 1fr auto auto auto;
+      gap:14px;align-items:center;
+      padding:14px 18px;border-top:1px solid #f0f0f0;
+    }
+    .tag-row:first-child{border-top:none}
+    .tag-row.is-child{padding-left:48px;background:#fafafa}
+    .tag-chip{
+      display:inline-block;padding:5px 10px;border-radius:2px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .tag-piece{width:28px;height:28px;display:block}
+    .tag-piece svg{width:100%;height:100%;color:#3A322A}
+    .tag-meta{font-size:13px;color:#666}
+    .tag-meta .slug{font-family:ui-monospace,monospace;font-size:11px;color:#999}
+    .tag-count{font-size:12px;color:#888;font-family:ui-monospace,monospace;white-space:nowrap}
+    .tag-actions{display:flex;gap:6px}
+    .tag-actions a, .tag-actions button{
+      padding:5px 10px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      border-radius:3px;text-decoration:none;border:1px solid #ddd;cursor:pointer;background:#fff;
+      font-family:inherit;color:#555;
+    }
+    .tag-actions a:hover, .tag-actions button:hover{border-color:#888;color:#111}
+    .tag-actions button.del:hover{border-color:#b00;color:#b00}
+
+    .empty{padding:48px 20px;text-align:center;color:#888;border:1px dashed #ddd;border-radius:8px}
+    .legend{margin-top:32px;font-size:12px;color:#888;line-height:1.6}
+  </style>
+</head>
+<body>
+  <CobogoSymbols />
+
+  <header class="top">
+    <div class="brand">
+      <h1>Tags</h1>
+      <span class="sub">/admin/tags</span>
+    </div>
+    <div class="breadcrumb">
+      <a href="/admin">← dashboard</a>
+    </div>
+  </header>
+
+  <div class="actions">
+    <h2>{tags.length} tags · {topLevel.length} de topo · {tags.length - topLevel.length} subtags</h2>
+    <a class="btn-primary" href="/admin/tags/novo">+ Nova tag</a>
+  </div>
+
+  {tags.length === 0 ? (
+    <div class="empty">
+      <p><strong>Sem tags ainda.</strong></p>
+      <p style="font-size:13px">Clica em "+ Nova tag" pra criar a primeira.</p>
+    </div>
+  ) : (
+    <div class="tag-list">
+      {topLevel.map((tag) => {
+        const children = childrenByParent.get(tag.id) ?? [];
+        return (
+          <>
+            <div class="tag-row">
+              <span class="tag-chip" style={`background:${tag.data.color};color:${tag.data.textColor}`}>
+                {tag.data.name}
+              </span>
+              <span class="tag-piece">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                  <use href={`#cobogo-${tag.data.piece}`} width="100" height="100" />
+                </svg>
+              </span>
+              <span class="tag-meta">
+                <span class="slug">{tag.id}</span>
+                {tag.data.description && <span> · {tag.data.description.slice(0, 60)}{tag.data.description.length > 60 ? '…' : ''}</span>}
+              </span>
+              <span class="tag-count">{articleCount.get(tag.id) ?? 0} artigo{articleCount.get(tag.id) === 1 ? '' : 's'}</span>
+              <span class="tag-count">ord {tag.data.order ?? 100}</span>
+              <span class="tag-actions">
+                <a href={`/admin/tags/edit/${tag.id}`}>editar</a>
+                <button class="del" data-slug={tag.id} data-name={tag.data.name}>× deletar</button>
+              </span>
+            </div>
+            {children.map((child) => (
+              <div class="tag-row is-child">
+                <span class="tag-chip" style={`background:${child.data.color};color:${child.data.textColor}`}>
+                  ↳ {child.data.name}
+                </span>
+                <span class="tag-piece">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                    <use href={`#cobogo-${child.data.piece}`} width="100" height="100" />
+                  </svg>
+                </span>
+                <span class="tag-meta">
+                  <span class="slug">{child.id}</span>
+                  {child.data.description && <span> · {child.data.description.slice(0, 60)}{child.data.description.length > 60 ? '…' : ''}</span>}
+                </span>
+                <span class="tag-count">{articleCount.get(child.id) ?? 0} artigo{articleCount.get(child.id) === 1 ? '' : 's'}</span>
+                <span class="tag-count">ord {child.data.order ?? 100}</span>
+                <span class="tag-actions">
+                  <a href={`/admin/tags/edit/${child.id}`}>editar</a>
+                  <button class="del" data-slug={child.id} data-name={child.data.name}>× deletar</button>
+                </span>
+              </div>
+            ))}
+          </>
+        );
+      })}
+      {orphans.length > 0 && (
+        <>
+          <div style="padding:10px 18px;font-size:11px;color:#b87b22;background:#fef3c7;border-top:1px solid #f0f0f0;text-transform:uppercase;letter-spacing:.1em;font-weight:600">
+            Órfãs (pai inexistente)
+          </div>
+          {orphans.map((tag) => (
+            <div class="tag-row">
+              <span class="tag-chip" style={`background:${tag.data.color};color:${tag.data.textColor}`}>
+                {tag.data.name}
+              </span>
+              <span class="tag-piece">
+                <svg viewBox="0 0 100 100"><use href={`#cobogo-${tag.data.piece}`} width="100" height="100" /></svg>
+              </span>
+              <span class="tag-meta">
+                <span class="slug">{tag.id}</span> · parent inexistente: <code>{tag.data.parent}</code>
+              </span>
+              <span class="tag-count">{articleCount.get(tag.id) ?? 0} artigo{articleCount.get(tag.id) === 1 ? '' : 's'}</span>
+              <span class="tag-count">ord {tag.data.order ?? 100}</span>
+              <span class="tag-actions">
+                <a href={`/admin/tags/edit/${tag.id}`}>editar</a>
+                <button class="del" data-slug={tag.id} data-name={tag.data.name}>× deletar</button>
+              </span>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  )}
+
+  <p class="legend">
+    Hierarquia limitada a 1 nível (pai → filhos). Tags com artigos não podem ser deletadas;
+    se quiser remover, primeiro re-tagueia os artigos.
+  </p>
+
+  <script is:inline>
+    document.querySelectorAll('button.del').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const slug = btn.dataset.slug;
+        const name = btn.dataset.name;
+        if (!slug) return;
+        if (!confirm(`Deletar a tag "${name}"?`)) return;
+        try {
+          const res = await fetch(`/api/tags/delete/${encodeURIComponent(slug)}`, { method: 'POST' });
+          const data = await res.json();
+          if (!res.ok) {
+            if (data.error === 'in_use') {
+              alert(`Não dá pra deletar — ${data.count} artigo(s) usam essa tag:\n\n${data.affected.map(a => '• ' + a.title).join('\n')}\n\nRe-tagueie esses artigos antes de deletar.`);
+              return;
+            }
+            if (data.error === 'has_children') {
+              alert(`Não dá pra deletar — ${data.count} subtag(s) apontam pra essa como pai:\n\n${data.children.map(c => '• ' + c.name).join('\n')}\n\nDelete ou re-parentee as subtags antes.`);
+              return;
+            }
+            alert(`Erro: ${data.error || res.status}`);
+            return;
+          }
+          alert(`Tag "${name}" deletada. Em ~1 min a Vercel rebuilda.`);
+          window.location.reload();
+        } catch (err) {
+          alert('Erro inesperado: ' + (err.message || err));
+        }
+      });
+    });
+  </script>
+</body>
+</html>

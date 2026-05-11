@@ -1,0 +1,9 @@
+{
+  "name": "Reportagem",
+  "color": "#1B1612",
+  "textColor": "#f9f9f6",
+  "parent": null,
+  "description": "Apuração de campo, entrevistas e dados.",
+  "piece": "labirinto",
+  "order": 2
+}

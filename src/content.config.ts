@@ -1,17 +1,15 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-/**
- * Categorias editoriais — espelha as 6 cores de tag definidas em global.css
- * (data-cat="ensaio" etc).
- */
-const categoryEnum = z.enum([
-  'ensaio',
-  'reportagem',
-  'critica',
-  'entrevista',
-  'memoria',
-  'cidade-casa',
+/** As 7 peças cobogó do sistema modernista. Cada tag pode ter uma associada como ícone. */
+const cobogoPieces = z.enum([
+  'grade',
+  'circulos',
+  'labirinto',
+  'flor',
+  'octogonos',
+  'estrelas',
+  'barroca',
 ]);
 
 const articles = defineCollection({
@@ -21,8 +19,8 @@ const articles = defineCollection({
     title: z.string(),
     /** Subtítulo / dek mostrado abaixo do título. */
     dek: z.string(),
-    /** 1+ categorias. A primeira é a principal (cor dominante). */
-    categories: z.array(categoryEnum).min(1),
+    /** 1+ tags (slugs validados dinamicamente pela coleção `tags`). A primeira é a principal. */
+    categories: z.array(z.string()).min(1),
     /** Autor — por enquanto string livre, vira referência quando criarmos coleção de autores. */
     author: z.string().default('João Andrade'),
     /** Data de publicação (formato: YYYY-MM-DD). */
@@ -44,4 +42,25 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { articles };
+/** Tags / categorias editoriais. JSON files em src/content/tags/, gerenciados via /admin/tags. */
+const tags = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/tags' }),
+  schema: z.object({
+    /** Nome de exibição da tag (qualquer string, com acentos). */
+    name: z.string(),
+    /** Cor de fundo da chip (hex). */
+    color: z.string(),
+    /** Cor do texto da chip (hex). */
+    textColor: z.string(),
+    /** Slug da tag-pai (hierarquia de 1 nível). null = tag de topo. */
+    parent: z.string().nullable().optional().default(null),
+    /** Descrição breve da tag — não exibida ainda, mas guardada pra futuro. */
+    description: z.string().optional().default(''),
+    /** Peça cobogó associada como ícone visual da tag (1 das 7 do sistema). */
+    piece: cobogoPieces.optional().default('grade'),
+    /** Ordem de exibição (menor = primeiro). Default 100. */
+    order: z.number().optional().default(100),
+  }),
+});
+
+export const collections = { articles, tags };

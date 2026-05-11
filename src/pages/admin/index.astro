@@ -12,14 +12,14 @@ articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const published = articles.filter((a) => !a.data.draft);
 const drafts = articles.filter((a) => a.data.draft);
 
-const categoryLabels: Record<string, string> = {
-  'ensaio': 'Ensaio',
-  'reportagem': 'Reportagem',
-  'critica': 'Crítica',
-  'entrevista': 'Entrevista',
-  'memoria': 'Memória',
-  'cidade-casa': 'Cidade & Casa',
-};
+const allTags = await getCollection('tags');
+const tagsBySlug = new Map(allTags.map((t) => [t.id, t.data]));
+function tagInfo(slug: string) {
+  const t = tagsBySlug.get(slug);
+  return t
+    ? { name: t.name, color: t.color, textColor: t.textColor }
+    : { name: slug, color: '#eee', textColor: '#666' };
+}
 
 const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 ---
@@ -114,8 +114,11 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
   </header>
 
   <div class="actions">
-    <h2>{articles.length} {articles.length === 1 ? 'artigo' : 'artigos'} <span style="color:#aaa;font-weight:400;font-size:14px">· {published.length} publicado{published.length === 1 ? '' : 's'} · {drafts.length} rascunho{drafts.length === 1 ? '' : 's'}</span></h2>
-    <a class="btn-primary" href="/admin/novo">+ Novo post</a>
+    <h2>{articles.length} {articles.length === 1 ? 'artigo' : 'artigos'} <span style="color:#aaa;font-weight:400;font-size:14px">· {published.length} publicado{published.length === 1 ? '' : 's'} · {drafts.length} rascunho{drafts.length === 1 ? '' : 's'} · {allTags.length} tag{allTags.length === 1 ? '' : 's'}</span></h2>
+    <span style="display:flex;gap:8px">
+      <a href="/admin/tags" style="padding:10px 14px;background:#eee;color:#333;text-decoration:none;border-radius:6px;font-size:14px;font-weight:600">Tags</a>
+      <a class="btn-primary" href="/admin/novo">+ Novo post</a>
+    </span>
   </div>
 
   {articles.length === 0 ? (
@@ -135,7 +138,7 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
                   <h3>{article.data.title}</h3>
                   <p class="dek">{article.data.dek}</p>
                 </div>
-                <span class="cat">{categoryLabels[article.data.categories[0]] ?? article.data.categories[0]}</span>
+                <span class="cat" style={(() => { const ti = tagInfo(article.data.categories[0]); return `background:${ti.color};color:${ti.textColor}`; })()}>{tagInfo(article.data.categories[0]).name}</span>
                 <span class="date">{fmtDate.format(article.data.date)}</span>
                 <span class="badge-draft">Rascunho</span>
               </a>
@@ -154,7 +157,7 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
                   <h3>{article.data.title}</h3>
                   <p class="dek">{article.data.dek}</p>
                 </div>
-                <span class="cat">{categoryLabels[article.data.categories[0]] ?? article.data.categories[0]}</span>
+                <span class="cat" style={(() => { const ti = tagInfo(article.data.categories[0]); return `background:${ti.color};color:${ti.textColor}`; })()}>{tagInfo(article.data.categories[0]).name}</span>
                 <span class="date">{fmtDate.format(article.data.date)}</span>
                 <span class="badge-draft" style="visibility:hidden">·</span>
               </a>

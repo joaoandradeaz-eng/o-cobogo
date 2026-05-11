@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import { getSession, isAuthorized } from '../../../lib/session';
+import CobogoSymbols from '../../../components/CobogoSymbols.astro';
+import TagForm from '../../../components/TagForm';
+
+const session = await getSession(Astro.cookies);
+if (!isAuthorized(session)) {
+  return Astro.redirect('/api/auth/login', 302);
+}
+
+const tags = await getCollection('tags');
+const availableParents = tags.map((t) => ({
+  slug: t.id,
+  name: t.data.name,
+  parent: t.data.parent ?? null,
+}));
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova tag · Admin · O Cobogó</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,sans-serif;max-width:920px;margin:0 auto;padding:40px 24px;line-height:1.5;color:#111}
+    header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;gap:16px}
+    .brand h1{font-size:24px;margin:0;font-weight:700}
+    .breadcrumb a{color:#888;text-decoration:none;font-size:13px}
+    .breadcrumb a:hover{color:#111}
+  </style>
+</head>
+<body>
+  <CobogoSymbols />
+
+  <header class="top">
+    <div class="brand">
+      <h1>Nova tag</h1>
+    </div>
+    <div class="breadcrumb">
+      <a href="/admin/tags">← tags</a>
+    </div>
+  </header>
+
+  <TagForm mode="create" availableParents={availableParents} client:only="react" />
+</body>
+</html>
