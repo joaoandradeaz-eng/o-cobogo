@@ -83,7 +83,7 @@ const orphans = tags.filter((t) => t.data.parent && !allSlugs.has(t.data.parent)
       white-space:nowrap;
     }
     .tag-piece{width:28px;height:28px;display:block}
-    .tag-piece svg{width:100%;height:100%;color:#3A322A}
+    .tag-piece svg{width:100%;height:100%}
     .tag-meta{font-size:13px;color:#666}
     .tag-meta .slug{font-family:ui-monospace,monospace;font-size:11px;color:#999}
     .tag-count{font-size:12px;color:#888;font-family:ui-monospace,monospace;white-space:nowrap}
@@ -133,7 +133,7 @@ const orphans = tags.filter((t) => t.data.parent && !allSlugs.has(t.data.parent)
               <span class="tag-chip" style={`background:${tag.data.color};color:${tag.data.textColor}`}>
                 {tag.data.name}
               </span>
-              <span class="tag-piece">
+              <span class="tag-piece" style={`color:${tag.data.color}`}>
                 <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                   <use href={`#cobogo-${tag.data.piece}`} width="100" height="100" />
                 </svg>
@@ -154,7 +154,7 @@ const orphans = tags.filter((t) => t.data.parent && !allSlugs.has(t.data.parent)
                 <span class="tag-chip" style={`background:${child.data.color};color:${child.data.textColor}`}>
                   ↳ {child.data.name}
                 </span>
-                <span class="tag-piece">
+                <span class="tag-piece" style={`color:${child.data.color}`}>
                   <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                     <use href={`#cobogo-${child.data.piece}`} width="100" height="100" />
                   </svg>
@@ -184,7 +184,7 @@ const orphans = tags.filter((t) => t.data.parent && !allSlugs.has(t.data.parent)
               <span class="tag-chip" style={`background:${tag.data.color};color:${tag.data.textColor}`}>
                 {tag.data.name}
               </span>
-              <span class="tag-piece">
+              <span class="tag-piece" style={`color:${tag.data.color}`}>
                 <svg viewBox="0 0 100 100"><use href={`#cobogo-${tag.data.piece}`} width="100" height="100" /></svg>
               </span>
               <span class="tag-meta">

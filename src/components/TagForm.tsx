@@ -209,7 +209,7 @@ export default function TagForm({ mode, initial, availableParents }: TagFormProp
         .tf-piece-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
         .tf-piece-grid button { aspect-ratio:1; border:2px solid transparent; background:#f5f5f5; border-radius:4px; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center; }
         .tf-piece-grid button.on { border-color:#d88854; background:#fff5ed; }
-        .tf-piece-grid button svg { width:100%; height:100%; color:#3A322A; }
+        .tf-piece-grid button svg { width:100%; height:100%; }
       `}</style>
 
       {error && <div className="tf-error">{error}</div>}
@@ -282,6 +282,7 @@ export default function TagForm({ mode, initial, availableParents }: TagFormProp
                   className={piece === p.value ? 'on' : ''}
                   onClick={() => setPiece(p.value)}
                   title={p.label}
+                  style={{ color }}
                 >
                   <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                     <use href={`#cobogo-${p.value}`} width="100" height="100" />
