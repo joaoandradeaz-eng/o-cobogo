@@ -13,7 +13,7 @@
     header.site .brand{ font-family:var(--serif); font-weight:700; font-size:22px; letter-spacing:-.01em;
       color: var(--head-text); text-decoration:none; }
     header.site .tagline{ font-family:var(--serif); font-style:normal; font-weight:400; font-size:16px;
-      line-height:1.3; color: var(--head-dim); text-align:center; max-width:60ch; justify-self:center; }
+      line-height:1.3; color: var(--head-text); text-align:center; max-width:60ch; justify-self:center; }
     header.site .tagline em{ font-style:normal; color:inherit; font-weight:400; }
     header.site .tagline-eye{
       width:16px; height:16px; color: var(--head-text);
@@ -25,8 +25,8 @@
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    /* Wall section: parede de cobogós com sombra do Congresso + sol atrás */
-    .wall-section{ position: relative; margin-top: 54px; }
+    /* Wall section: parede de cobogós com sombra do Congresso atrás */
+    .wall-section{ position: relative; margin-top: 28px; }
     .stripe{ width: 100%; background-color: transparent; }
 
     @media (max-width:760px){
@@ -41,8 +41,9 @@
       <a class="brand" href="/explorations/">O Cobogó</a>
       <div class="tagline">
         <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
-          <ellipse cx="50" cy="50" rx="39" ry="42" fill="none" stroke="currentColor" stroke-width="12"/>
-          <circle cx="50" cy="50" r="14" fill="#4169E1"/>
+          <!-- almond branco preenchido + bola azul clarinha no meio -->
+          <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="currentColor"/>
+          <circle cx="50" cy="50" r="14" fill="#A8C5E8"/>
         </svg>
         Ensaios de um <em>não-candango</em> no Planalto.
       </div>
@@ -89,29 +90,49 @@
       const TILE = 36;
       const ROWS = 7;
       const DARK = '#1A1A1A';     // niemeyer — cinza bem escuro
-      const SUN  = '#E07A3B';     // laranja de fim de tarde
+      const DIFF_COUNT = 5;       // qtd de cobogós "diferentes" a cada reload
 
-      // Camada 1 (topo): Grade cobogó em concreto, tileado
-      const symbol = document.getElementById('cobogo-grade');
-      const viewBox = symbol.getAttribute('viewBox') || '0 0 100 100';
-      const gradeInner = symbol.innerHTML.replace(/currentColor/g, PALETTE.concreto);
-      const gradeSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${gradeInner}</svg>`;
-      const gradeUri = `data:image/svg+xml;utf8,${encodeURIComponent(gradeSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
-
-      // Camada 2 (atrás): Congresso em cinza escuro + sol de fim de tarde
-      // - Sol laranja (atrás de tudo)
-      // - Plataforma horizontal (base longa)
-      // - Senado Federal (bola/dome convexo) — ESQUERDA
-      // - Duas torres gêmeas — centro
-      // - Câmara dos Deputados (bowl raso, mais estrutura) — DIREITA
-      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><circle cx='550' cy='180' r='42' fill='${SUN}'/><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
+      // Camada de fundo: Congresso em cinza escuro (sem sol agora)
+      const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
       const congressUri = `data:image/svg+xml;utf8,${encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
+      stripe.style.backgroundImage = `url("${congressUri}")`;
+      stripe.style.backgroundSize = '100% 100%';
+      stripe.style.backgroundRepeat = 'no-repeat';
+      stripe.style.backgroundPosition = 'center center';
 
-      // Empilhamento: Grade no topo (tileado), Congresso atrás (full stretched)
-      stripe.style.backgroundImage = `url("${gradeUri}"), url("${congressUri}")`;
-      stripe.style.backgroundSize = `${TILE}px ${TILE}px, 100% 100%`;
-      stripe.style.backgroundRepeat = 'repeat, no-repeat';
-      stripe.style.backgroundPosition = '0 0, center center';
+      // Construção da parede: cells individuais (grade/concreto majoritário +
+      // 5 cells aleatórios com peça e cor diferentes, randomizados a cada reload)
+      const cols = Math.ceil((window.innerWidth + TILE * 4) / TILE);
+      const total = cols * ROWS;
+      const diffIndices = new Set();
+      while (diffIndices.size < DIFF_COUNT && diffIndices.size < total) {
+        diffIndices.add(Math.floor(Math.random() * total));
+      }
+      const OTHER_PIECES = PIECES.filter(p => p !== 'grade');
+      const ACCENT_COLOR_KEYS = Object.keys(PALETTE).filter(k => k !== 'concreto');
+
+      let html = '';
+      for (let r = 0; r < ROWS; r++) {
+        html += `<div style="height:${TILE}px;white-space:nowrap;overflow:hidden;font-size:0;line-height:0">`;
+        for (let c = 0; c < cols; c++) {
+          const idx = r * cols + c;
+          let piece, color;
+          if (diffIndices.has(idx)) {
+            piece = OTHER_PIECES[Math.floor(Math.random() * OTHER_PIECES.length)];
+            color = PALETTE[ACCENT_COLOR_KEYS[Math.floor(Math.random() * ACCENT_COLOR_KEYS.length)]];
+          } else {
+            piece = 'grade';
+            color = PALETTE.concreto;
+          }
+          html += `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color:${color};width:${TILE}px;height:${TILE}px;display:inline-block;vertical-align:top"><use href="#cobogo-${piece}" width="100" height="100"/></svg>`;
+        }
+        html += '</div>';
+      }
+      stripe.innerHTML = html;
+      stripe.style.fontSize = '0';
+      stripe.style.lineHeight = '0';
+      stripe.style.overflow = 'hidden';
+      stripe.style.width = '100%';
       stripe.style.height = `${ROWS * TILE}px`;
     });
   </script>
