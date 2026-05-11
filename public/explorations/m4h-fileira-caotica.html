@@ -17,29 +17,29 @@
     header.site .nav a{ color: var(--head-dim); text-decoration:none; padding-bottom:4px; border-bottom:1px solid transparent; }
     header.site .nav a.active{ color: var(--head-text); border-bottom-color: var(--head-text); }
 
-    /* Tagline strip acima da parede — sempre visível (desktop + mobile) */
+    /* Tagline strip acima da parede — letras menores, cinza-chumbo, fonte do site */
     .tagline-strip{
       max-width: 1280px; margin: 0 auto;
       padding: 26px 68px 18px;
       text-align: center;
       font-family: var(--serif); font-style: normal; font-weight: 400;
-      font-size: 20px; line-height: 1.3;
-      color: var(--ink-3);
+      font-size: 17px; line-height: 1.3;
+      color: var(--cobogo-chumbo); /* #5C5A56 cinza-chumbo */
     }
     .tagline-strip em{ font-style: normal; color: inherit; font-weight: 400; }
     .tagline-strip .tagline-eye{
-      width: 18px; height: 18px; color: var(--ink-2);
+      width: 17px; height: 17px;
       display: inline-block; vertical-align: middle;
       margin-right: 7px; margin-top: -3px;
     }
 
-    /* Wall section: parede de cobogós com sombra do Congresso atrás */
+    /* Wall section: Congresso com mais destaque (sem opacity) */
     .wall-section{ position: relative; margin-top: 0; }
-    .stripe{ width: 100%; background-color: transparent; opacity: 0.6; }
+    .stripe{ width: 100%; background-color: transparent; }
 
     @media (max-width:760px){
       header.site .top{ padding:14px 20px; gap:12px; }
-      .tagline-strip{ padding: 16px 20px 12px; font-size: 15px; }
+      .tagline-strip{ padding: 16px 20px 12px; font-size: 14px; }
     }
   </style>
 </head>
@@ -56,9 +56,9 @@
 
   <div class="tagline-strip">
     <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
-      <!-- almond branco preenchido + bola azul royal no meio -->
-      <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="currentColor"/>
-      <circle cx="50" cy="50" r="14" fill="#4169E1"/>
+      <!-- almond todo azul royal + pingo branco no meio -->
+      <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="#4169E1"/>
+      <circle cx="50" cy="50" r="14" fill="#FFFFFF"/>
     </svg>
     Ensaios de um <em>não-candango</em> no Planalto.
   </div>
