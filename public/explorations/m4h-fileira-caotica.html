@@ -30,8 +30,8 @@
     .stripe{ width: 100%; background-color: transparent; }
 
     @media (max-width:760px){
-      header.site .top{ padding:14px 20px; grid-template-columns:1fr auto; gap:12px; }
-      header.site .tagline{ grid-column:1/-1; text-align:left; font-size:14px; }
+      header.site .top{ padding:14px 20px; grid-template-columns:auto auto; justify-content:space-between; gap:12px; }
+      header.site .tagline{ display:none; }
     }
   </style>
 </head>
@@ -89,49 +89,29 @@
       const stripe = document.getElementById('stripe');
       const TILE = 36;
       const ROWS = 7;
-      const DARK = '#1A1A1A';     // niemeyer — cinza bem escuro
-      const DIFF_COUNT = 5;       // qtd de cobogós "diferentes" a cada reload
+      const DARK = '#1A1A1A';      // niemeyer — cinza bem escuro
+      const TILE_COLOR = '#f2f3f4'; // cinza bem claro pros cobogós Grade
 
-      // Camada de fundo: Congresso em cinza escuro (sem sol agora)
+      // Camada 1 (topo): Grade cobogó em cinza claro, tileado
+      const symbol = document.getElementById('cobogo-grade');
+      const viewBox = symbol.getAttribute('viewBox') || '0 0 100 100';
+      const gradeInner = symbol.innerHTML.replace(/currentColor/g, TILE_COLOR);
+      const gradeSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${gradeInner}</svg>`;
+      const gradeUri = `data:image/svg+xml;utf8,${encodeURIComponent(gradeSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
+
+      // Camada 2 (atrás): Congresso em cinza escuro (sem sol)
       const congressSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 280' preserveAspectRatio='none'><g fill='${DARK}'><rect x='50' y='240' width='900' height='40'/><path d='M 180 240 A 75 60 0 0 1 330 240 Z'/><rect x='475' y='60' width='25' height='180'/><rect x='510' y='60' width='25' height='180'/><path d='M 670 240 L 670 170 Q 745 220 820 170 L 820 240 Z'/></g></svg>`;
       const congressUri = `data:image/svg+xml;utf8,${encodeURIComponent(congressSvg).replace(/'/g, '%27').replace(/"/g, '%22')}`;
-      stripe.style.backgroundImage = `url("${congressUri}")`;
-      stripe.style.backgroundSize = '100% 100%';
-      stripe.style.backgroundRepeat = 'no-repeat';
-      stripe.style.backgroundPosition = 'center center';
 
-      // Construção da parede: cells individuais (grade/concreto majoritário +
-      // 5 cells aleatórios com peça e cor diferentes, randomizados a cada reload)
-      const cols = Math.ceil((window.innerWidth + TILE * 4) / TILE);
-      const total = cols * ROWS;
-      const diffIndices = new Set();
-      while (diffIndices.size < DIFF_COUNT && diffIndices.size < total) {
-        diffIndices.add(Math.floor(Math.random() * total));
-      }
-      const OTHER_PIECES = PIECES.filter(p => p !== 'grade');
-      const ACCENT_COLOR_KEYS = Object.keys(PALETTE).filter(k => k !== 'concreto');
-
-      let html = '';
-      for (let r = 0; r < ROWS; r++) {
-        html += `<div style="height:${TILE}px;white-space:nowrap;overflow:hidden;font-size:0;line-height:0">`;
-        for (let c = 0; c < cols; c++) {
-          const idx = r * cols + c;
-          let piece, color;
-          if (diffIndices.has(idx)) {
-            piece = OTHER_PIECES[Math.floor(Math.random() * OTHER_PIECES.length)];
-            color = PALETTE[ACCENT_COLOR_KEYS[Math.floor(Math.random() * ACCENT_COLOR_KEYS.length)]];
-          } else {
-            piece = 'grade';
-            color = PALETTE.concreto;
-          }
-          html += `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color:${color};width:${TILE}px;height:${TILE}px;display:inline-block;vertical-align:top"><use href="#cobogo-${piece}" width="100" height="100"/></svg>`;
-        }
-        html += '</div>';
-      }
-      stripe.innerHTML = html;
-      stripe.style.fontSize = '0';
-      stripe.style.lineHeight = '0';
-      stripe.style.overflow = 'hidden';
+      // Limpa cells de iteração anterior + aplica os dois bg
+      stripe.innerHTML = '';
+      stripe.style.fontSize = '';
+      stripe.style.lineHeight = '';
+      stripe.style.overflow = '';
+      stripe.style.backgroundImage = `url("${gradeUri}"), url("${congressUri}")`;
+      stripe.style.backgroundSize = `${TILE}px ${TILE}px, 100% 100%`;
+      stripe.style.backgroundRepeat = 'repeat, no-repeat';
+      stripe.style.backgroundPosition = '0 0, center center';
       stripe.style.width = '100%';
       stripe.style.height = `${ROWS * TILE}px`;
     });
