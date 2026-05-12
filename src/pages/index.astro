@@ -109,6 +109,8 @@ function tagLabel(slug: string): string {
                     <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
                     por <span>João Andrade</span>
                   </span>
+                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="meta-inline">11 mar 2026 · 8 min</span>
                 </p>
               </div>
               <div class="thumb">imagem</div>
@@ -123,6 +125,8 @@ function tagLabel(slug: string): string {
                     <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
                     por <span>João Andrade</span>
                   </span>
+                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="meta-inline">04 mar 2026 · 10 min</span>
                 </p>
               </div>
               <div class="thumb">imagem</div>
@@ -137,6 +141,8 @@ function tagLabel(slug: string): string {
                     <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
                     por <span>João Andrade</span>
                   </span>
+                  <span class="dot" aria-hidden="true">·</span>
+                  <span class="meta-inline">26 fev 2026 · 12 min</span>
                 </p>
               </div>
               <div class="thumb">imagem</div>
@@ -426,13 +432,80 @@ function tagLabel(slug: string): string {
     transition:transform .25s ease;
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
   }
+  /* ========== DESKTOP: dentro do stack-link, esconde o meta-inline
+     (data + tempo) porque a coluna grande de data à esquerda já mostra. */
+  .row-1plus3 > .stack .stack-link .by .meta-inline,
+  .row-1plus3 > .stack .stack-link .by .dot{display:none}
+
+  /* ========== MOBILE (760px): byline numa linha só + dek truncado ========== */
+  @media (max-width:760px){
+    /* hero/c12 com menos respiro vertical no mobile */
+    .c12{padding:32px var(--pad-x) 40px}
+
+    /* dek truncado em 3 linhas em todos os cards principais */
+    article.card .dek{
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    /* byline compacto: avatar 20px, fonte menor, gap apertado pra caber inline */
+    article.card .by{
+      font-size:14px;gap:4px 8px;flex-wrap:nowrap;align-items:center;
+    }
+    article.card .by .by-author > img{width:20px;height:20px}
+    article.card .by .meta-inline{font-size:9.5px;letter-spacing:.12em}
+    article.card .by .by-author{flex-shrink:0}
+    article.card .by .meta-inline{
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+    }
+  }
+
+  /* ========== MOBILE (880px): stack-link redesenhado como card vertical ========== */
   @media (max-width:880px){
-    .row-1plus3{grid-template-columns:1fr;grid-template-rows:none}
+    .row-1plus3{grid-template-columns:1fr;grid-template-rows:none;margin-bottom:32px}
     .row-1plus3 > .big,
     .row-1plus3 > .stack{
       grid-row:auto;display:flex;flex-direction:column;gap:14px;
+      padding:32px var(--pad-x);
     }
-    .row-1plus3 > .stack{border-left:none}
+    .row-1plus3 > .stack{border-left:none;border-top:1px solid var(--rule);padding-top:32px}
     .row-1plus3 > .big article.card figure{min-height:0}
+
+    /* stack-link vira card vertical com rule preto em cima, sem date column nem thumb */
+    .row-1plus3 > .stack .stack-link{
+      display:flex;flex-direction:column;gap:12px;
+      padding:0;margin:0;
+      position:relative;
+    }
+    .row-1plus3 > .stack .stack-link::before{
+      content:'';display:block;
+      height:12px;background:#000;
+      margin-bottom:4px;
+    }
+    .row-1plus3 > .stack .stack-link .date,
+    .row-1plus3 > .stack .stack-link .thumb{display:none}
+    .row-1plus3 > .stack .stack-link .by .meta-inline,
+    .row-1plus3 > .stack .stack-link .by .dot{display:inline}
+    .row-1plus3 > .stack .stack-link h2{font-size:26px;line-height:1.1}
+    .row-1plus3 > .stack .stack-link .dek{
+      font-size:16px;-webkit-line-clamp:3;
+    }
+    .row-1plus3 > .stack .stack-link .by{
+      font-size:14px;display:flex;flex-wrap:nowrap;
+      align-items:center;gap:4px 8px;
+    }
+    .row-1plus3 > .stack .stack-link .by .by-author > img{width:20px;height:20px}
+    .row-1plus3 > .stack .stack-link .by .meta-inline{
+      font-size:9.5px;letter-spacing:.12em;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+    }
+
+    /* stack-body: separa visualmente cada link com gap maior */
+    .row-1plus3 > .stack > .stack-body{gap:32px}
+
+    /* esconde a rule original da stack (que ficaria órfã) e o spacer das tags
+       no topo da .stack — não precisamos dessas marcas no mobile */
+    .row-1plus3 > .stack > .rule,
+    .row-1plus3 > .stack > .tags-spacer{display:none}
   }
 </style>
