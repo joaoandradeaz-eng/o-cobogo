@@ -45,7 +45,7 @@ const hasMore = published.length > 7;
       {hero && (
       <div class="c12 hero">
         <article class="card">
-          <div class="tags"><Tag slug={hero.data.categories[0]} /></div>
+          <div class="tags"><Tag slug={hero.data.categories[0]} link /></div>
           <div class="rule"></div>
           <h2><a href={`/${hero.id}`} set:html={parseInlineMd(hero.data.title)}></a></h2>
           <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>
@@ -67,7 +67,7 @@ const hasMore = published.length > 7;
       <div class="pair">
         {pair.map((a, i) => (
         <article class="card">
-          <div class="tags"><Tag slug={a.data.categories[0]} /></div>
+          <div class="tags"><Tag slug={a.data.categories[0]} link /></div>
           <div class="rule"></div>
           <h2><a href={`/${a.id}`} set:html={parseInlineMd(a.data.title)}></a></h2>
           <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>
@@ -89,7 +89,7 @@ const hasMore = published.length > 7;
       {big && (
       <div class="row-1plus3">
         <div class="big">
-          <div class="tags"><Tag slug={big.data.categories[0]} /></div>
+          <div class="tags"><Tag slug={big.data.categories[0]} link /></div>
           <div class="rule"></div>
           <article class="card">
             <h2><a href={`/${big.id}`} set:html={parseInlineMd(big.data.title)}></a></h2>

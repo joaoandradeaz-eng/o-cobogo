@@ -85,10 +85,10 @@ function fmtCardDate(date: Date): string {
       {data.categories.map((cat) => {
         const ti = getTagInfo(cat);
         return (
-          <span class="tag-item">
+          <a class="tag-item tag-link" href={`/tags/${cat}`} aria-label={`Ver artigos em ${ti.name}`}>
             <svg class="tag-mark" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style={`color:${ti.color}`}><use href={`#cobogo-${ti.piece}`} width="100" height="100" /></svg>
             <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>{ti.name}</span>
-          </span>
+          </a>
         );
       })}
     </div>

@@ -104,6 +104,10 @@ img{display:block;max-width:100%}
 .tag-mark{
   width:16px;height:16px;flex-shrink:0;display:block;
 }
+/* chip clicável (link pra /tags/slug) */
+a.tag-link{text-decoration:none;transition:opacity .15s ease,transform .08s ease}
+a.tag-link:hover{opacity:.78;transform:translateY(-1px)}
+a.tag-link .tag{cursor:pointer}
 /* cores das tags vêm via style inline da collection (definido em src/content/tags/*.json) */
 
 /* ---------- by-author: mini avatar redondo (24px) inline com o nome ---------- */
