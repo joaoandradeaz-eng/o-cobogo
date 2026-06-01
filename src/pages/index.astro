@@ -3,6 +3,37 @@ export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
 import Tag from '../components/Tag.astro';
+import { getCollection } from 'astro:content';
+
+// converte *texto* (markdown emphasis) em <em>texto</em>; igual ao [slug].astro
+function parseInlineMd(text: string): string {
+  return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+}
+
+const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+// "12 mar 2026 · 14 min" (UTC pra evitar timezone shift)
+function fmtMeta(date: Date, readTime: string): string {
+  const ds = `${String(date.getUTCDate()).padStart(2, '0')} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+  return readTime ? `${ds} · ${readTime}` : ds;
+}
+// coluna de data da stack: { day: "11 Mar", year: "2026" }
+function fmtStackDate(date: Date): { day: string; year: string } {
+  const m = months[date.getUTCMonth()];
+  return {
+    day: `${String(date.getUTCDate()).padStart(2, '0')} ${m.charAt(0).toUpperCase()}${m.slice(1)}`,
+    year: `${date.getUTCFullYear()}`,
+  };
+}
+
+// Artigos publicados, mais recentes primeiro. Cada slot do layout puxa em ordem;
+// o que sobra além dos 4 primeiros cai na lista "Outras leituras" (stack).
+const published = await getCollection('articles', ({ data }) => !data.draft);
+published.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const hero = published[0];
+const pair = published.slice(1, 3);
+const big = published[3];
+const stack = published.slice(4);
 ---
 <BaseLayout title="O Cobogó" active="home" screenLabel="Home">
 
@@ -10,135 +41,103 @@ import Tag from '../components/Tag.astro';
     <div class="feed">
 
       <!-- HERO c12 -->
+      {hero && (
       <div class="c12 hero">
         <article class="card">
-          <div class="tags"><Tag slug="ensaio" /></div>
+          <div class="tags"><Tag slug={hero.data.categories[0]} /></div>
           <div class="rule"></div>
-          <h2><a href="/a-varanda-como-teoria-politica">A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></a></h2>
-          <p class="dek">Quando a fachada brasileira deixou de respirar — cobogó virou ornamento, varanda virou metragem desperdiçada — perdemos mais que um vocabulário arquitetônico. Este ensaio lê a porosidade da casa como tese política sobre o que uma cidade decide deixar passar…</p>
+          <h2><a href={`/${hero.id}`} set:html={parseInlineMd(hero.data.title)}></a></h2>
+          <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>
           <p class="by">
             <a href="/sobre" class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="eager" decoding="async" width="24" height="24" />
-              por <span>João Andrade</span>
+              por <span set:html={parseInlineMd(hero.data.author)}></span>
             </a>
             <span class="dot" aria-hidden="true">·</span>
-            <span class="meta-inline">12 mar 2026 · 14 min</span>
+            <span class="meta-inline">{fmtMeta(hero.data.date, hero.data.readTime)}</span>
           </p>
-          <figure class="ph-a"><span class="ph">imagem · fachada cobogó · placeholder</span></figure>
+          <figure class="ph-a"><span class="ph">imagem · placeholder</span></figure>
         </article>
       </div>
+      )}
 
       <!-- 2 cards lado a lado, alinhados via subgrid -->
+      {pair.length > 0 && (
       <div class="pair">
+        {pair.map((a, i) => (
         <article class="card">
-          <div class="tags"><Tag slug="ensaio" /></div>
+          <div class="tags"><Tag slug={a.data.categories[0]} /></div>
           <div class="rule"></div>
-          <h2><a href="#">A meritocracia como ficção fundadora: três notas de leitura</a></h2>
-          <p class="dek">Em três livros publicados nos últimos dezoito meses, três autores brasileiros tentam responder à mesma pergunta — por que ainda acreditamos que o mérito explica alguma coisa? Este ensaio lê os três em diálogo…</p>
+          <h2><a href={`/${a.id}`} set:html={parseInlineMd(a.data.title)}></a></h2>
+          <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>
           <p class="by">
             <a href="/sobre" class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-              por <span>João Andrade</span>
+              por <span set:html={parseInlineMd(a.data.author)}></span>
             </a>
             <span class="dot" aria-hidden="true">·</span>
-            <span class="meta-inline">10 fev 2026 · 9 min</span>
+            <span class="meta-inline">{fmtMeta(a.data.date, a.data.readTime)}</span>
           </p>
-          <figure class="ph-c"><span class="ph">retrato editorial</span></figure>
+          <figure class={i === 0 ? 'ph-c' : 'ph-b'}><span class="ph">imagem</span></figure>
         </article>
-        <article class="card">
-          <div class="tags"><Tag slug="critica" /></div>
-          <div class="rule"></div>
-          <h2><a href="#">Rosa, hoje: o que sobrou do <em>sertão</em> na imaginação política</a></h2>
-          <p class="dek">Releitura de <em>Grande Sertão: Veredas</em> a partir de uma pergunta deslocada — não o que o sertão era, mas o que a palavra ainda consegue argumentar quando o lugar empírico já não responde por ela…</p>
-          <p class="by">
-            <a href="/sobre" class="by-author">
-              <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-              por <span>João Andrade</span>
-            </a>
-            <span class="dot" aria-hidden="true">·</span>
-            <span class="meta-inline">29 jan 2026 · 12 min</span>
-          </p>
-          <figure class="ph-b"><span class="ph">ensaio · capa</span></figure>
-        </article>
+        ))}
       </div>
+      )}
 
       <!-- 1 grande à esquerda + 3 empilhadas à direita -->
+      {big && (
       <div class="row-1plus3">
         <div class="big">
-          <div class="tags"><Tag slug="reportagem" /></div>
+          <div class="tags"><Tag slug={big.data.categories[0]} /></div>
           <div class="rule"></div>
           <article class="card">
-            <h2><a href="#">Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></a></h2>
-            <p class="dek">Doze meses gravando a avenida em horários distintos — madrugadas, picos, tardes vazias — para descobrir que a sonoridade do Recife mudou mais do que sua paisagem visível…</p>
+            <h2><a href={`/${big.id}`} set:html={parseInlineMd(big.data.title)}></a></h2>
+            <p class="dek" set:html={parseInlineMd(big.data.dek)}></p>
             <p class="by">
               <a href="/sobre" class="by-author">
                 <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-                por <span>João Andrade</span>
+                por <span set:html={parseInlineMd(big.data.author)}></span>
               </a>
               <span class="dot" aria-hidden="true">·</span>
-              <span class="meta-inline">19 fev 2026 · 18 min</span>
+              <span class="meta-inline">{fmtMeta(big.data.date, big.data.readTime)}</span>
             </p>
-            <figure class="ph-d"><span class="ph">paisagem urbana</span></figure>
+            <figure class="ph-d"><span class="ph">imagem</span></figure>
           </article>
         </div>
         <div class="stack">
           <div class="tags-spacer" aria-hidden="true"></div>
           <div class="rule"></div>
           <div class="stack-body">
+            {stack.length > 0 && (
             <header class="stack-head">
               <h2>Outras <em>leituras</em></h2>
             </header>
-            <a class="stack-link" href="#">
-              <div class="date">11 Mar<br/>2026</div>
-              <div class="body">
-                <h2>A democracia local não cabe nas plataformas — e talvez seja melhor assim</h2>
-                <p class="dek">As assembleias de bairro perderam o WhatsApp para o ódio organizado e voltaram, sem alarde, para os salões paroquiais…</p>
-                <p class="by">
-                  <span class="by-author">
-                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-                    por <span>João Andrade</span>
-                  </span>
-                  <span class="dot" aria-hidden="true">·</span>
-                  <span class="meta-inline">11 mar 2026 · 8 min</span>
-                </p>
-              </div>
-              <div class="thumb">imagem</div>
-            </a>
-            <a class="stack-link" href="#">
-              <div class="date">04 Mar<br/>2026</div>
-              <div class="body">
-                <h2>Tradução é uma forma de hospitalidade — e está desgastada</h2>
-                <p class="dek">A queda na qualidade das traduções literárias publicadas no Brasil revela algo mais profundo do que cortes de orçamento: uma cultura que perdeu o gosto pela mediação…</p>
-                <p class="by">
-                  <span class="by-author">
-                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-                    por <span>João Andrade</span>
-                  </span>
-                  <span class="dot" aria-hidden="true">·</span>
-                  <span class="meta-inline">04 mar 2026 · 10 min</span>
-                </p>
-              </div>
-              <div class="thumb">imagem</div>
-            </a>
-            <a class="stack-link" href="#">
-              <div class="date">26 Fev<br/>2026</div>
-              <div class="body">
-                <h2>São Paulo já não tem esquinas — tem nós</h2>
-                <p class="dek">A morfologia urbana paulistana se reorganizou ao redor da insegurança. Esquinas viraram ângulos cegos; nós viraram pontos de fricção…</p>
-                <p class="by">
-                  <span class="by-author">
-                    <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
-                    por <span>João Andrade</span>
-                  </span>
-                  <span class="dot" aria-hidden="true">·</span>
-                  <span class="meta-inline">26 fev 2026 · 12 min</span>
-                </p>
-              </div>
-              <div class="thumb">imagem</div>
-            </a>
+            )}
+            {stack.map((a) => {
+              const sd = fmtStackDate(a.data.date);
+              return (
+              <a class="stack-link" href={`/${a.id}`}>
+                <div class="date">{sd.day}<br/>{sd.year}</div>
+                <div class="body">
+                  <h2 set:html={parseInlineMd(a.data.title)}></h2>
+                  <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>
+                  <p class="by">
+                    <span class="by-author">
+                      <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
+                      por <span set:html={parseInlineMd(a.data.author)}></span>
+                    </span>
+                    <span class="dot" aria-hidden="true">·</span>
+                    <span class="meta-inline">{fmtMeta(a.data.date, a.data.readTime)}</span>
+                  </p>
+                </div>
+                <div class="thumb">imagem</div>
+              </a>
+              );
+            })}
           </div>
         </div>
       </div>
+      )}
 
       <!-- INSERT: SOBRE O AUTOR -->
       <AuthorInsert inFeed={true} />

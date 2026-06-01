@@ -17,6 +17,12 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 const { data } = article;
 
+// "Continue lendo": até 3 artigos publicados mais recentes, exceto o atual
+const continueReading = (await getCollection('articles', ({ data }) => !data.draft))
+  .filter((a) => a.id !== article.id)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
 // Carrega todas as tags da collection — usado pra resolver labels e cores dinamicamente
 const allTags = await getCollection('tags');
 const tagsBySlug = new Map(allTags.map((t) => [t.id, t.data]));
@@ -41,6 +47,11 @@ const titlePlain = data.title.replace(/\*/g, '');
 const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const d = data.date;
 const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+// data dos cards "Continue lendo": "11 Mar 2026" (mês capitalizado)
+function fmtCardDate(date: Date): string {
+  const m = months[date.getUTCMonth()];
+  return `${String(date.getUTCDate()).padStart(2, '0')} ${m.charAt(0).toUpperCase()}${m.slice(1)} ${date.getUTCFullYear()}`;
+}
 ---
 
 <BaseLayout title={`${titlePlain} · O Cobogó`} active="home" screenLabel="Artigo">
@@ -120,30 +131,24 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
   <!-- INSERT: SOBRE O AUTOR -->
   <AuthorInsert />
 
-  <!-- CONTINUE LENDO (estático enquanto não temos múltiplos artigos) -->
+  <!-- CONTINUE LENDO -->
+  {continueReading.length > 0 && (
   <section class="continue">
     <div class="head">
       <h2>Continue <em>lendo</em></h2>
       <a href="/" class="more">Voltar à edição →</a>
     </div>
     <div class="grid">
-      <a href="#">
-        <div class="date">11 Mar 2026</div>
-        <h3>A democracia local não cabe nas plataformas — e talvez seja melhor assim</h3>
-        <div class="by"><span class="by-author"><img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />por <span>João Andrade</span></span></div>
+      {continueReading.map((a) => (
+      <a href={`/${a.id}`}>
+        <div class="date">{fmtCardDate(a.data.date)}</div>
+        <h3 set:html={parseInlineMd(a.data.title)}></h3>
+        <div class="by"><span class="by-author"><img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />por <span set:html={parseInlineMd(a.data.author)}></span></span></div>
       </a>
-      <a href="#">
-        <div class="date">04 Mar 2026</div>
-        <h3>Tradução é uma forma de hospitalidade — e está <em>desgastada</em></h3>
-        <div class="by"><span class="by-author"><img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />por <span>João Andrade</span></span></div>
-      </a>
-      <a href="#">
-        <div class="date">19 Fev 2026</div>
-        <h3>Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></h3>
-        <div class="by"><span class="by-author"><img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />por <span>João Andrade</span></span></div>
-      </a>
+      ))}
     </div>
   </section>
+  )}
 
   <script is:inline>
     /* Footnote anchors: sup no corpo → scroll suave até #nota-N */
