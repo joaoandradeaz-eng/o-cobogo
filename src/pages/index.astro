@@ -319,6 +319,8 @@ function tagLabel(slug: string): string {
       border-right:none;
       padding:0 var(--pad-x) 48px;
     }
+    /* no flex column, align-self:end encostaria a badge à direita — força à esquerda */
+    .pair > article.card > .tags{align-self:flex-start}
     .pair > article.card h2{font-size:24px}
   }
 
@@ -442,21 +444,31 @@ function tagLabel(slug: string): string {
     /* hero/c12 com menos respiro vertical no mobile */
     .c12{padding:32px var(--pad-x) 40px}
 
+    /* headline da capa: 36px no mobile (era 44) — segura presença mas deixa
+       dek + byline + imagem aparecerem na primeira dobra */
+    .c12 article.card h2{font-size:36px;line-height:1.06}
+
+    /* capa: 3/2 no mobile em vez de 21/9 (que virava uma tarja de ~120px);
+       fica mais cheia que os cards 4/3, sinalizando que é a matéria líder */
+    .c12 article.card figure{aspect-ratio:3/2}
+
     /* dek truncado em 3 linhas em todos os cards principais */
     article.card .dek{
       display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
       overflow:hidden;
     }
 
-    /* byline compacto: avatar 20px, fonte menor, gap apertado pra caber inline */
+    /* byline: inline quando cabe; quando não cabe, a data/tempo quebra inteira
+       pra linha de baixo (nunca corta "14 min" no meio com reticências) */
     article.card .by{
-      font-size:14px;gap:4px 8px;flex-wrap:nowrap;align-items:center;
+      font-size:14px;gap:4px 8px;flex-wrap:wrap;align-items:center;
     }
     article.card .by .by-author > img{width:20px;height:20px}
-    article.card .by .meta-inline{font-size:9.5px;letter-spacing:.12em}
     article.card .by .by-author{flex-shrink:0}
+    /* sem o ponto separador: na quebra ele ficaria órfão no início da linha 2 */
+    article.card .by .dot{display:none}
     article.card .by .meta-inline{
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+      font-size:9.5px;letter-spacing:.1em;white-space:nowrap;
     }
   }
 
@@ -469,6 +481,8 @@ function tagLabel(slug: string): string {
       padding:32px var(--pad-x);
     }
     .row-1plus3 > .stack{border-left:none;border-top:1px solid var(--rule);padding-top:32px}
+    /* mesma correção do align-self da .pair: badge à esquerda no flex column */
+    .row-1plus3 > .big > .tags{align-self:flex-start}
     .row-1plus3 > .big article.card figure{min-height:0}
 
     /* stack-link vira card vertical com rule preto em cima, sem date column nem thumb */
@@ -480,6 +494,9 @@ function tagLabel(slug: string): string {
     .row-1plus3 > .stack .stack-link::before{
       content:'';display:block;
       height:12px;background:#000;
+      /* o .stack-link herda align-items:center do desktop; sem o stretch a barra
+         (conteúdo vazio) colapsa pra 0px de largura e fica invisível */
+      align-self:stretch;
       margin-bottom:4px;
     }
     .row-1plus3 > .stack .stack-link .date,
