@@ -26,12 +26,10 @@
 
 /* BYLINE: caixinha cinza claro, serif (mesma família dos títulos) */
 .art-hd .byline{
-  margin-top:40px;
-  padding:18px 24px;
-  background:#efece6;
+  margin-top:28px;
   font-family:var(--serif);font-size:17px;line-height:1.45;
   color:var(--ink-2);
-  display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;
+  display:flex;flex-wrap:nowrap;align-items:center;gap:0 12px;
   letter-spacing:0;text-transform:none;
 }
 .art-hd .byline .bit{display:inline-flex;align-items:center;gap:6px}
@@ -53,7 +51,9 @@
 @media (max-width:760px){
   .art-hd{padding:20px 20px 24px}
   .art-hd h1{font-size:38px}
-  .art-hd .byline{font-size:14px;gap:4px 10px;padding:14px 18px}
+  /* byline numa linha só: fonte menor + nowrap, sem caixa. Cabe num 360px. */
+  .art-hd .byline{font-size:12.5px;gap:0 8px;white-space:nowrap}
+  .art-hd .byline .by-author > img{width:18px;height:18px}
 }
 
 /* ========== HERO IMAGE ========== */
@@ -149,17 +149,6 @@
 }
 .art-body .notas ol li a.nota-back:hover{
   color: var(--terra-deep); background: rgba(184, 90, 31, 0.1);
-}
-
-/* ===== Barra de progresso de leitura (fixa no topo) ===== */
-.read-progress{
-  position: fixed; top: 0; left: 0; right: 0; height: 3px;
-  z-index: 200; pointer-events: none; background: transparent;
-}
-.read-progress span{
-  display: block; height: 100%; width: 0;
-  background: var(--terra);
-  transition: width .08s linear;
 }
 
 /* ===== Botão "voltar ao topo" (flutuante) ===== */

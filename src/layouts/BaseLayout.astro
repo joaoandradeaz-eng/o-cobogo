@@ -17,6 +17,8 @@ interface Props {
   type?: 'website' | 'article';
   /** Se true, pede pros buscadores não indexarem (ex.: páginas de admin). */
   noindex?: boolean;
+  /** Tagline-strip de intro. No artigo desligamos pra o foco ser a matéria. */
+  showIntro?: boolean;
 }
 
 const {
@@ -27,6 +29,7 @@ const {
   image = '/assets/icone.png',
   type = 'website',
   noindex = false,
+  showIntro = true,
 } = Astro.props;
 
 const SITE_NAME = 'O Cobogó';
@@ -73,7 +76,7 @@ const ogImage = new URL(image, Astro.site).href;
     <a href="#main" class="skip-link">Pular para o conteúdo</a>
     <Header active={active} />
     <main id="main">
-      <PageIntro />
+      {showIntro && <PageIntro />}
       <slot />
     </main>
     <Footer />

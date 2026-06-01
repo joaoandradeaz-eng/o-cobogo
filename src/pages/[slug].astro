@@ -83,11 +83,9 @@ function fmtCardDate(date: Date): string {
   description={dekPlain}
   image={data.heroImage}
   type="article"
+  showIntro={false}
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
-
-  <!-- BARRA DE PROGRESSO DE LEITURA (fixa no topo) -->
-  <div class="read-progress" aria-hidden="true"><span></span></div>
 
   <!-- VOLTAR AO TOPO (flutuante, aparece após rolar) -->
   <button class="to-top" type="button" aria-label="Voltar ao topo" hidden>↑</button>
@@ -236,24 +234,19 @@ function fmtCardDate(date: Date): string {
   </script>
 
   <script is:inline>
-    /* Barra de progresso + botão "voltar ao topo" */
+    /* Botão "voltar ao topo": aparece depois de rolar, some no topo */
     (function () {
-      const bar = document.querySelector('.read-progress span');
       const toTop = document.querySelector('.to-top');
+      if (!toTop) return;
       const root = document.documentElement;
       function onScroll() {
-        const max = root.scrollHeight - root.clientHeight;
-        const pct = max > 0 ? (root.scrollTop / max) * 100 : 0;
-        if (bar) bar.style.width = pct + '%';
-        if (toTop) toTop.hidden = root.scrollTop < 600;
+        toTop.hidden = root.scrollTop < 600;
       }
       document.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
-      if (toTop) {
-        toTop.addEventListener('click', () =>
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        );
-      }
+      toTop.addEventListener('click', () =>
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      );
     })();
 
     /* Compartilhar: usa o menu nativo do celular (Web Share); no desktop, copia o link */
