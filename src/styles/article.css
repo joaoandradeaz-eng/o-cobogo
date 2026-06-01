@@ -133,6 +133,23 @@
   background: rgba(184, 90, 31, 0.12);
   transition: background .25s ease;
 }
+/* destaque rápido no número de chamada quando o leitor volta da nota */
+.art-body .col sup.nota-flash{
+  background: rgba(184, 90, 31, 0.22);
+  border-radius: 2px;
+  transition: background .25s ease;
+}
+/* ↩ retorno ao texto, ao final de cada nota */
+.art-body .notas ol li a.nota-back{
+  font-family: var(--mono); font-size: 13px;
+  color: var(--ink-3); text-decoration: none;
+  margin-left: 6px; padding: 0 4px;
+  border-radius: 2px; cursor: pointer;
+  transition: color .15s ease, background .15s ease;
+}
+.art-body .notas ol li a.nota-back:hover{
+  color: var(--terra-deep); background: rgba(184, 90, 31, 0.1);
+}
 
 /* === Hand-drawn highlights (mark element, multicolor) ===
    Cada cor usa o mesmo SVG path com Bézier irregular nas bordas, sobreposto

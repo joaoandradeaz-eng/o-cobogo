@@ -1,14 +1,24 @@
 ---
+import { getCollection } from 'astro:content';
+
 interface Props {
-  active?: 'home' | 'sobre';
+  active?: 'home' | 'arquivo' | 'sobre';
 }
 const { active = 'home' } = Astro.props;
+
+// O link "Arquivo" só aparece quando a home transborda (mais de 7 artigos) —
+// abaixo disso a /arquivo só repetiria a home. Mesmo limite do botão "Ver mais".
+const published = await getCollection('articles', ({ data }) => !data.draft);
+const showArchive = published.length > 7;
 ---
 <header class="site">
   <div class="top">
     <a href="/" class="brand" aria-label="O Cobogó · ir para a home">O Cobogó</a>
     <nav class="rt">
       <a href="/" class={active === 'home' ? 'is-active' : ''}>Home</a>
+      {showArchive && (
+        <a href="/arquivo" class={active === 'arquivo' ? 'is-active' : ''}>Arquivo</a>
+      )}
       <a href="/sobre" class={active === 'sobre' ? 'is-active' : ''}>Sobre</a>
     </nav>
   </div>

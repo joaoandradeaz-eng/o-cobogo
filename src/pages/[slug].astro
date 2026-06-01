@@ -174,24 +174,42 @@ function fmtCardDate(date: Date): string {
   )}
 
   <script is:inline>
-    /* Footnote anchors: sup no corpo → scroll suave até #nota-N */
+    /* Notas de rodapé: clique no número vai até a nota; ↩ na nota volta ao texto. */
+    function flash(el) {
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('nota-flash');
+      setTimeout(() => el.classList.remove('nota-flash'), 1800);
+    }
+
+    const refByNum = {};
     document.querySelectorAll('.art-body .col sup').forEach((sup) => {
       const num = sup.textContent?.trim();
       if (!num || !/^\d+$/.test(num)) return;
+      // 1ª ocorrência do número vira âncora de retorno (#ref-N)
+      if (!refByNum[num]) { sup.id = 'ref-' + num; refByNum[num] = sup; }
       sup.style.cursor = 'pointer';
       sup.setAttribute('role', 'link');
       sup.setAttribute('tabindex', '0');
-      const go = () => {
-        const target = document.getElementById('nota-' + num);
-        if (!target) return;
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        target.classList.add('nota-flash');
-        setTimeout(() => target.classList.remove('nota-flash'), 1800);
-      };
+      sup.setAttribute('aria-label', 'Ir para a nota ' + num);
+      const go = () => flash(document.getElementById('nota-' + num));
       sup.addEventListener('click', go);
       sup.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
       });
+    });
+
+    document.querySelectorAll('.art-body .notas li[id^="nota-"]').forEach((li) => {
+      const num = li.id.replace('nota-', '');
+      if (!refByNum[num]) return; // só adiciona retorno se a nota é citada no texto
+      const back = document.createElement('a');
+      back.className = 'nota-back';
+      back.href = '#ref-' + num;
+      back.textContent = '↩';
+      back.setAttribute('aria-label', 'Voltar ao texto');
+      back.addEventListener('click', (e) => { e.preventDefault(); flash(refByNum[num]); });
+      li.appendChild(document.createTextNode(' '));
+      li.appendChild(back);
     });
   </script>
 

@@ -1,7 +1,29 @@
 ---
+import { getCollection } from 'astro:content';
+const tags = (await getCollection('tags')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name, 'pt-BR')
+);
+// Arquivo só aparece quando a home transborda (>7 artigos) — antes disso repetiria a home.
+const published = await getCollection('articles', ({ data }) => !data.draft);
+const showArchive = published.length > 7;
 ---
 <footer class="site">
   <div class="shell">
+    <nav class="foot-nav" aria-label="Navegação do rodapé">
+      <div class="col">
+        <span class="col-h">Navegar</span>
+        <a href="/">Início</a>
+        {showArchive && <a href="/arquivo">Arquivo</a>}
+        <a href="/sobre">Sobre</a>
+        <a href="/rss.xml">RSS</a>
+      </div>
+      <div class="col editorias">
+        <span class="col-h">Editorias</span>
+        {tags.map((t) => (
+          <a href={`/tags/${t.id}`}>{t.data.name}</a>
+        ))}
+      </div>
+    </nav>
     <div class="foot-row">
       <div class="lt">© MMXXVI · ISSN 0000-0000</div>
       <div class="rt">Recife · São Paulo · Lisboa</div>
