@@ -1,5 +1,6 @@
 import TurndownService from 'turndown';
 import matter from 'gray-matter';
+import { marked } from 'marked';
 
 export type PostFrontmatter = {
   title: string;
@@ -110,6 +111,13 @@ turndown.addRule('positionedImage', {
 
 export function htmlToMarkdown(html: string): string {
   return turndown.turndown(html).trim();
+}
+
+/* Markdown → HTML para pré-preencher o editor TipTap na edição.
+   marked converte os pedaços markdown (parágrafos, *itálico*, ## títulos, listas)
+   e deixa passar o HTML cru embutido (blockquote, figure, table, charts, img posicionada). */
+export function markdownToHtml(md: string): string {
+  return marked.parse(md, { async: false, gfm: true, breaks: false }) as string;
 }
 
 export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): string {

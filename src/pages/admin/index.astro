@@ -66,14 +66,29 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
     .row{
       display:grid;grid-template-columns:1fr auto auto auto;gap:16px;align-items:center;
       padding:16px 20px;border-top:1px solid #f0f0f0;
-      text-decoration:none;color:inherit;
+      color:inherit;
       transition:background .12s ease;
     }
     .row:first-child{border-top:none}
     .row:hover{background:#fafafa}
-    .row .meta-col{min-width:0}
+    .row .meta-col{min-width:0;text-decoration:none;color:inherit;display:block}
+    .row .meta-col:hover h3{color:#c47842}
     .row h3{font-size:16px;margin:0 0 4px 0;font-weight:600;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .row .dek{font-size:13px;color:#666;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row .actions{display:flex;gap:6px;align-items:center}
+    .row .act{
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:11px;font-weight:600;letter-spacing:.04em;
+      padding:6px 10px;border-radius:5px;border:1px solid #ddd;
+      background:#fff;color:#555;cursor:pointer;white-space:nowrap;
+      transition:background .12s ease,color .12s ease,border-color .12s ease;
+    }
+    .row .act:hover{background:#f3f3f3;color:#222}
+    .row .act-edit{border-color:#d6c9b4;color:#9a7b3f}
+    .row .act-edit:hover{background:#f6eede;color:#7a5a10}
+    .row .act-toggle:hover{background:#eef6f0;color:#2c7a4d;border-color:#bfe0cb}
+    .row .act-delete:hover{background:#fdeaea;color:#b00;border-color:#f3bcbc}
+    .row .act:disabled{opacity:.5;cursor:wait}
     .row .cat{
       font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
       padding:4px 8px;border-radius:4px;background:#f0f0f0;color:#444;
@@ -97,6 +112,7 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
       .row{grid-template-columns:1fr;gap:6px}
       .row .meta-col{order:1}
       .row .cat,.row .date,.row .badge-draft{justify-self:start}
+      .row .actions{justify-self:start;flex-wrap:wrap;margin-top:4px}
     }
   </style>
 </head>
@@ -133,15 +149,19 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
           <h3 class="section-title">Rascunhos <span class="count">{drafts.length}</span></h3>
           <div class="list">
             {drafts.map((article) => (
-              <a class="row" href={`/admin/edit/${article.id}`}>
-                <div class="meta-col">
-                  <h3>{article.data.title}</h3>
+              <div class="row">
+                <a class="meta-col" href={`/admin/edit/${article.id}`}>
+                  <h3>{article.data.title} <span class="badge-draft">Rascunho</span></h3>
                   <p class="dek">{article.data.dek}</p>
-                </div>
+                </a>
                 <span class="cat" style={(() => { const ti = tagInfo(article.data.categories[0]); return `background:${ti.color};color:${ti.textColor}`; })()}>{tagInfo(article.data.categories[0]).name}</span>
                 <span class="date">{fmtDate.format(article.data.date)}</span>
-                <span class="badge-draft">Rascunho</span>
-              </a>
+                <div class="actions">
+                  <a class="act act-edit" href={`/admin/edit/${article.id}`}>Editar</a>
+                  <button type="button" class="act act-toggle" data-slug={article.id} data-draft="false">Publicar</button>
+                  <button type="button" class="act act-delete" data-slug={article.id} data-title={article.data.title}>Excluir</button>
+                </div>
+              </div>
             ))}
           </div>
         </section>
@@ -152,15 +172,19 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
           <h3 class="section-title">Publicados <span class="count">{published.length}</span></h3>
           <div class="list">
             {published.map((article) => (
-              <a class="row" href={`/admin/edit/${article.id}`}>
-                <div class="meta-col">
+              <div class="row">
+                <a class="meta-col" href={`/admin/edit/${article.id}`}>
                   <h3>{article.data.title}</h3>
                   <p class="dek">{article.data.dek}</p>
-                </div>
+                </a>
                 <span class="cat" style={(() => { const ti = tagInfo(article.data.categories[0]); return `background:${ti.color};color:${ti.textColor}`; })()}>{tagInfo(article.data.categories[0]).name}</span>
                 <span class="date">{fmtDate.format(article.data.date)}</span>
-                <span class="badge-draft" style="visibility:hidden">·</span>
-              </a>
+                <div class="actions">
+                  <a class="act act-edit" href={`/admin/edit/${article.id}`}>Editar</a>
+                  <button type="button" class="act act-toggle" data-slug={article.id} data-draft="true">Despublicar</button>
+                  <button type="button" class="act act-delete" data-slug={article.id} data-title={article.data.title}>Excluir</button>
+                </div>
+              </div>
             ))}
           </div>
         </section>
@@ -169,5 +193,52 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short
   )}
 
   <p style="margin-top:32px;font-size:13px;color:#888"><a href="/" style="color:#888">← Ver site</a></p>
+
+  <script is:inline>
+    async function postJSON(url, payload, btn) {
+      const original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '…';
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alert('Erro: ' + (data.error || ('HTTP ' + res.status)));
+          btn.disabled = false;
+          btn.textContent = original;
+          return;
+        }
+        alert('Feito! O Vercel está rebuildando — em ~1 min a mudança aparece. A página vai recarregar.');
+        window.location.reload();
+      } catch (err) {
+        alert('Falha de rede: ' + (err && err.message ? err.message : err));
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    }
+
+    document.querySelectorAll('.act-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const slug = btn.getAttribute('data-slug');
+        const makeDraft = btn.getAttribute('data-draft') === 'true';
+        const verb = makeDraft ? 'despublicar (vira rascunho)' : 'publicar';
+        if (!confirm('Tem certeza que quer ' + verb + ' "' + slug + '"?')) return;
+        postJSON('/api/posts/toggle-draft', { slug, draft: makeDraft }, btn);
+      });
+    });
+
+    document.querySelectorAll('.act-delete').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const slug = btn.getAttribute('data-slug');
+        const title = btn.getAttribute('data-title') || slug;
+        if (!confirm('EXCLUIR DEFINITIVAMENTE "' + title + '"?\n\nIsso apaga o arquivo do repositório. Não dá pra desfazer pelo painel (só pelo histórico do Git).')) return;
+        postJSON('/api/posts/delete', { slug }, btn);
+      });
+    });
+  </script>
 </body>
 </html>

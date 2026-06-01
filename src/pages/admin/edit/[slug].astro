@@ -1,6 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleEditor from '../../../components/ArticleEditor';
 import { getSession, isAuthorized } from '../../../lib/session';
+import { markdownToHtml } from '../../../lib/markdown';
+import '../../../styles/article.css';
 
 const session = await getSession(Astro.cookies);
 if (!isAuthorized(session)) {
@@ -13,28 +17,50 @@ const article = articles.find((a) => a.id === slug);
 if (!article) {
   return new Response('Artigo não encontrado', { status: 404 });
 }
+
+const authorName = session.name?.split(' ').slice(0, 2).join(' ') || 'João Andrade';
+
+const cloudinary = {
+  cloudName: import.meta.env.CLOUDINARY_CLOUD_NAME ?? '',
+  uploadPreset: import.meta.env.CLOUDINARY_UPLOAD_PRESET ?? '',
+};
+
+const tagsCollection = await getCollection('tags');
+tagsCollection.sort((a, b) => {
+  const oa = a.data.order ?? 100;
+  const ob = b.data.order ?? 100;
+  if (oa !== ob) return oa - ob;
+  return a.data.name.localeCompare(b.data.name);
+});
+const tags = tagsCollection.map((t) => ({
+  value: t.id,
+  label: t.data.name,
+  color: t.data.color,
+  textColor: t.data.textColor,
+}));
+
+const d = article.data;
+const initial = {
+  title: d.title,
+  dek: d.dek,
+  categories: d.categories,
+  date: d.date.toISOString().slice(0, 10),
+  readTime: d.readTime,
+  linhaFina: d.linhaFina ?? '',
+  linhaFinaLabel: d.linhaFinaLabel ?? 'Linha-fina',
+  notas: d.notas ?? [],
+  bodyHtml: markdownToHtml(article.body ?? ''),
+  draft: d.draft ?? false,
+};
 ---
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Editar · {article.data.title} · Admin</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <style>
-    body{font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:0 24px;line-height:1.5;color:#111}
-    .stub{padding:48px 24px;text-align:center;border:1px dashed #ddd;border-radius:8px;color:#888}
-    .stub h1{color:#111;margin-top:0;font-size:22px}
-    .stub .title{color:#444;font-style:italic;margin:8px 0 24px}
-    a{color:#666}
-  </style>
-</head>
-<body>
-  <div class="stub">
-    <h1>Editor — em breve</h1>
-    <p class="title">"{article.data.title}"</p>
-    <p>A edição de posts já existentes vem na <strong>Fase 4</strong>.</p>
-    <p style="margin-top:24px"><a href="/admin">← Voltar pro dashboard</a></p>
-  </div>
-</body>
-</html>
+<BaseLayout title={`Editar · ${d.title} · Admin`} active="home" screenLabel="Editor">
+  <ArticleEditor
+    client:only="react"
+    mode="edit"
+    slug={article.id}
+    initial={initial}
+    authorName={authorName}
+    cloudinary={cloudinary}
+    tags={tags}
+  />
+</BaseLayout>

@@ -21,11 +21,30 @@ function formatDateBR(iso: string): string {
   return `${String(d).padStart(2, '0')} ${months[m - 1]} ${y}`;
 }
 
+type InitialValues = {
+  title: string;
+  dek: string;
+  categories: string[];
+  date: string;
+  readTime: string;
+  linhaFina: string;
+  linhaFinaLabel: string;
+  notas: string[];
+  bodyHtml: string;
+  draft: boolean;
+};
+
 type Props = {
   authorName?: string;
   cloudinary?: { cloudName: string; uploadPreset: string };
   /** Tags disponíveis (vêm do server, lidas de src/content/tags/) */
   tags?: TagOption[];
+  /** 'create' (padrão) ou 'edit'. No modo edit o slug é travado e o post existente é reescrito. */
+  mode?: 'create' | 'edit';
+  /** Slug do artigo sendo editado (obrigatório no modo edit). */
+  slug?: string;
+  /** Valores iniciais para pré-preencher o editor no modo edit. */
+  initial?: InitialValues;
 };
 
 type Snapshot = {
@@ -96,17 +115,25 @@ function AutoTextarea({
   );
 }
 
-export default function ArticleEditor({ authorName = 'João Andrade', cloudinary, tags = [] }: Props) {
-  const [title, setTitle] = useState('');
-  const [dek, setDek] = useState('');
-  const [categories, setCategories] = useState<string[]>([]);
-  const [date, setDate] = useState(todayISO());
-  const [readTime, setReadTime] = useState('5 min');
-  const [linhaFina, setLinhaFina] = useState('');
-  const [linhaFinaLabel, setLinhaFinaLabel] = useState('Linha-fina');
-  const [showLinhaFina, setShowLinhaFina] = useState(false);
-  const [notas, setNotas] = useState<string[]>([]);
-  const [bodyHtml, setBodyHtml] = useState('');
+export default function ArticleEditor({
+  authorName = 'João Andrade',
+  cloudinary,
+  tags = [],
+  mode = 'create',
+  slug,
+  initial,
+}: Props) {
+  const isEdit = mode === 'edit';
+  const [title, setTitle] = useState(initial?.title ?? '');
+  const [dek, setDek] = useState(initial?.dek ?? '');
+  const [categories, setCategories] = useState<string[]>(initial?.categories ?? []);
+  const [date, setDate] = useState(initial?.date || todayISO());
+  const [readTime, setReadTime] = useState(initial?.readTime || '5 min');
+  const [linhaFina, setLinhaFina] = useState(initial?.linhaFina ?? '');
+  const [linhaFinaLabel, setLinhaFinaLabel] = useState(initial?.linhaFinaLabel ?? 'Linha-fina');
+  const [showLinhaFina, setShowLinhaFina] = useState(!!initial?.linhaFina);
+  const [notas, setNotas] = useState<string[]>(initial?.notas ?? []);
+  const [bodyHtml, setBodyHtml] = useState(initial?.bodyHtml ?? '');
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -120,8 +147,13 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
   const editorRef = useRef<Editor | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Restore from localStorage on mount
+  // Restore from localStorage on mount (só no modo create — edição parte do conteúdo real)
   useEffect(() => {
+    if (isEdit) {
+      initialMountedRef.current = true;
+      setEditorReady(true);
+      return;
+    }
     const draft = loadDraft();
     if (draft && (draft.title || draft.bodyHtml || draft.dek)) {
       const ageMin = Math.round((Date.now() - draft.savedAt) / 60000);
@@ -148,8 +180,9 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
     setEditorReady(true);
   }, []);
 
-  // Auto-save (debounced)
+  // Auto-save (debounced) — só no modo create
   useEffect(() => {
+    if (isEdit) return;
     if (!initialMountedRef.current) return;
     if (!title && !bodyHtml && !dek) return;
     setAutosaveStatus('pending');
@@ -261,10 +294,12 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
     setError(null);
     setSubmitting(true);
     try {
-      const res = await fetch('/api/posts/create', {
+      const endpoint = isEdit ? '/api/posts/update' : '/api/posts/create';
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
+          slug: isEdit ? slug : undefined,
           title,
           dek,
           categories,
@@ -282,9 +317,11 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
         setError(data.error ?? `Erro ${res.status}`);
         return;
       }
-      clearDraft();
-      const verb = draft ? 'Rascunho salvo' : 'Publicado';
-      alert(`${verb}!\nO Vercel está rebuildando — em ~1 min seu post estará no ar.\nSlug: ${data.slug}`);
+      if (!isEdit) clearDraft();
+      const verb = isEdit
+        ? (draft ? 'Alterações salvas como rascunho' : 'Alterações publicadas')
+        : (draft ? 'Rascunho salvo' : 'Publicado');
+      alert(`${verb}!\nO Vercel está rebuildando — em ~1 min a mudança estará no ar.\nSlug: ${data.slug}`);
       window.location.href = '/admin';
     } catch (err: any) {
       setError(err.message ?? 'Erro inesperado');
@@ -470,14 +507,20 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
         <div className="left">
           <a className="back" href="/admin">← dashboard</a>
           <span className={`ed-status ${autosaveStatus}`}>
-            {autosaveStatus === 'pending' && 'salvando…'}
-            {autosaveStatus === 'saved' && '✓ salvo localmente'}
-            {autosaveStatus === 'idle' && (
-              canPublish
-                ? 'pronto pra publicar'
-                : canSaveDraft
-                  ? 'rascunho ok (faltam campos pra publicar)'
-                  : 'comece a escrever'
+            {isEdit ? (
+              <>editando: <em>{slug}</em></>
+            ) : (
+              <>
+                {autosaveStatus === 'pending' && 'salvando…'}
+                {autosaveStatus === 'saved' && '✓ salvo localmente'}
+                {autosaveStatus === 'idle' && (
+                  canPublish
+                    ? 'pronto pra publicar'
+                    : canSaveDraft
+                      ? 'rascunho ok (faltam campos pra publicar)'
+                      : 'comece a escrever'
+                )}
+              </>
             )}
           </span>
         </div>
@@ -488,7 +531,7 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
             disabled={!canSaveDraft}
             onClick={() => submit(true)}
           >
-            Salvar rascunho
+            {isEdit ? 'Despublicar (rascunho)' : 'Salvar rascunho'}
           </button>
           <button
             type="button"
@@ -496,7 +539,9 @@ export default function ArticleEditor({ authorName = 'João Andrade', cloudinary
             disabled={!canPublish}
             onClick={() => submit(false)}
           >
-            {submitting ? 'Publicando…' : 'Publicar'}
+            {submitting
+              ? (isEdit ? 'Salvando…' : 'Publicando…')
+              : (isEdit ? 'Salvar alterações' : 'Publicar')}
           </button>
         </div>
       </div>
