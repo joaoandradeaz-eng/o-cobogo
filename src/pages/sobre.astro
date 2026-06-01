@@ -1,6 +1,30 @@
 ---
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+function parseInlineMd(text: string): string {
+  return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+}
+const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+function fmtRowDate(date: Date): { day: string; year: string } {
+  const m = months[date.getUTCMonth()];
+  return {
+    day: `${String(date.getUTCDate()).padStart(2, '0')} ${m.charAt(0).toUpperCase()}${m.slice(1)}`,
+    year: `${date.getUTCFullYear()}`,
+  };
+}
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const recent = allArticles.slice(0, 6);
+const total = allArticles.length;
+
+const tags = await getCollection('tags');
+const tagsBySlug = new Map(tags.map((t) => [t.id, t.data]));
+function catName(slug: string): string {
+  return tagsBySlug.get(slug)?.name ?? slug;
+}
 ---
 <BaseLayout title="Sobre · O Cobogó" active="sobre" screenLabel="Sobre">
 
@@ -33,55 +57,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <!-- ARQUIVO SELECIONADO -->
+  {recent.length > 0 && (
   <section class="arquivo">
     <div class="head">
       <h2>Próximas <em>leituras</em></h2>
-      <a href="#" class="more">Arquivo completo (87) →</a>
+      <a href="/arquivo" class="more">Arquivo completo ({total}) →</a>
     </div>
 
-    <a class="row" href="/a-varanda-como-teoria-politica">
-      <div class="date">12 Mar<br/>2026</div>
-      <h3>A varanda como teoria política: o que a fachada perdeu quando deixou de <em>respirar</em></h3>
-      <div class="where">ensaio · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">11 Mar<br/>2026</div>
-      <h3>A democracia local não cabe nas plataformas — e talvez seja melhor assim</h3>
-      <div class="where">crônica · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">04 Mar<br/>2026</div>
-      <h3>Tradução é uma forma de hospitalidade — e está desgastada</h3>
-      <div class="where">ensaio · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">26 Fev<br/>2026</div>
-      <h3>São Paulo já não tem esquinas — tem nós</h3>
-      <div class="where">crônica · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">19 Fev<br/>2026</div>
-      <h3>Onde mora o ruído: um ano ouvindo a Avenida Conde da <em>Boa Vista</em></h3>
-      <div class="where">reportagem · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">10 Fev<br/>2026</div>
-      <h3>A meritocracia como ficção fundadora: três notas de leitura</h3>
-      <div class="where">ensaio · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
-    <a class="row" href="#">
-      <div class="date">29 Jan<br/>2026</div>
-      <h3>Rosa, hoje: o que sobrou do <em>sertão</em> na imaginação política</h3>
-      <div class="where">ensaio · O Cobogó</div>
-      <div class="thumb">imagem</div>
-    </a>
+    {recent.map((a) => {
+      const d = fmtRowDate(a.data.date);
+      return (
+      <a class="row" href={`/${a.id}`}>
+        <div class="date">{d.day}<br/>{d.year}</div>
+        <h3 set:html={parseInlineMd(a.data.title)}></h3>
+        <div class="where">{catName(a.data.categories[0])} · O Cobogó</div>
+        <div class="thumb">imagem</div>
+      </a>
+      );
+    })}
   </section>
+  )}
 </BaseLayout>
 
 <style is:global>

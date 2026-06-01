@@ -1,0 +1,123 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// converte *texto* (markdown emphasis) em <em>texto</em>
+function parseInlineMd(text: string): string {
+  return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+}
+
+const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+function fmtRowDate(date: Date): { day: string; year: string } {
+  const m = months[date.getUTCMonth()];
+  return {
+    day: `${String(date.getUTCDate()).padStart(2, '0')} ${m.charAt(0).toUpperCase()}${m.slice(1)}`,
+    year: `${date.getUTCFullYear()}`,
+  };
+}
+
+// Todos os artigos publicados, do mais recente ao mais antigo
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const tags = await getCollection('tags');
+const tagsBySlug = new Map(tags.map((t) => [t.id, t.data]));
+function catName(slug: string): string {
+  return tagsBySlug.get(slug)?.name ?? slug;
+}
+
+const total = articles.length;
+---
+<BaseLayout title="Arquivo · O Cobogó" screenLabel="Arquivo">
+
+  <section class="arquivo-page">
+    <div class="head">
+      <div class="rule"></div>
+      <h1>Arquivo</h1>
+      <p class="sub">{total} {total === 1 ? 'artigo' : 'artigos'} · do mais recente ao mais antigo</p>
+    </div>
+
+    {total === 0 ? (
+      <div class="empty">Ainda não há artigos publicados.</div>
+    ) : (
+      <div class="list">
+        {articles.map((a) => {
+          const d = fmtRowDate(a.data.date);
+          return (
+          <a class="row" href={`/${a.id}`}>
+            <div class="date">{d.day}<br/>{d.year}</div>
+            <h3 set:html={parseInlineMd(a.data.title)}></h3>
+            <div class="where">{catName(a.data.categories[0])} · O Cobogó</div>
+            <div class="thumb">imagem</div>
+          </a>
+          );
+        })}
+      </div>
+    )}
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+  .arquivo-page{
+    max-width:1280px;margin:0 auto;
+    padding:48px 68px 64px;
+  }
+  .arquivo-page .head{margin-bottom:8px}
+  .arquivo-page .head .rule{height:14px;background:#000}
+  .arquivo-page .head h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:64px;line-height:1;letter-spacing:-.02em;
+    color:#000;margin:24px 0 10px;
+  }
+  .arquivo-page .head .sub{
+    font-family:var(--mono);font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+    padding-bottom:24px;border-bottom:1px solid var(--ink);
+  }
+  .arquivo-page .empty{
+    padding:64px 0;font-family:var(--serif);font-style:italic;
+    font-size:20px;color:var(--ink-3);
+  }
+  .arquivo-page a.row{
+    display:grid;grid-template-columns:90px 1fr 200px 96px;
+    gap:24px;align-items:center;
+    padding:28px 0;border-bottom:1px solid var(--rule);
+    transition:background .2s ease, color .2s ease, padding .2s ease;
+    color:#000;
+  }
+  .arquivo-page a.row:hover{background:#000;color:#fff;padding-left:24px;padding-right:24px}
+  .arquivo-page a.row:hover .date,
+  .arquivo-page a.row:hover h3,
+  .arquivo-page a.row:hover .where,
+  .arquivo-page a.row:hover .thumb{color:#fff}
+  .arquivo-page .date{
+    font-family:var(--sans);font-size:13px;
+    letter-spacing:.04em;color:#000;font-weight:500;line-height:1.3;
+  }
+  .arquivo-page h3{
+    font-family:var(--serif);font-weight:500;
+    font-size:28px;line-height:1.15;letter-spacing:-.005em;
+    text-wrap:balance;color:#000;margin:0;
+  }
+  .arquivo-page h3 em{font-style:italic;font-weight:400}
+  .arquivo-page .where{
+    font-family:var(--serif);font-style:italic;font-size:16px;
+    color:var(--ink-3);text-align:right;
+  }
+  .arquivo-page .thumb{
+    width:96px;height:96px;background:#b89072;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:#000a;
+    flex-shrink:0;
+  }
+  @media (max-width:760px){
+    .arquivo-page{padding:32px 20px 48px}
+    .arquivo-page .head h1{font-size:48px}
+    .arquivo-page a.row{grid-template-columns:1fr;gap:8px;padding:20px 0}
+    .arquivo-page .where{text-align:left}
+    .arquivo-page .thumb{width:100%;height:80px}
+  }
+</style>
