@@ -51,9 +51,9 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
       {data.categories.map((cat) => {
         const ti = getTagInfo(cat);
         return (
-          <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>
-            <svg class="tag-mark" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><use href={`#cobogo-${ti.piece}`} width="100" height="100" /></svg>
-            {ti.name}
+          <span class="tag-item">
+            <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>{ti.name}</span>
+            <svg class="tag-mark" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style={`color:${ti.color}`}><use href={`#cobogo-${ti.piece}`} width="100" height="100" /></svg>
           </span>
         );
       })}

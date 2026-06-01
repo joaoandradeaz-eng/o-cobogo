@@ -150,17 +150,9 @@ import Tag from '../components/Tag.astro';
 <style is:global>
   /* ========== TAGS de categoria (chips coloridos acima da linha preta) ========== */
   .tags{
-    display:flex;flex-wrap:wrap;gap:6px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:16px;
   }
-  .tag{
-    display:inline-block;
-    font-family:var(--mono);font-size:10px;font-weight:600;
-    letter-spacing:.16em;text-transform:uppercase;
-    padding:5px 10px;
-    border-radius:2px;line-height:1;
-    white-space:nowrap;
-  }
-  /* cores das tags vêm via style inline da collection (sem hardcode) */
+  /* o chip (.tag) e a peça (.tag-mark) são estilizados globalmente (Tag.astro) */
 
   /* spacer invisível: reserva a mesma altura das .tags pra manter a
      linha preta da .stack alinhada com a da .big no row-1plus3 */
