@@ -151,6 +151,53 @@
   color: var(--terra-deep); background: rgba(184, 90, 31, 0.1);
 }
 
+/* ===== Barra de progresso de leitura (fixa no topo) ===== */
+.read-progress{
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  z-index: 200; pointer-events: none; background: transparent;
+}
+.read-progress span{
+  display: block; height: 100%; width: 0;
+  background: var(--terra);
+  transition: width .08s linear;
+}
+
+/* ===== Botão "voltar ao topo" (flutuante) ===== */
+.to-top{
+  position: fixed; right: 24px; bottom: 24px; z-index: 150;
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid var(--ink);
+  background: var(--paper); color: var(--ink);
+  font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(27, 22, 18, .18);
+  transition: background .2s ease, color .2s ease;
+}
+.to-top:hover{ background: #000; color: #fff; }
+.to-top[hidden]{ display: none; }
+
+/* ===== Compartilhar / RSS no fim do artigo ===== */
+.art-body .art-share{
+  margin-top: 48px; padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 16px 24px; flex-wrap: wrap;
+}
+.art-body .art-share .art-share-label{
+  font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+}
+.art-body .art-share .art-share-actions{
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.art-body .art-share .share-btn{
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: #000;
+  border: 1px solid var(--ink); border-radius: 2px;
+  padding: 12px 18px; background: transparent; cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.art-body .art-share .share-btn:hover{ background: #000; color: #fff; }
+
 /* === Hand-drawn highlights (mark element, multicolor) ===
    Cada cor usa o mesmo SVG path com Bézier irregular nas bordas, sobreposto
    a uma 2a passada deslocada (cor mais saturada da mesma família).
@@ -468,6 +515,11 @@
   .art-body .linha-fina .v{font-size:21px}
   /* coluna estreita: justify + hyphens viram buracos/rios; ragged-right lê melhor */
   .art-body .col p{text-align:left;hyphens:none;-webkit-hyphens:none}
+  /* botão voltar-ao-topo mais perto do canto no mobile */
+  .to-top{right:16px;bottom:16px}
+  /* compartilhar: botões de largura cheia ficam mais fáceis de tocar */
+  .art-body .art-share .art-share-actions{width:100%}
+  .art-body .art-share .share-btn{flex:1;text-align:center;padding:14px 18px}
 }
 
 /* ========== INSERT AUTOR no artigo: precisa de margin-top ========== */

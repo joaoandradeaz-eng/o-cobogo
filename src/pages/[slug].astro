@@ -17,10 +17,17 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 const { data } = article;
 
-// "Continue lendo": até 3 artigos publicados mais recentes, exceto o atual
+// "Continue lendo": até 3 artigos. Prioriza quem compartilha editoria com o atual
+// (leitura temática faz mais sentido), e dentro de cada grupo, os mais recentes.
+const currentCats = new Set(article.data.categories);
 const continueReading = (await getCollection('articles', ({ data }) => !data.draft))
   .filter((a) => a.id !== article.id)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .sort((a, b) => {
+    const aShared = a.data.categories.some((c) => currentCats.has(c)) ? 1 : 0;
+    const bShared = b.data.categories.some((c) => currentCats.has(c)) ? 1 : 0;
+    if (aShared !== bShared) return bShared - aShared;
+    return b.data.date.getTime() - a.data.date.getTime();
+  })
   .slice(0, 3);
 
 // Carrega todas as tags da collection — usado pra resolver labels e cores dinamicamente
@@ -78,6 +85,12 @@ function fmtCardDate(date: Date): string {
   type="article"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
+
+  <!-- BARRA DE PROGRESSO DE LEITURA (fixa no topo) -->
+  <div class="read-progress" aria-hidden="true"><span></span></div>
+
+  <!-- VOLTAR AO TOPO (flutuante, aparece após rolar) -->
+  <button class="to-top" type="button" aria-label="Voltar ao topo" hidden>↑</button>
 
   <!-- ARTICLE HEADER -->
   <header class="art-hd">
@@ -149,6 +162,15 @@ function fmtCardDate(date: Date): string {
       </aside>
     )}
 
+    <!-- COMPARTILHAR / ASSINAR -->
+    <div class="art-share">
+      <span class="art-share-label">Gostou? Compartilhe</span>
+      <div class="art-share-actions">
+        <button type="button" class="share-btn" data-share>Compartilhar →</button>
+        <a class="share-btn" href="/rss.xml">Assinar via RSS</a>
+      </div>
+    </div>
+
   </section>
 
   <!-- INSERT: SOBRE O AUTOR -->
@@ -211,6 +233,48 @@ function fmtCardDate(date: Date): string {
       li.appendChild(document.createTextNode(' '));
       li.appendChild(back);
     });
+  </script>
+
+  <script is:inline>
+    /* Barra de progresso + botão "voltar ao topo" */
+    (function () {
+      const bar = document.querySelector('.read-progress span');
+      const toTop = document.querySelector('.to-top');
+      const root = document.documentElement;
+      function onScroll() {
+        const max = root.scrollHeight - root.clientHeight;
+        const pct = max > 0 ? (root.scrollTop / max) * 100 : 0;
+        if (bar) bar.style.width = pct + '%';
+        if (toTop) toTop.hidden = root.scrollTop < 600;
+      }
+      document.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      if (toTop) {
+        toTop.addEventListener('click', () =>
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        );
+      }
+    })();
+
+    /* Compartilhar: usa o menu nativo do celular (Web Share); no desktop, copia o link */
+    (function () {
+      const btn = document.querySelector('[data-share]');
+      if (!btn) return;
+      btn.addEventListener('click', async () => {
+        const url = location.href;
+        const title = document.title;
+        if (navigator.share) {
+          try { await navigator.share({ title, url }); } catch (e) {}
+        } else {
+          try {
+            await navigator.clipboard.writeText(url);
+            const old = btn.textContent;
+            btn.textContent = 'Link copiado ✓';
+            setTimeout(() => { btn.textContent = old; }, 1800);
+          } catch (e) {}
+        }
+      });
+    })();
   </script>
 
 </BaseLayout>
