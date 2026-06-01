@@ -44,6 +44,11 @@ export function clearSession(cookies: AstroCookies): void {
   cookies.delete(COOKIE_NAME, { path: '/' });
 }
 
+/** Fonte única de verdade de quem pode entrar no admin. */
+export function isEmailAllowed(email: string | undefined | null): boolean {
+  return !!email && email === ALLOWED_EMAIL;
+}
+
 export function isAuthorized(session: SessionData | null): session is SessionData {
-  return session?.email === ALLOWED_EMAIL;
+  return isEmailAllowed(session?.email);
 }

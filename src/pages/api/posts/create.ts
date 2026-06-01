@@ -110,7 +110,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     );
   } catch (err: any) {
     return new Response(
-      JSON.stringify({ error: `GitHub commit failed: ${err.message ?? String(err)}` }),
+      JSON.stringify({ error: `Falha ao salvar no GitHub (token expirado ou sem permissão?). Detalhe: ${err.message ?? String(err)}` }),
       { status: 502 }
     );
   }
