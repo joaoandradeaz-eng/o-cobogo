@@ -1,0 +1,19 @@
+---
+// Chip de categoria: cor + nome da collection + mini peça de cobogó (mesma do gerador no admin).
+// O sprite #cobogo-* é registrado globalmente via CobogoSymbols no BaseLayout.
+import { getCollection } from 'astro:content';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+
+const tags = await getCollection('tags');
+const t = tags.find((x) => x.id === slug)?.data;
+const name = t?.name ?? slug;
+const color = t?.color ?? '#eee';
+const textColor = t?.textColor ?? '#666';
+const piece = t?.piece ?? 'grade';
+---
+<span class="tag" data-cat={slug} style={`background:${color};color:${textColor}`}>
+  <svg class="tag-mark" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><use href={`#cobogo-${piece}`} width="100" height="100" /></svg>
+  {name}
+</span>

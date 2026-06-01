@@ -79,6 +79,9 @@ img{display:block;max-width:100%}
 @media (max-width:760px){
   /* sem parede no mobile — tagline com respiro discreto, gruda mais perto do conteúdo */
   .tagline-strip{padding:28px 20px 16px;font-size:16px}
+  /* o .no-wall forçava 40px embaixo (specificity 0,2,0) e abria um vão grande
+     entre a tagline e as tags no mobile — alinha ao respiro discreto da faixa */
+  .tagline-strip.no-wall{padding-bottom:14px}
   .wall-section{display:none}
 }
 
@@ -87,12 +90,18 @@ img{display:block;max-width:100%}
   display:flex;flex-wrap:wrap;gap:6px;
 }
 .tag{
-  display:inline-block;
+  display:inline-flex;align-items:center;gap:5px;
   font-family:var(--mono);font-size:10px;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;
-  padding:5px 10px;
+  padding:5px 9px;
   border-radius:2px;line-height:1;
   white-space:nowrap;
+}
+/* mini peça de cobogó associada à tag (mesmo símbolo do gerador no admin);
+   herda a cor do texto do chip via currentColor */
+.tag .tag-mark{
+  width:11px;height:11px;flex-shrink:0;
+  display:block;color:currentColor;
 }
 /* cores das tags vêm via style inline da collection (definido em src/content/tags/*.json) */
 

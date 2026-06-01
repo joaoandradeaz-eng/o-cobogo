@@ -21,12 +21,12 @@ const { data } = article;
 const allTags = await getCollection('tags');
 const tagsBySlug = new Map(allTags.map((t) => [t.id, t.data]));
 
-type TagInfo = { name: string; color: string; textColor: string };
+type TagInfo = { name: string; color: string; textColor: string; piece: string };
 function getTagInfo(slug: string): TagInfo {
   const t = tagsBySlug.get(slug);
-  if (t) return { name: t.name, color: t.color, textColor: t.textColor };
+  if (t) return { name: t.name, color: t.color, textColor: t.textColor, piece: t.piece ?? 'grade' };
   // Fallback se a tag foi deletada mas o artigo ainda a referencia
-  return { name: slug, color: '#eee', textColor: '#666' };
+  return { name: slug, color: '#eee', textColor: '#666', piece: 'grade' };
 }
 
 // converte *texto* (markdown emphasis) em <em>texto</em>; usado em campos de frontmatter
@@ -51,7 +51,10 @@ const dateFmt = `${String(d.getUTCDate()).padStart(2, '0')} ${months[d.getUTCMon
       {data.categories.map((cat) => {
         const ti = getTagInfo(cat);
         return (
-          <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>{ti.name}</span>
+          <span class="tag" data-cat={cat} style={`background:${ti.color};color:${ti.textColor}`}>
+            <svg class="tag-mark" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><use href={`#cobogo-${ti.piece}`} width="100" height="100" /></svg>
+            {ti.name}
+          </span>
         );
       })}
     </div>

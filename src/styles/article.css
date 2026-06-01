@@ -51,7 +51,7 @@
   .art-hd .dek{font-size:20px}
 }
 @media (max-width:760px){
-  .art-hd{padding:40px 20px 24px}
+  .art-hd{padding:20px 20px 24px}
   .art-hd h1{font-size:38px}
   .art-hd .byline{font-size:14px;gap:4px 10px;padding:14px 18px}
 }
