@@ -42,6 +42,21 @@ function parseInlineMd(text: string): string {
 const titleHtml = parseInlineMd(data.title);
 const dekHtml = parseInlineMd(data.dek);
 const titlePlain = data.title.replace(/\*/g, '');
+const dekPlain = data.dek.replace(/\*/g, '');
+
+// JSON-LD (schema.org Article) — ajuda buscadores e prévia de links.
+const articleUrl = new URL(`/${article.id}`, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: titlePlain,
+  description: dekPlain,
+  datePublished: data.date.toISOString(),
+  author: { '@type': 'Person', name: data.author.replace(/\*/g, '') },
+  publisher: { '@type': 'Organization', name: 'O Cobogó' },
+  mainEntityOfPage: articleUrl,
+  ...(data.heroImage ? { image: new URL(data.heroImage, Astro.site).href } : {}),
+};
 
 // formato data: "12 mar 2026" (UTC pra evitar timezone shift)
 const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -54,7 +69,15 @@ function fmtCardDate(date: Date): string {
 }
 ---
 
-<BaseLayout title={`${titlePlain} · O Cobogó`} active="home" screenLabel="Artigo">
+<BaseLayout
+  title={`${titlePlain} · O Cobogó`}
+  active="home"
+  screenLabel="Artigo"
+  description={dekPlain}
+  image={data.heroImage}
+  type="article"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
 
   <!-- ARTICLE HEADER -->
   <header class="art-hd">

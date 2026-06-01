@@ -1,0 +1,57 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Página não encontrada · O Cobogó" screenLabel="404" noindex>
+  <section class="erro-404">
+    <div class="rule"></div>
+    <div class="code">404</div>
+    <h1>A página <em>respirou</em> e se foi.</h1>
+    <p class="lede">
+      O endereço que você procurou não existe — ou existiu e foi demolido,
+      como tantas varandas. Volte pra fachada principal.
+    </p>
+    <div class="links">
+      <a href="/" class="primary">← Voltar à edição</a>
+      <a href="/arquivo">Ver o arquivo</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .erro-404{
+    max-width:1280px;margin:0 auto;
+    padding:64px 68px 96px;
+  }
+  .erro-404 .rule{height:14px;background:#000}
+  .erro-404 .code{
+    font-family:var(--mono);font-size:13px;font-weight:700;
+    letter-spacing:.18em;color:var(--ink-3);
+    padding-top:14px;
+  }
+  .erro-404 h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:64px;line-height:1.02;letter-spacing:-.02em;
+    color:#000;margin:24px 0 18px;max-width:18ch;
+  }
+  .erro-404 h1 em{font-style:italic;font-weight:400;color:var(--terra-deep)}
+  .erro-404 .lede{
+    font-family:var(--serif);font-style:italic;
+    font-size:22px;line-height:1.4;color:var(--ink-2);
+    max-width:46ch;margin-bottom:32px;
+  }
+  .erro-404 .links{display:flex;gap:20px;align-items:baseline;flex-wrap:wrap}
+  .erro-404 .links a{
+    font-family:var(--mono);font-size:12px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);text-decoration:none;
+    border-bottom:1px solid transparent;transition:color .15s,border-color .15s;
+  }
+  .erro-404 .links a:hover{color:#000;border-color:#000}
+  .erro-404 .links a.primary{color:var(--terra-deep)}
+  @media (max-width:760px){
+    .erro-404{padding:48px 20px 64px}
+    .erro-404 h1{font-size:44px}
+    .erro-404 .lede{font-size:19px}
+  }
+</style>

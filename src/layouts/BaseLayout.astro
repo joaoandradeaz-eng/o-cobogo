@@ -9,9 +9,29 @@ interface Props {
   title: string;
   active?: 'home' | 'sobre';
   screenLabel?: string;
+  /** Meta description / og:description. Cai num resumo padrão da revista se omitido. */
+  description?: string;
+  /** Imagem social (og:image). Caminho relativo (/assets/...) ou URL absoluta. */
+  image?: string;
+  /** Tipo Open Graph: 'website' (padrão) ou 'article'. */
+  type?: 'website' | 'article';
+  /** Se true, pede pros buscadores não indexarem (ex.: páginas de admin). */
+  noindex?: boolean;
 }
 
-const { title, active = 'home', screenLabel } = Astro.props;
+const {
+  title,
+  active = 'home',
+  screenLabel,
+  description = 'Revista editorial sobre cidade, cultura e arquitetura — por João Andrade.',
+  image = '/assets/icone.png',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const SITE_NAME = 'O Cobogó';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -19,13 +39,34 @@ const { title, active = 'home', screenLabel } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/png" href="/assets/icone.png" />
+    <link rel="alternate" type="application/rss+xml" title="O Cobogó" href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <slot name="head" />
   </head>
   <body data-screen-label={screenLabel}>
     <CobogoSymbols />
