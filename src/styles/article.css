@@ -449,6 +449,8 @@
   .art-body .col blockquote p{font-size:24px}
   .art-body .col p:first-of-type::first-letter{font-size:88px}
   .art-body .linha-fina .v{font-size:21px}
+  /* coluna estreita: justify + hyphens viram buracos/rios; ragged-right lê melhor */
+  .art-body .col p{text-align:left;hyphens:none;-webkit-hyphens:none}
 }
 
 /* ========== INSERT AUTOR no artigo: precisa de margin-top ========== */
@@ -514,4 +516,11 @@
     padding:24px 0 !important;
   }
   .continue .grid > a:last-child{border-bottom:none}
+}
+@media (max-width:760px){
+  /* alinhar padding lateral ao corpo (era 68px, espremia a coluna) */
+  .continue{padding:48px 20px 64px}
+  /* head em nowrap fazia o "Voltar à edição" colidir sobre o h2 grande; empilha */
+  .continue .head{flex-direction:column;align-items:flex-start;gap:10px}
+  .continue .head h2{font-size:32px}
 }
