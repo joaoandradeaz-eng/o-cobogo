@@ -10,19 +10,11 @@ const { active = 'home' } = Astro.props;
 // abaixo disso a /arquivo só repetiria a home. Mesmo limite do botão "Ver mais".
 const published = await getCollection('articles', ({ data }) => !data.draft);
 const showArchive = published.length > 7;
+
+// Cor do header fixa por página: azul (navy) como padrão; verde no "Sobre".
+const headerBg = active === 'sobre' ? '#2E4A3C' : '#2B3F6E';
 ---
-{/* Cor do header: muda a cada carregamento, sorteada de uma paleta inspirada em
-   Brasília (o azul do céu, a terra do cerrado, o entardecer no Planalto). O script
-   roda inline ANTES de o <header> ser pintado, então troca a cor sem flash e
-   re-sorteia a cada refresh — funciona até nas páginas pré-renderizadas. */}
-<script is:inline>
-  (function () {
-    var palette = ['#2B3F6E', '#1B3A5B', '#8C3F12', '#2E4A3C', '#5A2A3A', '#3D3A6E', '#1E4D4A'];
-    var c = palette[Math.floor(Math.random() * palette.length)];
-    document.documentElement.style.setProperty('--header-bg', c);
-  })();
-</script>
-<header class="site">
+<header class="site" style={`--header-bg:${headerBg}`}>
   <div class="top">
     <a href="/" class="brand" aria-label="O Cobogó · ir para a home">O Cobogó</a>
     <nav class="rt">
@@ -32,12 +24,5 @@ const showArchive = published.length > 7;
       )}
       <a href="/sobre" class={active === 'sobre' ? 'is-active' : ''}>Sobre</a>
     </nav>
-  </div>
-  <div class="tagline">
-    <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
-      <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="#FFFFFF"/>
-      <circle cx="50" cy="50" r="14" fill="#1B1612"/>
-    </svg>
-    Ensaios de um <em>não-candango</em> no Planalto.
   </div>
 </header>
