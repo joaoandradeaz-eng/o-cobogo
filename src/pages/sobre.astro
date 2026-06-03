@@ -28,6 +28,11 @@ function catName(slug: string): string {
 ---
 <BaseLayout title="Sobre · O Cobogó" active="sobre" screenLabel="Sobre" description="João Andrade — escreve sobre cidade, cultura e arquitetura em O Cobogó.">
 
+  <!-- EPÍGRAFE / MANIFESTO -->
+  <section class="epigraph">
+    <p>Cidade é uma forma de <em>pensar</em>.</p>
+  </section>
+
   <!-- HERO DO AUTOR -->
   <section class="author-hero">
     <div class="rule"></div>
@@ -76,9 +81,32 @@ function catName(slug: string): string {
     })}
   </section>
   )}
+
+  <!-- ASSINATURA VISUAL / CONTATO -->
+  <section class="signoff">
+    <svg class="seal" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><use href="#cobogo-flor" width="100" height="100" /></svg>
+    <p class="locale">O Cobogó · Brasília</p>
+    <a class="contact" href="https://www.linkedin.com/in/joaoandradeaz" target="_blank" rel="noopener">Fale comigo no LinkedIn →</a>
+  </section>
 </BaseLayout>
 
 <style is:global>
+  /* ========== EPÍGRAFE / MANIFESTO ========== */
+  .epigraph{
+    max-width:1280px;margin:0 auto;
+    padding:72px var(--gutter) 40px;
+  }
+  .epigraph p{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(34px,5vw,64px);line-height:1.08;
+    letter-spacing:-.02em;color:#000;max-width:18ch;
+    text-wrap:balance;
+  }
+  .epigraph p em{font-style:italic;color:var(--terra-deep)}
+  @media (max-width:760px){
+    .epigraph{padding:48px 20px 24px}
+  }
+
   /* ========== AUTHOR HERO ========== */
   .author-hero{
     max-width:1280px;margin:48px auto 0;
@@ -226,5 +254,32 @@ function catName(slug: string): string {
     }
     .arquivo .where{text-align:left}
     .arquivo .thumb{width:100%;height:80px}
+  }
+
+  /* ========== ASSINATURA VISUAL / CONTATO ========== */
+  .signoff{
+    max-width:1280px;margin:0 auto;
+    padding:56px var(--gutter) 80px;
+    border-top:1px solid var(--ink);
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;gap:20px;
+  }
+  .signoff .seal{
+    width:54px;height:54px;color:var(--terra-deep);display:block;
+  }
+  .signoff .locale{
+    font-family:var(--mono);font-size:11px;font-weight:500;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .signoff .contact{
+    display:inline-flex;align-items:center;
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.12em;text-transform:uppercase;color:#000;
+    padding:13px 22px;border:1px solid var(--ink);border-radius:2px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .signoff .contact:hover{background:#000;color:#fff}
+  @media (max-width:760px){
+    .signoff{padding:48px 20px 64px}
   }
 </style>
