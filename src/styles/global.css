@@ -127,7 +127,7 @@ header.site .top{
 }
 /* tagline movida da PageIntro pro header — aparece agora em todas as páginas */
 header.site .tagline{
-  text-align:center;
+  text-align:left;
   padding:0 var(--edge) 16px;
   font-family:var(--serif);font-weight:400;
   font-size:16px;line-height:1.3;color:#fff;

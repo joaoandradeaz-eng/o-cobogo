@@ -41,18 +41,17 @@ function catName(slug: string): string {
       </div>
       <div>
         <h1>João Andrade</h1>
-        <p class="lede">Não nasceu candango. Chegou ao Planalto vindo de fora e ficou — e é dessa distância, a de quem ainda estranha, que escreve sobre a cidade, a cultura e o que passa entre uma e&nbsp;outra.</p>
       </div>
     </div>
   </section>
 
   <!-- BIOGRAFIA -->
   <section class="bio">
-    <h2>Biografia</h2>
     <p><span class="first">João Andrade construiu carreira no setor privado</span>, em São Paulo, ao longo de mais de dez anos — antes de a vida o trazer para Brasília. Vem de uma família de pequenos comerciantes, três gerações dedicadas ao balcão e à rua, e talvez por isso nunca tenha conseguido olhar uma cidade sem ver, primeiro, as pessoas que a fazem funcionar.</p>
     <p>Mudou-se para o Planalto por amor — a esposa, advogada — e ali encontrou um ofício que não procurava: o de agregar, conciliar e costurar interesses. Hoje trabalha com relações institucionais e governamentais, ao lado de quem representa milhões de pequenos empreendedores do país. Aprendeu, no caminho, que <em>a influência mais duradoura é a que não se anuncia</em> — lição que serve à política e, descobriu depois, também à escrita.</p>
     <p>O Cobogó nasceu do outro lado dessa rotina. Se o trabalho é a pauta, aqui mora o olhar. O cobogó — aquele elemento vazado que filtra a luz e deixa passar o vento sem deixar passar tudo — deu nome e método à revista: uma forma de olhar a cidade que separa o ruído do que de fato importa. João escreve sobre o que está entre a casa e a rua, entre o que se constrói e o que se decide.</p>
-    <p>Acredita que <em>cidade é uma forma de pensar</em>, e que a melhor maneira de entender um lugar é continuar, por algum tempo, estrangeiro a ele. Filho de um professor universitário, cresceu cercado pelo peso das ideias — e faz desta revista o lugar onde o não-candango anota, sem pressa, o que enxerga do Planalto.</p>
+    <p>Acredita que <em>cidade é uma forma de pensar</em>, e que a melhor maneira de entender um lugar é continuar, por algum tempo, estrangeiro a ele. Filho de um professor universitário, cresceu cercado pelo peso das ideias — e faz desta revista o lugar onde anota, sem pressa, o que vê.</p>
+    <p class="closing">Não nasceu candango. Chegou ao Planalto vindo de fora e ficou — e é dessa distância, a de quem ainda estranha, que escreve sobre a cidade, a cultura e o que passa entre uma e&nbsp;outra.</p>
     <div class="signature">— j. a.</div>
   </section>
 
@@ -148,6 +147,13 @@ function catName(slug: string): string {
   }
   .bio p em{font-style:italic;color:var(--ink)}
   .bio p .first{font-family:var(--serif);font-style:italic;color:var(--ink-3)}
+  /* frase de fecho (era a lede do topo) — destacada como kicker do texto */
+  .bio .closing{
+    margin-top:36px;
+    font-family:var(--serif);font-style:italic;
+    font-size:27px;line-height:1.4;color:#000;
+    max-width:60ch;text-wrap:pretty;
+  }
   .bio .signature{
     margin-top:40px;font-family:var(--serif);
     font-style:italic;font-size:18px;color:var(--ink-3);
@@ -156,6 +162,7 @@ function catName(slug: string): string {
     .bio{padding:48px 20px}
     .bio h2{font-size:32px}
     .bio p{font-size:19px}
+    .bio .closing{font-size:21px}
   }
 
   /* ========== ARQUIVO SELECIONADO ========== */
