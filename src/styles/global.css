@@ -20,6 +20,15 @@
   --display:var(--serif);
   --pad-y:48px;
   --pad-x:28px;
+  /* Margens laterais (gutters) das páginas no DESKTOP — dobradas em relação ao
+     valor histórico (68px → 136px, 40px → 80px). Em telas ≤1100px voltam ao
+     tamanho antigo, pra tablet/laptop pequeno não ficar apertado. */
+  --gutter:136px; /* páginas editoriais: artigo, sobre, arquivo, tags, 404 */
+  --edge:80px;    /* header, shell e insert "Sobre o autor" */
+}
+/* Tablet e abaixo: gutters voltam ao tamanho de antes (o "dobro" é só no desktop) */
+@media (max-width:1100px){
+  :root{ --gutter:68px; --edge:40px; }
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -51,37 +60,17 @@ img{display:block;max-width:100%}
 }
 .skip-link:focus{left:8px}
 
-.shell{max-width:1280px;margin:0 auto;padding:0 40px}
+.shell{max-width:1280px;margin:0 auto;padding:0 var(--edge)}
 @media (max-width:760px){ .shell{padding:0 20px} }
 
-/* ========== PAGE INTRO: tagline-strip + parede de cobogós com sombra do Congresso ========== */
-.tagline-strip{
-  max-width:1280px;margin:0 auto;
-  padding:26px 68px 18px;
-  text-align:center;
-  font-family:var(--serif);font-style:normal;font-weight:400;
-  font-size:17px;line-height:1.3;
-  color:#5C5A56; /* cinza-chumbo */
-}
-.tagline-strip em{font-style:normal;color:inherit;font-weight:400}
-.tagline-strip .tagline-eye{
-  width:17px;height:17px;
-  display:inline-block;vertical-align:middle;
-  margin-right:7px;margin-top:-3px;
-}
-
+/* ========== PAGE INTRO: parede de cobogós (oculta por enquanto) ==========
+   A tagline migrou pro header. Aqui ficam só os estilos da parede de cobogós,
+   preservados junto com o markup (showWall=false em PageIntro.astro) pra
+   reativar fácil quando quiser. */
 .wall-section{position:relative;margin-top:0}
 .stripe{width:100%;background-color:transparent}
 
-/* Em /sobre e /[slug] não tem parede → tagline ganha mais respiro embaixo */
-.tagline-strip.no-wall{padding-bottom:40px}
-
 @media (max-width:760px){
-  /* sem parede no mobile — tagline com respiro discreto, gruda mais perto do conteúdo */
-  .tagline-strip{padding:28px 20px 16px;font-size:16px}
-  /* o .no-wall forçava 40px embaixo (specificity 0,2,0) e abria um vão grande
-     entre a tagline e as tags no mobile — alinha ao respiro discreto da faixa */
-  .tagline-strip.no-wall{padding-bottom:14px}
   .wall-section{display:none}
 }
 
@@ -134,12 +123,12 @@ a.by-author:hover > span{color:#000;text-decoration:underline}
 header.site{background:var(--header-bg,#2B3F6E);border-bottom:1px solid var(--ink)}
 header.site .top{
   display:flex;align-items:center;justify-content:space-between;
-  gap:24px;padding:18px 40px 14px;
+  gap:24px;padding:18px var(--edge) 14px;
 }
 /* tagline movida da PageIntro pro header — aparece agora em todas as páginas */
 header.site .tagline{
   text-align:center;
-  padding:0 40px 16px;
+  padding:0 var(--edge) 16px;
   font-family:var(--serif);font-weight:400;
   font-size:16px;line-height:1.3;color:#fff;
 }
@@ -223,7 +212,7 @@ footer.site .foot-row .rt{
 /* ---------- insert "Sobre o autor" (Home + Artigo) ---------- */
 .insert.autor{
   max-width:1280px;margin:0 auto;
-  padding:0 40px;background:transparent;position:relative;
+  padding:0 var(--edge);background:transparent;position:relative;
 }
 .insert.autor .rule{
   height:12px;background:#000;

@@ -1,7 +1,7 @@
 /* ========== ARTICLE LAYOUT — usado em /[slug] e em /admin/novo, /admin/edit ========== */
 
 /* ========== ARTICLE HEADER ========== */
-.art-hd{max-width:1280px;margin:0 auto;padding:64px 68px 40px}
+.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 40px}
 .art-hd .tags{
   display:flex;flex-wrap:wrap;align-items:center;gap:16px;
   margin-bottom:14px;
@@ -57,7 +57,7 @@
 }
 
 /* ========== HERO IMAGE ========== */
-.art-hero{max-width:1280px;margin:0 auto;padding:0 68px}
+.art-hero{max-width:1280px;margin:0 auto;padding:0 var(--gutter)}
 .art-hero figure{
   position:relative;aspect-ratio:16/8;
   background:var(--paper-2);border:1px solid var(--rule-strong);
@@ -517,7 +517,7 @@
 /* ========== CONTINUE LENDO ========== */
 .continue{
   max-width:1280px;margin:0 auto;
-  padding:64px 68px 96px;
+  padding:64px var(--gutter) 96px;
   border-top:1px solid var(--rule);
 }
 .continue .head{

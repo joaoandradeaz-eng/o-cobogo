@@ -208,6 +208,11 @@ const hasMore = published.length > 7;
   .feed{
     display:grid;grid-template-columns:repeat(12,1fr);gap:0;
   }
+  /* desktop: dobra a margem externa da home (28→56px) empurrando a grade
+     toda pra dentro, sem alargar o vão entre as colunas. Some no tablet/mobile. */
+  @media (min-width:1101px){
+    .feed{padding-left:28px;padding-right:28px}
+  }
   .feed > article,.feed > .insert{
     padding:var(--pad-y) var(--pad-x);
   }
