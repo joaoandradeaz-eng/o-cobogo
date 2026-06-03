@@ -1,18 +1,34 @@
 ---
-title: "A varanda como teoria política: o que a fachada perdeu quando deixou de *respirar*"
-dek: "Sobre o cobogó, o ar-condicionado e a hipótese de que a casa brasileira fechou os olhos quando fechou as paredes."
-categories: [ensaio, cidade-casa]
-author: "João Andrade"
-date: 2026-03-12
-readTime: "14 min"
-heroCaption: "Sobrado em Casa Forte com fachada de cobogó cerâmico, década de 1960. A pele que separa sem fechar."
-linhaFina: "A varanda não é uma sobra arquitetônica — é um *argumento*. Foi onde o brasileiro aprendeu a não escolher entre dentro e fora."
+title: >-
+  A varanda como teoria política: o que a fachada perdeu quando deixou de
+  *respirar*
+dek: >-
+  Sobre o cobogó, o ar-condicionado e a hipótese de que a casa brasileira fechou
+  os olhos quando fechou as paredes.
+categories:
+  - opiniao
+  - cidade-casa
+author: João Andrade
+date: 2026-03-12T00:00:00.000Z
+readTime: 14 min
+heroCaption: >-
+  Sobrado em Casa Forte com fachada de cobogó cerâmico, década de 1960. A pele
+  que separa sem fechar.
+linhaFina: >-
+  A varanda não é uma sobra arquitetônica — é um *argumento*. Foi onde o
+  brasileiro aprendeu a não escolher entre dentro e fora.
 notas:
-  - 'Sobre o cobogó como invenção pernambucana, ver Boeckmann, E. A. (1929), "Tijolos vazados", boletim ICEI.'
+  - >-
+    Sobre o cobogó como invenção pernambucana, ver Boeckmann, E. A. (1929),
+    "Tijolos vazados", boletim ICEI.
   - 'Lina Bo Bardi, *entrevistas reunidas*, Cosac, 2009, p. 142.'
-  - 'O dado sobre 1985–2005 é impressionista; ver Censos IBGE para arquitetura residencial.'
+  - >-
+    O dado sobre 1985–2005 é impressionista; ver Censos IBGE para arquitetura
+    residencial.
   - 'Sobre porosidade urbana, Walter Benjamin, "Nápoles" (1925).'
-  - 'Sobre injustiça doméstica, ver Heleieth Saffioti, *Empregada doméstica*, 1988.'
+  - >-
+    Sobre injustiça doméstica, ver Heleieth Saffioti, *Empregada doméstica*,
+    1988.
   - 'O verbo "sombrear" aparece em João Cabral, "Pernambucano falando".'
 ---
 
