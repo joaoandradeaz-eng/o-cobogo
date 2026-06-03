@@ -1,27 +1,19 @@
 ---
 /**
- * Page intro: tagline-strip (todas as páginas) + parede de cobogós Grade
- * com sombra do Congresso (SÓ na home).
+ * Page intro: parede de cobogós Grade com sombra do Congresso (SÓ na home).
  *
- * Em /sobre e /[slug] a tagline ganha mais espaço (modificador .no-wall)
- * já que vira a única peça visual entre header e conteúdo.
+ * NOTA (mudança): a tagline ("Ensaios de um não-candango no Planalto") foi
+ * movida para o header (ver Header.astro), então aparece agora em TODAS as
+ * páginas — não mora mais aqui.
  *
- * No mobile a parede está sempre oculta (display:none via media query) —
- * a regra .no-wall do desktop não interfere lá.
+ * A parede de cobogós está TEMPORARIAMENTE OCULTA a pedido (showWall = false).
+ * O código fica preservado abaixo; basta voltar showWall para true pra reativar.
  */
 const isHome = Astro.url.pathname === '/';
+const showWall = false; // ← parede de cobogós escondida por enquanto (código mantido)
 ---
 
-<!-- Tagline strip — sempre visível -->
-<div class:list={['tagline-strip', !isHome && 'no-wall']}>
-  <svg class="tagline-eye" viewBox="0 0 100 100" aria-hidden="true">
-    <path d="M 4 50 Q 50 -20 96 50 Q 50 120 4 50 Z" fill="#4169E1"/>
-    <circle cx="50" cy="50" r="14" fill="#FFFFFF"/>
-  </svg>
-  Ensaios de um <em>não-candango</em> no Planalto.
-</div>
-
-{isHome && (
+{showWall && isHome && (
   <Fragment>
     <!-- Symbol def do Grade cobogó (inline, usado pelo script abaixo via getElementById) -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
