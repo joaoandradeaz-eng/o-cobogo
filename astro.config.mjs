@@ -5,7 +5,7 @@ import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://o-cobogo.vercel.app',
+  site: 'https://ocobogo.com.br',
   output: 'server',
   adapter: vercel(),
   integrations: [
