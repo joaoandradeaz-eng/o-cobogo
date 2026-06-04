@@ -15,6 +15,8 @@ export type PostFrontmatter = {
   notas?: string[];
   heroImage?: string;
   heroCaption?: string;
+  heroPosition?: string;
+  heroZoom?: number;
 };
 
 const turndown = new TurndownService({
@@ -131,6 +133,15 @@ export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): s
   };
   if (frontmatter.heroImage) data.heroImage = frontmatter.heroImage;
   if (frontmatter.heroCaption) data.heroCaption = frontmatter.heroCaption;
+  // Enquadramento só importa se há capa; grava apenas valores fora do padrão.
+  if (frontmatter.heroImage) {
+    if (frontmatter.heroPosition && frontmatter.heroPosition !== '50% 50%') {
+      data.heroPosition = frontmatter.heroPosition;
+    }
+    if (frontmatter.heroZoom && frontmatter.heroZoom !== 1) {
+      data.heroZoom = frontmatter.heroZoom;
+    }
+  }
   if (frontmatter.linhaFina) data.linhaFina = frontmatter.linhaFina;
   if (frontmatter.linhaFinaLabel !== undefined) data.linhaFinaLabel = frontmatter.linhaFinaLabel;
   if (frontmatter.notas?.length) data.notas = frontmatter.notas;

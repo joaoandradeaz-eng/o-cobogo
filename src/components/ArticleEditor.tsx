@@ -34,6 +34,8 @@ type InitialValues = {
   draft: boolean;
   heroImage?: string;
   heroCaption?: string;
+  heroPosition?: string;
+  heroZoom?: number;
 };
 
 type Props = {
@@ -61,8 +63,20 @@ type Snapshot = {
   bodyHtml: string;
   heroImage: string;
   heroCaption: string;
+  heroPosX: number;
+  heroPosY: number;
+  heroZoom: number;
   savedAt: number;
 };
+
+/** "50% 30%" → {x:50,y:30}; valores ausentes/ruins caem no centro (50). */
+function parseHeroPosition(pos?: string): { x: number; y: number } {
+  if (!pos) return { x: 50, y: 50 };
+  const m = pos.match(/(-?\d+(?:\.\d+)?)%?\s+(-?\d+(?:\.\d+)?)%?/);
+  if (!m) return { x: 50, y: 50 };
+  const clamp = (n: number) => Math.min(100, Math.max(0, n));
+  return { x: clamp(Number(m[1])), y: clamp(Number(m[2])) };
+}
 
 function loadDraft(): Snapshot | null {
   try {
@@ -140,6 +154,9 @@ export default function ArticleEditor({
   const [bodyHtml, setBodyHtml] = useState(initial?.bodyHtml ?? '');
   const [heroImage, setHeroImage] = useState(initial?.heroImage ?? '');
   const [heroCaption, setHeroCaption] = useState(initial?.heroCaption ?? '');
+  const [heroPosX, setHeroPosX] = useState(parseHeroPosition(initial?.heroPosition).x);
+  const [heroPosY, setHeroPosY] = useState(parseHeroPosition(initial?.heroPosition).y);
+  const [heroZoom, setHeroZoom] = useState(initial?.heroZoom ?? 1);
   const [heroUploading, setHeroUploading] = useState(false);
   const heroInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -181,6 +198,9 @@ export default function ArticleEditor({
         setBodyHtml(draft.bodyHtml);
         setHeroImage(draft.heroImage || '');
         setHeroCaption(draft.heroCaption || '');
+        setHeroPosX(typeof draft.heroPosX === 'number' ? draft.heroPosX : 50);
+        setHeroPosY(typeof draft.heroPosY === 'number' ? draft.heroPosY : 50);
+        setHeroZoom(typeof draft.heroZoom === 'number' ? draft.heroZoom : 1);
         setRestoredFromDraft(true);
       } else {
         clearDraft();
@@ -197,11 +217,11 @@ export default function ArticleEditor({
     if (!title && !bodyHtml && !dek) return;
     setAutosaveStatus('pending');
     const t = setTimeout(() => {
-      saveDraft({ title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption });
+      saveDraft({ title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption, heroPosX, heroPosY, heroZoom });
       setAutosaveStatus('saved');
     }, 1500);
     return () => clearTimeout(t);
-  }, [title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption]);
+  }, [title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption, heroPosX, heroPosY, heroZoom]);
 
   // beforeunload
   useEffect(() => {
@@ -341,6 +361,8 @@ export default function ArticleEditor({
           bodyHtml,
           heroImage: heroImage.trim() || undefined,
           heroCaption: heroImage.trim() && heroCaption.trim() ? heroCaption.trim() : undefined,
+          heroPosition: heroImage.trim() ? `${Math.round(heroPosX)}% ${Math.round(heroPosY)}%` : undefined,
+          heroZoom: heroImage.trim() ? Number(heroZoom.toFixed(2)) : undefined,
           linhaFina: showLinhaFina && linhaFina.trim() ? linhaFina : undefined,
           linhaFinaLabel: showLinhaFina && linhaFina.trim() ? linhaFinaLabel.trim() : undefined,
           notas: notas.filter((n) => n.trim()).length ? notas.filter((n) => n.trim()) : undefined,
@@ -717,7 +739,15 @@ export default function ArticleEditor({
       <div className="art-hero">
         <figure>
           {heroImage ? (
-            <img src={heroImage} alt={heroCaption || 'Capa do artigo'} />
+            <img
+              src={heroImage}
+              alt={heroCaption || 'Capa do artigo'}
+              style={{
+                objectPosition: `${heroPosX}% ${heroPosY}%`,
+                transform: `scale(${heroZoom})`,
+                transformOrigin: `${heroPosX}% ${heroPosY}%`,
+              }}
+            />
           ) : (
             <button
               type="button"
@@ -732,6 +762,37 @@ export default function ArticleEditor({
         </figure>
         {heroImage && (
           <>
+            {/* Enquadramento dentro da moldura fixa: foco + zoom */}
+            <div className="hero-frame-ctl" style={{
+              marginTop: 12, padding: '14px 16px',
+              border: '1px solid var(--rule)', borderRadius: 4,
+              display: 'grid', gap: 10,
+              fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-2)',
+            }}>
+              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
+                <span>Vertical</span>
+                <input type="range" min={0} max={100} step={1} value={heroPosY}
+                  onChange={(e) => setHeroPosY(Number(e.target.value))}
+                  aria-label="Enquadramento vertical (topo ↔ base)" />
+              </label>
+              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
+                <span>Horizontal</span>
+                <input type="range" min={0} max={100} step={1} value={heroPosX}
+                  onChange={(e) => setHeroPosX(Number(e.target.value))}
+                  aria-label="Enquadramento horizontal (esquerda ↔ direita)" />
+              </label>
+              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
+                <span>Zoom {heroZoom.toFixed(2)}×</span>
+                <input type="range" min={1} max={3} step={0.05} value={heroZoom}
+                  onChange={(e) => setHeroZoom(Number(e.target.value))}
+                  aria-label="Zoom da capa" />
+              </label>
+              <button type="button"
+                onClick={() => { setHeroPosX(50); setHeroPosY(50); setHeroZoom(1); }}
+                style={{ justifySelf: 'start', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 12, color: 'var(--ink-3)', textDecoration: 'underline', padding: 0 }}>
+                ↺ centralizar e tirar zoom
+              </button>
+            </div>
             <input
               type="text"
               value={heroCaption}
@@ -739,7 +800,7 @@ export default function ArticleEditor({
               placeholder="Legenda da capa (opcional)…"
               aria-label="Legenda da capa"
               style={{
-                width: '100%', marginTop: 10, padding: '6px 0',
+                width: '100%', marginTop: 12, padding: '6px 0',
                 border: 'none', borderBottom: '1px solid var(--rule)',
                 background: 'transparent', fontFamily: 'var(--serif)',
                 fontSize: 15, color: 'var(--ink-2)', textAlign: 'center',
@@ -750,7 +811,7 @@ export default function ArticleEditor({
                 style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-3)', textDecoration: 'underline' }}>
                 {heroUploading ? '⏳ subindo…' : '↻ trocar capa'}
               </button>
-              <button type="button" onClick={() => { setHeroImage(''); setHeroCaption(''); }}
+              <button type="button" onClick={() => { setHeroImage(''); setHeroCaption(''); setHeroPosX(50); setHeroPosY(50); setHeroZoom(1); }}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-3)', textDecoration: 'underline' }}>
                 × remover capa
               </button>

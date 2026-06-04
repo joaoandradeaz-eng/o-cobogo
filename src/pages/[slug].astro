@@ -125,7 +125,7 @@ function fmtCardDate(date: Date): string {
   <div class="art-hero">
     <figure>
       {data.heroImage
-        ? <img src={data.heroImage} alt={data.heroCaption ?? ''} />
+        ? <img src={data.heroImage} alt={data.heroCaption ?? ''} style={`object-position:${data.heroPosition ?? '50% 50%'};transform:scale(${data.heroZoom ?? 1});transform-origin:${data.heroPosition ?? '50% 50%'}`} />
         : <div class="ph">imagem · placeholder</div>}
     </figure>
     {data.heroCaption && (

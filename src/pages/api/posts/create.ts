@@ -16,6 +16,8 @@ type CreateBody = {
   bodyHtml?: string;
   heroImage?: string;
   heroCaption?: string;
+  heroPosition?: string;
+  heroZoom?: number;
   linhaFina?: string;
   linhaFinaLabel?: string;
   notas?: string[];
@@ -97,6 +99,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     draft: isDraft,
     heroImage: body.heroImage?.trim() || undefined,
     heroCaption: body.heroCaption?.trim() || undefined,
+    heroPosition: body.heroPosition?.trim() || undefined,
+    heroZoom: typeof body.heroZoom === 'number' ? body.heroZoom : undefined,
     linhaFina: body.linhaFina?.trim() || undefined,
     linhaFinaLabel: body.linhaFinaLabel,
     notas: body.notas?.length ? body.notas.map((n) => n.trim()).filter(Boolean) : undefined,

@@ -31,6 +31,10 @@ const articles = defineCollection({
     heroImage: z.string().optional(),
     /** Legenda da foto de capa. */
     heroCaption: z.string().optional(),
+    /** Enquadramento da capa dentro da moldura fixa: ponto de foco (object-position), ex "50% 30%". */
+    heroPosition: z.string().optional(),
+    /** Zoom da capa dentro da moldura (1 = preenche; >1 aproxima). Padrão 1. */
+    heroZoom: z.number().optional(),
     /** Linha-fina: kicker em destaque acima do corpo do texto. Use *itálico* livremente. */
     linhaFina: z.string().optional(),
     /** Rótulo da linha-fina. Padrão: "Linha-fina". String vazia ou undefined → não renderiza rótulo. */
