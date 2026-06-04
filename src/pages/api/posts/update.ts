@@ -1,9 +1,8 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import { getSession, isAuthorized } from '../../../lib/session';
 import { htmlToMarkdown, buildMarkdownFile, type PostFrontmatter } from '../../../lib/markdown';
 import { getFile, updateFile } from '../../../lib/github';
-
-const VALID_CATEGORIES = ['ensaio', 'reportagem', 'critica', 'entrevista', 'memoria', 'cidade-casa'];
 
 type UpdateBody = {
   slug?: string;
@@ -62,7 +61,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
   }
 
-  if (body.categories?.some((c) => !VALID_CATEGORIES.includes(c))) {
+  // Lê as editorias reais do repositório (src/content/tags) — nunca uma lista fixa
+  // que pode desencontrar das tags. Assim, criar uma tag nova já a habilita aqui.
+  const validCategories = (await getCollection('tags')).map((t) => t.id);
+  if (body.categories?.some((c) => !validCategories.includes(c))) {
     return new Response(JSON.stringify({ error: 'invalid category' }), { status: 400 });
   }
 
@@ -87,7 +89,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const frontmatter: PostFrontmatter = {
     title: titleRaw || `(sem título) ${slug}`,
     dek: dekRaw || '...',
-    categories: body.categories?.length ? body.categories : ['ensaio'],
+    categories: body.categories?.length ? body.categories : ['opiniao'],
     date: body.date?.trim() || todayISO(),
     readTime: body.readTime?.trim() || '1 min',
     draft: isDraft,
