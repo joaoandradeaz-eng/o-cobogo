@@ -78,6 +78,9 @@ function parseHeroPosition(pos?: string): { x: number; y: number } {
   return { x: clamp(Number(m[1])), y: clamp(Number(m[2])) };
 }
 
+const clampPct = (n: number) => Math.min(100, Math.max(0, n));
+const clampZoom = (n: number) => Math.min(3, Math.max(1, n));
+
 function loadDraft(): Snapshot | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -159,6 +162,10 @@ export default function ArticleEditor({
   const [heroZoom, setHeroZoom] = useState(initial?.heroZoom ?? 1);
   const [heroUploading, setHeroUploading] = useState(false);
   const heroInputRef = useRef<HTMLInputElement | null>(null);
+  const heroFigureRef = useRef<HTMLElement | null>(null);
+  const heroZoomRef = useRef(heroZoom);
+  heroZoomRef.current = heroZoom;
+  const heroDragRef = useRef({ active: false, startX: 0, startY: 0, baseX: 50, baseY: 50 });
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -320,6 +327,39 @@ export default function ArticleEditor({
       setHeroUploading(false);
     }
   };
+
+  // Arrastar a capa (clique/dedo) pra reposicionar o foco dentro da moldura.
+  const onHeroPointerDown = (e: React.PointerEvent) => {
+    if (!heroImage) return;
+    e.preventDefault();
+    try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch {}
+    heroDragRef.current = { active: true, startX: e.clientX, startY: e.clientY, baseX: heroPosX, baseY: heroPosY };
+  };
+  const onHeroPointerMove = (e: React.PointerEvent) => {
+    const d = heroDragRef.current;
+    if (!d.active || !heroFigureRef.current) return;
+    const rect = heroFigureRef.current.getBoundingClientRect();
+    const z = heroZoomRef.current || 1;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    // arrastar a foto pra direita revela mais o lado esquerdo → diminui X
+    setHeroPosX(clampPct(d.baseX - (dx / (rect.width * z)) * 100));
+    setHeroPosY(clampPct(d.baseY - (dy / (rect.height * z)) * 100));
+  };
+  const endHeroDrag = () => { heroDragRef.current.active = false; };
+
+  // Pinça do trackpad (Mac) chega como wheel + ctrlKey — vira zoom da capa.
+  useEffect(() => {
+    const el = heroFigureRef.current;
+    if (!el || !heroImage) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey) return; // só pinça; scroll normal passa direto
+      e.preventDefault();
+      setHeroZoom((z) => clampZoom(z - e.deltaY * 0.01));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [heroImage]);
 
   const insertFootnote = () => {
     const editor = editorRef.current;
@@ -737,15 +777,24 @@ export default function ArticleEditor({
 
       {/* ========= HERO IMAGE (capa do artigo) ========= */}
       <div className="art-hero">
-        <figure>
+        <figure
+          ref={heroFigureRef as React.RefObject<HTMLElement>}
+          onPointerDown={onHeroPointerDown}
+          onPointerMove={onHeroPointerMove}
+          onPointerUp={endHeroDrag}
+          onPointerCancel={endHeroDrag}
+          style={heroImage ? { cursor: 'grab', touchAction: 'none', userSelect: 'none' } : undefined}
+        >
           {heroImage ? (
             <img
               src={heroImage}
               alt={heroCaption || 'Capa do artigo'}
+              draggable={false}
               style={{
                 objectPosition: `${heroPosX}% ${heroPosY}%`,
                 transform: `scale(${heroZoom})`,
                 transformOrigin: `${heroPosX}% ${heroPosY}%`,
+                pointerEvents: 'none',
               }}
             />
           ) : (
@@ -769,6 +818,9 @@ export default function ArticleEditor({
               display: 'grid', gap: 10,
               fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-2)',
             }}>
+              <p style={{ margin: 0, fontSize: 12, fontStyle: 'italic', color: 'var(--ink-3)' }}>
+                Arraste a imagem para reposicionar · pince com dois dedos no trackpad para dar zoom — ou use os controles abaixo.
+              </p>
               <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
                 <span>Vertical</span>
                 <input type="range" min={0} max={100} step={1} value={heroPosY}
