@@ -60,7 +60,7 @@
 .art-hero{max-width:1280px;margin:0 auto;padding:0 var(--gutter)}
 .art-hero figure{
   position:relative;aspect-ratio:16/8;
-  background:var(--paper-2);border:1px solid var(--rule-strong);
+  background:var(--paper-2);
   overflow:hidden;
 }
 .art-hero figure img{width:100%;height:100%;object-fit:cover;display:block}
