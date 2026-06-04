@@ -811,40 +811,15 @@ export default function ArticleEditor({
         </figure>
         {heroImage && (
           <>
-            {/* Enquadramento dentro da moldura fixa: foco + zoom */}
-            <div className="hero-frame-ctl" style={{
-              marginTop: 12, padding: '14px 16px',
-              border: '1px solid var(--rule)', borderRadius: 4,
-              display: 'grid', gap: 10,
-              fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-2)',
-            }}>
-              <p style={{ margin: 0, fontSize: 12, fontStyle: 'italic', color: 'var(--ink-3)' }}>
-                Arraste a imagem para reposicionar · pince com dois dedos no trackpad para dar zoom — ou use os controles abaixo.
-              </p>
-              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
-                <span>Vertical</span>
-                <input type="range" min={0} max={100} step={1} value={heroPosY}
-                  onChange={(e) => setHeroPosY(Number(e.target.value))}
-                  aria-label="Enquadramento vertical (topo ↔ base)" />
-              </label>
-              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
-                <span>Horizontal</span>
-                <input type="range" min={0} max={100} step={1} value={heroPosX}
-                  onChange={(e) => setHeroPosX(Number(e.target.value))}
-                  aria-label="Enquadramento horizontal (esquerda ↔ direita)" />
-              </label>
-              <label style={{ display: 'grid', gridTemplateColumns: '92px 1fr', alignItems: 'center', gap: 12 }}>
-                <span>Zoom {heroZoom.toFixed(2)}×</span>
-                <input type="range" min={1} max={3} step={0.05} value={heroZoom}
-                  onChange={(e) => setHeroZoom(Number(e.target.value))}
-                  aria-label="Zoom da capa" />
-              </label>
+            <p style={{ margin: '10px 0 0', fontFamily: 'var(--serif)', fontSize: 12, fontStyle: 'italic', color: 'var(--ink-3)', textAlign: 'center' }}>
+              Arraste a imagem para reposicionar · pince com dois dedos no trackpad para dar zoom.
+              {' '}
               <button type="button"
                 onClick={() => { setHeroPosX(50); setHeroPosY(50); setHeroZoom(1); }}
-                style={{ justifySelf: 'start', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 12, color: 'var(--ink-3)', textDecoration: 'underline', padding: 0 }}>
-                ↺ centralizar e tirar zoom
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 12, fontStyle: 'italic', color: 'var(--ink-3)', textDecoration: 'underline', padding: 0 }}>
+                ↺ centralizar
               </button>
-            </div>
+            </p>
             <input
               type="text"
               value={heroCaption}
