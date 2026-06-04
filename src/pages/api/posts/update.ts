@@ -14,6 +14,8 @@ type UpdateBody = {
   readTime?: string;
   draft?: boolean;
   bodyHtml?: string;
+  heroImage?: string;
+  heroCaption?: string;
   linhaFina?: string;
   linhaFinaLabel?: string;
   notas?: string[];
@@ -87,6 +89,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     date: body.date?.trim() || todayISO(),
     readTime: body.readTime?.trim() || '1 min',
     draft: isDraft,
+    heroImage: body.heroImage?.trim() || undefined,
+    heroCaption: body.heroCaption?.trim() || undefined,
     linhaFina: body.linhaFina?.trim() || undefined,
     linhaFinaLabel: body.linhaFinaLabel,
     notas: body.notas?.length ? body.notas.map((n) => n.trim()).filter(Boolean) : undefined,

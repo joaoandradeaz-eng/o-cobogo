@@ -32,6 +32,8 @@ type InitialValues = {
   notas: string[];
   bodyHtml: string;
   draft: boolean;
+  heroImage?: string;
+  heroCaption?: string;
 };
 
 type Props = {
@@ -57,6 +59,8 @@ type Snapshot = {
   linhaFinaLabel: string;
   notas: string[];
   bodyHtml: string;
+  heroImage: string;
+  heroCaption: string;
   savedAt: number;
 };
 
@@ -134,6 +138,10 @@ export default function ArticleEditor({
   const [showLinhaFina, setShowLinhaFina] = useState(!!initial?.linhaFina);
   const [notas, setNotas] = useState<string[]>(initial?.notas ?? []);
   const [bodyHtml, setBodyHtml] = useState(initial?.bodyHtml ?? '');
+  const [heroImage, setHeroImage] = useState(initial?.heroImage ?? '');
+  const [heroCaption, setHeroCaption] = useState(initial?.heroCaption ?? '');
+  const [heroUploading, setHeroUploading] = useState(false);
+  const heroInputRef = useRef<HTMLInputElement | null>(null);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -171,6 +179,8 @@ export default function ArticleEditor({
         setShowLinhaFina(!!draft.linhaFina);
         setNotas(draft.notas || []);
         setBodyHtml(draft.bodyHtml);
+        setHeroImage(draft.heroImage || '');
+        setHeroCaption(draft.heroCaption || '');
         setRestoredFromDraft(true);
       } else {
         clearDraft();
@@ -187,11 +197,11 @@ export default function ArticleEditor({
     if (!title && !bodyHtml && !dek) return;
     setAutosaveStatus('pending');
     const t = setTimeout(() => {
-      saveDraft({ title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml });
+      saveDraft({ title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption });
       setAutosaveStatus('saved');
     }, 1500);
     return () => clearTimeout(t);
-  }, [title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml]);
+  }, [title, dek, categories, date, readTime, linhaFina, linhaFinaLabel, notas, bodyHtml, heroImage, heroCaption]);
 
   // beforeunload
   useEffect(() => {
@@ -269,6 +279,28 @@ export default function ArticleEditor({
     }
   };
 
+  const triggerHeroUpload = () => heroInputRef.current?.click();
+
+  const handleHeroSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!cloudinary?.cloudName || !cloudinary?.uploadPreset) {
+      alert('Cloudinary não configurado nas env vars do Vercel.');
+      return;
+    }
+    setHeroUploading(true);
+    try {
+      const { uploadToCloudinary } = await import('../lib/cloudinary');
+      const url = await uploadToCloudinary(file, cloudinary);
+      setHeroImage(url);
+    } catch (err: any) {
+      alert(`Upload da capa falhou: ${err?.message ?? err}`);
+    } finally {
+      setHeroUploading(false);
+    }
+  };
+
   const insertFootnote = () => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -307,6 +339,8 @@ export default function ArticleEditor({
           readTime,
           draft,
           bodyHtml,
+          heroImage: heroImage.trim() || undefined,
+          heroCaption: heroImage.trim() && heroCaption.trim() ? heroCaption.trim() : undefined,
           linhaFina: showLinhaFina && linhaFina.trim() ? linhaFina : undefined,
           linhaFinaLabel: showLinhaFina && linhaFina.trim() ? linhaFinaLabel.trim() : undefined,
           notas: notas.filter((n) => n.trim()).length ? notas.filter((n) => n.trim()) : undefined,
@@ -679,11 +713,51 @@ export default function ArticleEditor({
         </div>
       </header>
 
-      {/* ========= HERO IMAGE (placeholder Phase 5) ========= */}
+      {/* ========= HERO IMAGE (capa do artigo) ========= */}
       <div className="art-hero">
         <figure>
-          <div className="ph">imagem · placeholder · upload na fase 5</div>
+          {heroImage ? (
+            <img src={heroImage} alt={heroCaption || 'Capa do artigo'} />
+          ) : (
+            <button
+              type="button"
+              className="ph"
+              onClick={triggerHeroUpload}
+              disabled={heroUploading}
+              style={{ border: 'none', cursor: heroUploading ? 'wait' : 'pointer' }}
+            >
+              {heroUploading ? '⏳ subindo capa…' : '+ imagem de capa · clique para subir'}
+            </button>
+          )}
         </figure>
+        {heroImage && (
+          <>
+            <input
+              type="text"
+              value={heroCaption}
+              onChange={(e) => setHeroCaption(e.target.value)}
+              placeholder="Legenda da capa (opcional)…"
+              aria-label="Legenda da capa"
+              style={{
+                width: '100%', marginTop: 10, padding: '6px 0',
+                border: 'none', borderBottom: '1px solid var(--rule)',
+                background: 'transparent', fontFamily: 'var(--serif)',
+                fontSize: 15, color: 'var(--ink-2)', textAlign: 'center',
+              }}
+            />
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 10 }}>
+              <button type="button" onClick={triggerHeroUpload} disabled={heroUploading}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-3)', textDecoration: 'underline' }}>
+                {heroUploading ? '⏳ subindo…' : '↻ trocar capa'}
+              </button>
+              <button type="button" onClick={() => { setHeroImage(''); setHeroCaption(''); }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--ink-3)', textDecoration: 'underline' }}>
+                × remover capa
+              </button>
+            </div>
+          </>
+        )}
+        <input ref={heroInputRef} type="file" accept="image/*" onChange={handleHeroSelected} style={{ display: 'none' }} />
       </div>
 
       {/* ========= BODY ========= */}

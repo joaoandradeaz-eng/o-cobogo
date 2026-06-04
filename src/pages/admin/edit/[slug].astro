@@ -51,6 +51,8 @@ const initial = {
   notas: d.notas ?? [],
   bodyHtml: markdownToHtml(article.body ?? ''),
   draft: d.draft ?? false,
+  heroImage: d.heroImage ?? '',
+  heroCaption: d.heroCaption ?? '',
 };
 ---
 <BaseLayout title={`Editar · ${d.title} · Admin`} active="home" screenLabel="Editor">
