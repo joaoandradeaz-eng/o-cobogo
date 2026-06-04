@@ -3,6 +3,7 @@ export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
 import { getCollection, render } from 'astro:content';
+import { cloudinaryOgUrl } from '../lib/social-image';
 import '../styles/article.css';
 
 export async function getStaticPaths() {
@@ -51,6 +52,12 @@ const dekHtml = parseInlineMd(data.dek);
 const titlePlain = data.title.replace(/\*/g, '');
 const dekPlain = data.dek.replace(/\*/g, '');
 
+// Imagem de social (og:image): com capa, usa a foto recortada/comprimida pro
+// tamanho que o WhatsApp pede; sem capa, usa o cartão tipográfico gerado no build.
+const ogImage = data.heroImage
+  ? cloudinaryOgUrl(data.heroImage)!
+  : `/og/${article.id}.png`;
+
 // JSON-LD (schema.org Article) — ajuda buscadores e prévia de links.
 const articleUrl = new URL(`/${article.id}`, Astro.site).href;
 const jsonLd = {
@@ -62,7 +69,7 @@ const jsonLd = {
   author: { '@type': 'Person', name: data.author.replace(/\*/g, '') },
   publisher: { '@type': 'Organization', name: 'O Cobogó' },
   mainEntityOfPage: articleUrl,
-  ...(data.heroImage ? { image: new URL(data.heroImage, Astro.site).href } : {}),
+  image: new URL(ogImage, Astro.site).href,
 };
 
 // formato data: "12 mar 2026" (UTC pra evitar timezone shift)
@@ -81,7 +88,7 @@ function fmtCardDate(date: Date): string {
   active="home"
   screenLabel="Artigo"
   description={dekPlain}
-  image={data.heroImage}
+  image={ogImage}
   type="article"
   showIntro={false}
 >
