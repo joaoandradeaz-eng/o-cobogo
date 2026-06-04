@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { getSession, isAuthorized } from '../../../lib/session';
 import { slugify } from '../../../lib/slug';
 import { htmlToMarkdown, buildMarkdownFile, type PostFrontmatter } from '../../../lib/markdown';
+import { estimateReadTime } from '../../../lib/readtime';
 import { createFile, fileExists } from '../../../lib/github';
 
 type CreateBody = {
@@ -97,7 +98,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     dek: dekRaw || '...',
     categories: body.categories?.length ? body.categories : ['opiniao'],
     date: body.date?.trim() || todayISO(),
-    readTime: body.readTime?.trim() || '1 min',
+    readTime: body.readTime?.trim() || estimateReadTime(bodyHtmlRaw),
     draft: isDraft,
     heroImage: body.heroImage?.trim() || undefined,
     heroCaption: body.heroCaption?.trim() || undefined,

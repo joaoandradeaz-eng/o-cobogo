@@ -3,6 +3,7 @@ import type { Editor } from '@tiptap/react';
 import PostEditor from './PostEditor';
 import { TableGridPicker } from './TableExtensions';
 import { ChartModal } from './ChartExtension';
+import { estimateReadTime } from '../lib/readtime';
 
 type TagOption = { value: string; label: string; color?: string; textColor?: string };
 
@@ -149,7 +150,6 @@ export default function ArticleEditor({
   const [dek, setDek] = useState(initial?.dek ?? '');
   const [categories, setCategories] = useState<string[]>(initial?.categories ?? []);
   const [date, setDate] = useState(initial?.date || todayISO());
-  const [readTime, setReadTime] = useState(initial?.readTime || '5 min');
   const [linhaFina, setLinhaFina] = useState(initial?.linhaFina ?? '');
   const [linhaFinaLabel, setLinhaFinaLabel] = useState(initial?.linhaFinaLabel ?? 'Linha-fina');
   const [showLinhaFina, setShowLinhaFina] = useState(!!initial?.linhaFina);
@@ -166,6 +166,10 @@ export default function ArticleEditor({
   const heroZoomRef = useRef(heroZoom);
   heroZoomRef.current = heroZoom;
   const heroDragRef = useRef({ active: false, startX: 0, startY: 0, baseX: 50, baseY: 50 });
+
+  // Tempo de leitura: calculado automaticamente a partir do corpo do texto.
+  // Não é mais um campo manual — recalcula sozinho a cada edição.
+  const readTime = estimateReadTime(bodyHtml);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -197,7 +201,6 @@ export default function ArticleEditor({
         setDek(draft.dek);
         setCategories(draft.categories);
         setDate(draft.date || todayISO());
-        setReadTime(draft.readTime || '5 min');
         setLinhaFina(draft.linhaFina || '');
         setLinhaFinaLabel(draft.linhaFinaLabel ?? 'Linha-fina');
         setShowLinhaFina(!!draft.linhaFina);
@@ -764,13 +767,13 @@ export default function ArticleEditor({
           </label>
           <label>
             tempo de leitura:
-            <input
-              type="text"
-              value={readTime}
-              onChange={(e) => setReadTime(e.target.value)}
-              placeholder="ex: 8 min"
-              style={{ width: 80 }}
-            />
+            <span
+              title="Calculado automaticamente a partir do texto (~200 palavras/min)"
+              style={{ fontWeight: 600, paddingLeft: 4 }}
+            >
+              {readTime}{' '}
+              <em style={{ fontWeight: 400, opacity: 0.6 }}>(automático)</em>
+            </span>
           </label>
         </div>
       </header>
