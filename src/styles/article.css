@@ -505,10 +505,8 @@
   .art-body .col blockquote p{font-size:24px}
   .art-body .col p:first-of-type::first-letter{font-size:88px}
   .art-body .linha-fina .v{font-size:21px}
-  /* coluna estreita: justify + hyphens viram buracos/rios; ragged-right lê melhor.
-     O !important vence o style inline que o editor grava ao "justificar" um parágrafo. */
-  .art-body .col p{text-align:left;hyphens:none;-webkit-hyphens:none}
-  .art-body .col p[style*="justify"]{text-align:left !important}
+  /* corpo justificado também no mobile (margens retas dos dois lados,
+     como no desktop); o hyphens:auto herdado da regra base evita buracos */
   /* botão voltar-ao-topo mais perto do canto no mobile */
   .to-top{right:16px;bottom:16px}
   /* compartilhar: botões de largura cheia ficam mais fáceis de tocar */
