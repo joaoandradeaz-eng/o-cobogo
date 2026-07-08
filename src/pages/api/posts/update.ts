@@ -48,7 +48,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const isDraft = body.draft === true;
   const titleRaw = body.title?.trim() ?? '';
-  const dekRaw = body.dek?.trim() ?? '';
+  // '...' era o texto-tapume da época em que o dek era obrigatório; formulários
+  // antigos (abas abertas / rascunhos locais) ainda o enviam — trata como vazio.
+  const dekTrimmed = body.dek?.trim() ?? '';
+  const dekRaw = /^[.…\s]*$/.test(dekTrimmed) ? '' : dekTrimmed;
   const bodyHtmlRaw = body.bodyHtml?.trim() ?? '';
 
   if (!isDraft) {

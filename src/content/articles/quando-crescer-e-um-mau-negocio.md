@@ -6,7 +6,6 @@ categories:
 author: João Andrade
 date: 2026-07-08T00:00:00.000Z
 readTime: 4 min
-dek: ...
 heroImage: >-
   https://res.cloudinary.com/dqyjyl8ff/image/upload/v1783522612/kvla8o7l4xjlkciaug3b.jpg
 heroPosition: 50% 100%

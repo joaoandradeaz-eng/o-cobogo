@@ -137,6 +137,10 @@ function AutoTextarea({
   );
 }
 
+// '...' era o texto-tapume da época em que o subtítulo era obrigatório;
+// limpa ao carregar pra ele não voltar a ser gravado num save futuro.
+const stripDekPlaceholder = (v: string) => (/^[.…\s]*$/.test(v) ? '' : v);
+
 export default function ArticleEditor({
   authorName = 'João Andrade',
   cloudinary,
@@ -147,7 +151,7 @@ export default function ArticleEditor({
 }: Props) {
   const isEdit = mode === 'edit';
   const [title, setTitle] = useState(initial?.title ?? '');
-  const [dek, setDek] = useState(initial?.dek ?? '');
+  const [dek, setDek] = useState(stripDekPlaceholder(initial?.dek ?? ''));
   const [categories, setCategories] = useState<string[]>(initial?.categories ?? []);
   const [date, setDate] = useState(initial?.date || todayISO());
   const [linhaFina, setLinhaFina] = useState(initial?.linhaFina ?? '');
@@ -198,7 +202,7 @@ export default function ArticleEditor({
       );
       if (proceed) {
         setTitle(draft.title);
-        setDek(draft.dek);
+        setDek(stripDekPlaceholder(draft.dek));
         setCategories(draft.categories);
         setDate(draft.date || todayISO());
         setLinhaFina(draft.linhaFina || '');
