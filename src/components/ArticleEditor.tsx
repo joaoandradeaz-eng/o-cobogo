@@ -432,7 +432,7 @@ export default function ArticleEditor({
   const hasAnyContent = !!(title.trim() || dek.trim() || bodyHtml.trim());
   const canSaveDraft = hasAnyContent && !submitting;
   const canPublish =
-    title.trim() && dek.trim() && categories.length > 0 && bodyHtml.trim() && !submitting;
+    title.trim() && categories.length > 0 && bodyHtml.trim() && !submitting;
 
   const dateBR = formatDateBR(date);
 

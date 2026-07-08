@@ -13,7 +13,7 @@ export async function GET(context) {
     site: context.site,
     items: articles.map((a) => ({
       title: a.data.title.replace(/\*/g, ''),
-      description: a.data.dek.replace(/\*/g, ''),
+      description: (a.data.dek || a.data.linhaFina || '').replace(/\*/g, ''),
       pubDate: a.data.date,
       link: `/${a.id}/`,
       categories: a.data.categories,

@@ -1,6 +1,5 @@
 ---
 title: Quando crescer é um mau negócio
-dek: ...
 categories:
   - opiniao
   - politica
@@ -15,7 +14,7 @@ linhaFina: >-
   Câmara nos próximos meses: vale a pena crescer no Brasil?
 linhaFinaLabel: Linha-fina
 ---
-<p style="text-align: justify;">H**á um real, na economia brasileira, que custa alguns milhares de reais. É o real de número 81.001, o primeiro depois do teto do MEI.** Até ele, o microempreendedor paga, em cima do faturamento, um boleto fixo de menos de noventa reais por mês. Depois dele, o imposto muda de natureza, custos operacionais incidem e a conta do ano, no mesmo faturamento, vai a outro patamar. E esse muro não é exclusividade do MEI: ele reaparece, ainda maior, na porta de saída do Simples Nacional. E até aí, tudo bem: fronteira de regime simplificado existe no mundo inteiro, e cruzá-la sempre custa algo. O agravo acontece quando, há quase uma década, esses limites não são corrigidos e são corroídos pela inflação; quando quem empreende se vê asfixiado por um teto que não corresponde mais à realidade.</p>
+<p style="text-align: justify;">H<strong>á um real, na economia brasileira, que custa alguns milhares de reais. É o real de número 81.001, o primeiro depois do teto do MEI.</strong> Até ele, o microempreendedor paga, em cima do faturamento, um boleto fixo de menos de noventa reais por mês. Depois dele, o imposto muda de natureza, custos operacionais incidem e a conta do ano, no mesmo faturamento, vai a outro patamar. E esse muro não é exclusividade do MEI: ele reaparece, ainda maior, na porta de saída do Simples Nacional. E até aí, tudo bem: fronteira de regime simplificado existe no mundo inteiro, e cruzá-la sempre custa algo. O agravo acontece quando, há quase uma década, esses limites não são corrigidos e são corroídos pela inflação; quando quem empreende se vê asfixiado por um teto que não corresponde mais à realidade.</p>
 
 É esse agravo que faz evidente o que alguns dão o nome de nanismo tributário: diante de um muro caro demais para atravessar, o pequeno negócio aprende que compensa continuar pequeno. A confeiteira que recusa encomendas em dezembro para não estourar o teto; o prestador que divide o faturamento em dois CNPJs; a loja que empurra vendas sem emissão de nota fiscal. Todas essas escolhas são individualmente racionais e coletivamente desastrosas. E é esse incentivo perverso que a Câmara tem agora a chance de desmontar: recalibrar os degraus do Simples para que crescer volte a ser a escolha óbvia.
 

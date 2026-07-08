@@ -62,7 +62,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   } else {
     const errors: string[] = [];
     if (!titleRaw) errors.push('title is required');
-    if (!dekRaw) errors.push('dek is required');
     if (!body.categories?.length) errors.push('at least one category is required');
     if (!bodyHtmlRaw) errors.push('body is empty');
     if (errors.length) {

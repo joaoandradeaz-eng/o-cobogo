@@ -1,7 +1,10 @@
 ---
-export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+
+// Página temporariamente escondida: redireciona pra home até o "Sobre" estar pronto.
+// Pra reativar: apague a linha abaixo e restaure `export const prerender = true;` acima dos imports.
+return Astro.redirect('/', 302);
 
 function parseInlineMd(text: string): string {
   return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');

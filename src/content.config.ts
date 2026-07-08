@@ -17,8 +17,8 @@ const articles = defineCollection({
   schema: z.object({
     /** Título do artigo. Use *asterisco* pra marcar palavra(s) em itálico. */
     title: z.string(),
-    /** Subtítulo / dek mostrado abaixo do título. */
-    dek: z.string(),
+    /** Subtítulo / dek mostrado abaixo do título. Opcional — vazio não renderiza. */
+    dek: z.string().default(''),
     /** 1+ tags (slugs validados dinamicamente pela coleção `tags`). A primeira é a principal. */
     categories: z.array(z.string()).min(1),
     /** Autor — por enquanto string livre, vira referência quando criarmos coleção de autores. */

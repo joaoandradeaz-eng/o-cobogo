@@ -125,12 +125,13 @@ export function markdownToHtml(md: string): string {
 export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): string {
   const data: Record<string, unknown> = {
     title: frontmatter.title,
-    dek: frontmatter.dek,
     categories: frontmatter.categories,
     author: frontmatter.author ?? 'João Andrade',
     date: new Date(`${frontmatter.date}T00:00:00Z`),
     readTime: frontmatter.readTime,
   };
+  // Dek é opcional: vazio não entra no frontmatter (e a página não renderiza o <p>).
+  if (frontmatter.dek?.trim()) data.dek = frontmatter.dek;
   if (frontmatter.heroImage) data.heroImage = frontmatter.heroImage;
   if (frontmatter.heroCaption) data.heroCaption = frontmatter.heroCaption;
   // Enquadramento só importa se há capa; grava apenas valores fora do padrão.

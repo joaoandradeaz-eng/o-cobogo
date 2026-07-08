@@ -48,12 +48,12 @@ const hasMore = published.length > 7;
           <div class="tags"><Tag slug={hero.data.categories[0]} link /></div>
           <div class="rule"></div>
           <h2><a href={`/${hero.id}`} set:html={parseInlineMd(hero.data.title)}></a></h2>
-          <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>
+          {hero.data.dek && <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>}
           <p class="by">
-            <a href="/sobre" class="by-author">
+            <span class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="eager" decoding="async" width="24" height="24" />
               por <span set:html={parseInlineMd(hero.data.author)}></span>
-            </a>
+            </span>
             <span class="dot" aria-hidden="true">·</span>
             <span class="meta-inline">{fmtMeta(hero.data.date, hero.data.readTime)}</span>
           </p>
@@ -70,12 +70,12 @@ const hasMore = published.length > 7;
           <div class="tags"><Tag slug={a.data.categories[0]} link /></div>
           <div class="rule"></div>
           <h2><a href={`/${a.id}`} set:html={parseInlineMd(a.data.title)}></a></h2>
-          <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>
+          {a.data.dek && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
           <p class="by">
-            <a href="/sobre" class="by-author">
+            <span class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
               por <span set:html={parseInlineMd(a.data.author)}></span>
-            </a>
+            </span>
             <span class="dot" aria-hidden="true">·</span>
             <span class="meta-inline">{fmtMeta(a.data.date, a.data.readTime)}</span>
           </p>
@@ -93,12 +93,12 @@ const hasMore = published.length > 7;
           <div class="rule"></div>
           <article class="card">
             <h2><a href={`/${big.id}`} set:html={parseInlineMd(big.data.title)}></a></h2>
-            <p class="dek" set:html={parseInlineMd(big.data.dek)}></p>
+            {big.data.dek && <p class="dek" set:html={parseInlineMd(big.data.dek)}></p>}
             <p class="by">
-              <a href="/sobre" class="by-author">
+              <span class="by-author">
                 <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
                 por <span set:html={parseInlineMd(big.data.author)}></span>
-              </a>
+              </span>
               <span class="dot" aria-hidden="true">·</span>
               <span class="meta-inline">{fmtMeta(big.data.date, big.data.readTime)}</span>
             </p>
@@ -121,7 +121,7 @@ const hasMore = published.length > 7;
                 <div class="date">{sd.day}<br/>{sd.year}</div>
                 <div class="body">
                   <h2 set:html={parseInlineMd(a.data.title)}></h2>
-                  <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>
+                  {a.data.dek && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
                   <p class="by">
                     <span class="by-author">
                       <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
