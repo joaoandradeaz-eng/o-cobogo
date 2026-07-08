@@ -6,6 +6,7 @@ categories:
 author: João Andrade
 date: 2026-07-08T00:00:00.000Z
 readTime: 4 min
+dek: ...
 heroImage: >-
   https://res.cloudinary.com/dqyjyl8ff/image/upload/v1783522612/kvla8o7l4xjlkciaug3b.jpg
 heroPosition: 50% 100%
@@ -18,7 +19,7 @@ linhaFinaLabel: Linha-fina
 
 É esse agravo que faz evidente o que alguns dão o nome de nanismo tributário: diante de um muro caro demais para atravessar, o pequeno negócio aprende que compensa continuar pequeno. A confeiteira que recusa encomendas em dezembro para não estourar o teto; o prestador que divide o faturamento em dois CNPJs; a loja que empurra vendas sem emissão de nota fiscal. Todas essas escolhas são individualmente racionais e coletivamente desastrosas. E é esse incentivo perverso que a Câmara tem agora a chance de desmontar: recalibrar os degraus do Simples para que crescer volte a ser a escolha óbvia.
 
-Nos últimos dois meses, a comissão especial que analisa o PLP 108/21, projeto que atualiza os limites do Simples Nacional, cruzou o país ouvindo quem vive o problema e o parecer do relator, o deputado Jorge Goetten, pode sair ainda neste mês, antes do recesso parlamentar. **Não se trata de um ajuste de rodapé: é a revisão mais importante, em uma década, do regime onde vive a imensa maioria das empresas brasileiras**. Mas o governo não concorda com a mudança, e quer restringir a atualização somente para o primeiro degrau do Simples Nacional, o MEI.
+Nos últimos dois meses, a comissão especial que analisa o PLP 108/21, projeto que atualiza os limites do Simples Nacional, cruzou o país ouvindo quem vive o problema e o parecer do relator, o deputado Jorge Goetten, pode sair ainda neste mês. **Não se trata de um ajuste de rodapé: é a revisão mais importante, em uma década, do regime onde vive a imensa maioria das empresas brasileiras**. Mas o governo não concorda com a mudança, e quer restringir a atualização somente para o primeiro degrau do Simples Nacional, o MEI.
 
 O governo enviou à Câmara, na semana passada, um projeto que corrige apenas o teto do MEI, de R$ 81 mil para R$ 140 mil até 2028, deixando o resto da escada como está. E isso não é coincidência de recorte: o MEI também é CPF e vota; a microempresa é CNPJ. A três meses da eleição, seguir com a sugestão do governo só serviria como mecanismo eleitoral para quem está preocupado com um novo mandato. Do ponto de vista prático, no entanto, corrigir só o primeiro degrau é institucionalizar o nanismo tributário, uma anti-política do crescimento. Como o próprio deputado Jorge Goetten disse: atualizar apenas o MEI funciona como um convite legal para as empresas migrarem para a alíquota menor, um arranjo onde ninguém ganha, nem mesmo o governo. **Não existe meia correção honesta: ou se atualiza a tabela inteira, ou se oficializa o incentivo a não crescer**.
 
