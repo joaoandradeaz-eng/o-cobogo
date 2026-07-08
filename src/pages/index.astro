@@ -45,7 +45,7 @@ const hasMore = published.length > 7;
       {hero && (
       <div class="c12 hero">
         <article class="card">
-          <div class="tags"><Tag slug={hero.data.categories[0]} link /></div>
+          <div class="tags">{hero.data.categories.map((c) => <Tag slug={c} link />)}</div>
           <div class="rule"></div>
           <h2><a href={`/${hero.id}`} set:html={parseInlineMd(hero.data.title)}></a></h2>
           {hero.data.dek && <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>}
@@ -57,7 +57,11 @@ const hasMore = published.length > 7;
             <span class="dot" aria-hidden="true">·</span>
             <span class="meta-inline">{fmtMeta(hero.data.date, hero.data.readTime)}</span>
           </p>
-          <figure class="ph-a"><span class="ph">imagem · placeholder</span></figure>
+          <figure class={hero.data.heroImage ? '' : 'ph-a'}>
+            {hero.data.heroImage
+              ? <img src={hero.data.heroImage} alt="" loading="eager" decoding="async" style={`object-position:${hero.data.heroPosition ?? '50% 50%'};transform:scale(${hero.data.heroZoom ?? 1});transform-origin:${hero.data.heroPosition ?? '50% 50%'}`} />
+              : <span class="ph">imagem · placeholder</span>}
+          </figure>
         </article>
       </div>
       )}
@@ -67,7 +71,7 @@ const hasMore = published.length > 7;
       <div class="pair">
         {pair.map((a, i) => (
         <article class="card">
-          <div class="tags"><Tag slug={a.data.categories[0]} link /></div>
+          <div class="tags">{a.data.categories.map((c) => <Tag slug={c} link />)}</div>
           <div class="rule"></div>
           <h2><a href={`/${a.id}`} set:html={parseInlineMd(a.data.title)}></a></h2>
           {a.data.dek && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
@@ -79,7 +83,11 @@ const hasMore = published.length > 7;
             <span class="dot" aria-hidden="true">·</span>
             <span class="meta-inline">{fmtMeta(a.data.date, a.data.readTime)}</span>
           </p>
-          <figure class={i === 0 ? 'ph-c' : 'ph-b'}><span class="ph">imagem</span></figure>
+          <figure class={a.data.heroImage ? '' : (i === 0 ? 'ph-c' : 'ph-b')}>
+            {a.data.heroImage
+              ? <img src={a.data.heroImage} alt="" loading="lazy" decoding="async" style={`object-position:${a.data.heroPosition ?? '50% 50%'};transform:scale(${a.data.heroZoom ?? 1});transform-origin:${a.data.heroPosition ?? '50% 50%'}`} />
+              : <span class="ph">imagem</span>}
+          </figure>
         </article>
         ))}
       </div>
@@ -89,7 +97,7 @@ const hasMore = published.length > 7;
       {big && (
       <div class="row-1plus3">
         <div class="big">
-          <div class="tags"><Tag slug={big.data.categories[0]} link /></div>
+          <div class="tags">{big.data.categories.map((c) => <Tag slug={c} link />)}</div>
           <div class="rule"></div>
           <article class="card">
             <h2><a href={`/${big.id}`} set:html={parseInlineMd(big.data.title)}></a></h2>
@@ -102,7 +110,11 @@ const hasMore = published.length > 7;
               <span class="dot" aria-hidden="true">·</span>
               <span class="meta-inline">{fmtMeta(big.data.date, big.data.readTime)}</span>
             </p>
-            <figure class="ph-d"><span class="ph">imagem</span></figure>
+            <figure class={big.data.heroImage ? '' : 'ph-d'}>
+              {big.data.heroImage
+                ? <img src={big.data.heroImage} alt="" loading="lazy" decoding="async" style={`object-position:${big.data.heroPosition ?? '50% 50%'};transform:scale(${big.data.heroZoom ?? 1});transform-origin:${big.data.heroPosition ?? '50% 50%'}`} />
+                : <span class="ph">imagem</span>}
+            </figure>
           </article>
         </div>
         <div class="stack">
@@ -131,7 +143,11 @@ const hasMore = published.length > 7;
                     <span class="meta-inline">{fmtMeta(a.data.date, a.data.readTime)}</span>
                   </p>
                 </div>
-                <div class="thumb">imagem</div>
+                <div class="thumb">
+                  {a.data.heroImage
+                    ? <img src={a.data.heroImage} alt="" loading="lazy" decoding="async" style={`object-position:${a.data.heroPosition ?? '50% 50%'}`} />
+                    : 'imagem'}
+                </div>
               </a>
               );
             })}
@@ -268,6 +284,13 @@ const hasMore = published.length > 7;
     display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:10px;
     letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  }
+  /* foto de capa do artigo dentro da moldura do card (mesmo esquema do art-hero) */
+  article.card figure img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .row-1plus3 > .stack .stack-link .thumb img{
+    width:100%;height:100%;object-fit:cover;display:block;
   }
 
   /* tamanhos do h2 por size */
