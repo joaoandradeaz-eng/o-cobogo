@@ -100,13 +100,10 @@
 .art-body .linha-fina .v{
   font-family:var(--serif);font-style:italic;
   font-size:26px;line-height:1.3;color:#000;
-  /* todas as linhas (inclusive a última) encostam nas duas margens,
-     acompanhando as réguas de cima e de baixo; balance distribui as
-     palavras por igual entre as linhas antes de justificar (sem ele,
-     a última linha pode sobrar com 2 palavras e um buraco no meio) */
-  text-wrap:balance;
-  text-align:justify;
-  text-align-last:justify;
+  /* quebra natural: cada linha preenche até perto da margem direita,
+     alinhada à esquerda, sem justificar (justify espaça as palavras) e
+     sem balance (balance encurtava as linhas e espremia tudo à esquerda) */
+  text-align:left;
 }
 .art-body .linha-fina .v em{font-weight:500;font-style:italic}
 
@@ -507,8 +504,7 @@
   .art-body .col h2{font-size:28px}
   .art-body .col blockquote p{font-size:24px}
   .art-body .col p:first-of-type::first-letter{font-size:88px}
-  /* coluna estreita: justificar nas duas pontas abriria buracos; volta ao normal */
-  .art-body .linha-fina .v{font-size:21px;text-align:left;text-align-last:auto}
+  .art-body .linha-fina .v{font-size:21px}
   /* coluna estreita: justify + hyphens viram buracos/rios; ragged-right lê melhor.
      O !important vence o style inline que o editor grava ao "justificar" um parágrafo. */
   .art-body .col p{text-align:left;hyphens:none;-webkit-hyphens:none}
