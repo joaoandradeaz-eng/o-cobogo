@@ -51,14 +51,18 @@ turndown.addRule('coloredSpan', {
 });
 
 /* Preserve <p style="text-align:..."> from TextAlign extension.
-   Block HTML in markdown — needs blank lines around it. */
+   Block HTML in markdown — needs blank lines around it.
+   IMPORTANTE: usa innerHTML, não `content`. O `content` vem com a formatação
+   interna já convertida pra markdown (**negrito**), mas o marked não processa
+   markdown dentro de bloco de HTML cru — os asteriscos apareceriam literais
+   no artigo publicado. innerHTML mantém <strong>/<em>/<mark> como HTML. */
 turndown.addRule('alignedParagraph', {
   filter: (node: any) =>
     node.nodeName === 'P' &&
     typeof node.getAttribute === 'function' &&
     (node.getAttribute('style') || '').includes('text-align'),
-  replacement: (content, node: any) =>
-    `\n\n<p style="${node.getAttribute('style')}">${content}</p>\n\n`,
+  replacement: (_, node: any) =>
+    `\n\n<p style="${node.getAttribute('style')}">${(node as HTMLElement).innerHTML}</p>\n\n`,
 });
 
 /* Same for h2/h3 with text-align (TextAlign extension applies to headings too). */
@@ -67,9 +71,9 @@ turndown.addRule('alignedHeading', {
     /^H[2-3]$/.test(node.nodeName) &&
     typeof node.getAttribute === 'function' &&
     (node.getAttribute('style') || '').includes('text-align'),
-  replacement: (content, node: any) => {
+  replacement: (_, node: any) => {
     const tag = node.nodeName.toLowerCase();
-    return `\n\n<${tag} style="${node.getAttribute('style')}">${content}</${tag}>\n\n`;
+    return `\n\n<${tag} style="${node.getAttribute('style')}">${(node as HTMLElement).innerHTML}</${tag}>\n\n`;
   },
 });
 
