@@ -1,0 +1,9 @@
+{
+  "name": "Política",
+  "color": "#3A6B47",
+  "textColor": "#8C3F12",
+  "parent": null,
+  "description": "",
+  "piece": "grade",
+  "order": 100
+}
