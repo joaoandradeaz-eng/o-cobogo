@@ -8,9 +8,9 @@ date: 2026-07-16T00:00:00.000Z
 readTime: 7 min
 dek: ...
 heroImage: >-
-  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1784219464/oqlzbrpi6ypzdtps7cij.png
-heroPosition: 73% 11%
-heroZoom: 1.48
+  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1784220548/zdguluvinyfdeqlnomee.png
+heroPosition: 90% 1%
+heroZoom: 1.21
 linhaFina: >-
   O Congresso esvaziou e Brasília baixou a voz. Em tom de sussurro, pergunto ao
   leitor: quem leva o posto de protagonista do semestre?
