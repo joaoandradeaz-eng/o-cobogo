@@ -147,8 +147,8 @@ function fmtCardDate(date: Date): string {
 
     {data.linhaFina && (
       <aside class="linha-fina">
-        {data.linhaFinaLabel !== '' && (
-          <div class="label">{data.linhaFinaLabel ?? 'Linha-fina'}</div>
+        {data.linhaFinaLabel && (
+          <div class="label">{data.linhaFinaLabel}</div>
         )}
         <div class="v" set:html={parseInlineMd(data.linhaFina)}></div>
       </aside>

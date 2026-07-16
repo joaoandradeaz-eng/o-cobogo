@@ -13,7 +13,6 @@ heroZoom: 1.21
 linhaFina: >-
   O Congresso esvaziou e Brasília baixou a voz. Em tom de sussurro, pergunto ao
   leitor: quem leva o posto de protagonista do semestre?
-linhaFinaLabel: Linha-fina
 ---
 O Congresso entra em recesso, Brasília muda de volume. Os painéis se apagam, os corredores esvaziam, os discursos esperam agosto. Sobra o silêncio, que por aqui nunca é vazio: é o horário nobre das conversas que não são para todos. Eu sou dos que aproveitam para olhar o retrovisor e fazer as minhas próprias observações. **Desta vez, reflito sobre quem leva o posto de protagonista em Brasília no semestre que acaba, mas sob uma régua um tanto quanto específica: a do poder. Quem mostrou mais capital político?**
 
