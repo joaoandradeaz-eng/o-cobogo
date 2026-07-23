@@ -2,10 +2,15 @@
 title: A emenda ficou pior que o soneto
 categories:
   - opiniao
+  - analise
+  - politica
 author: João Andrade
 date: 2026-07-23T00:00:00.000Z
 readTime: 8 min
 dek: ...
+heroImage: >-
+  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1784829543/ppv3jy9a2gl8wbjjau5n.webp
+heroPosition: 10% 43%
 linhaFina: >-
   Diz o provérbio que a emenda sai pior que o soneto, e que o conserto estraga a
   obra principal. A maior auditoria já feita sobre as emendas parlamentares
@@ -13,7 +18,6 @@ linhaFina: >-
   a chave do cofre? Ao caro leitor, desde já o aviso: deixe uma caneta ao
   alcance da mão.
 linhaFinaLabel: ''
-draft: true
 ---
 Por quase trinta anos, os cientistas políticos brasileiros discordaram de quase tudo. Em uma coisa, porém, a maioria convergia: o nosso presidencialismo, contra todo o pessimismo que existiu, tinha vingado. E vingou, argumentaram, por uma razão quase constrangedora de tão banal: o presidente é quem segurava a chave do cofre. Hoje o cofre mudou de senhorio, e há quem se pergunte se passou a mãos melhores ou apenas a outras. **Na última semana, ao vasculhar as emendas parlamentares, o Tribunal de Contas da União (TCU) fez, sem saber, um exercício de crítica literária. Os nomes dessa auditoria, quando vierem, contarão a história pequena. A história grande é a de como aquele cofre passou de mão em mão. E essa começa muito antes, em um soneto.**
 
