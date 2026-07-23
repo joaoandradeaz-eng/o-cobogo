@@ -10,7 +10,7 @@ readTime: 8 min
 dek: ...
 heroImage: >-
   https://res.cloudinary.com/dqyjyl8ff/image/upload/v1784829796/eylziblbwd3lnxhnjszd.webp
-heroPosition: 15% 7%
+heroPosition: 44% 39%
 linhaFina: >-
   Diz o provérbio que a emenda sai pior que o soneto, e que o conserto estraga a
   obra principal. A maior auditoria já feita sobre as emendas parlamentares
