@@ -1,0 +1,90 @@
+---
+/**
+ * Analytics do site (Umami Cloud) + medição de profundidade de leitura.
+ *
+ * - O script do Umami só entra em produção (import.meta.env.PROD), então
+ *   visitas no localhost não contam.
+ * - Páginas de admin ficam de fora — edição não é audiência.
+ * - Nas páginas de artigo, dispara os eventos scroll-25/50/75/100 medindo
+ *   o avanço sobre o corpo do texto (.art-body), não sobre a página inteira.
+ *   Em dev, os eventos aparecem no console pra conferência.
+ */
+const isAdmin = Astro.url.pathname.startsWith('/admin');
+const loadUmami = import.meta.env.PROD && !isAdmin;
+---
+{loadUmami && (
+  <script
+    is:inline
+    defer
+    src="https://cloud.umami.is/script.js"
+    data-website-id="caf8af28-5f7a-4463-920c-0b2eb068454f"
+    data-domains="ocobogo.com.br,www.ocobogo.com.br,o-cobogo.vercel.app"
+  ></script>
+)}
+<script>
+  // Profundidade de leitura: mede quanto do corpo do artigo já passou pela
+  // tela e registra cada marco uma única vez por visita à página.
+  const body = document.querySelector('.art-body');
+  if (body) {
+    const marks = [25, 50, 75, 100];
+    const fired = new Set<number>();
+    const queue: string[] = [];
+
+    // O script do Umami carrega com `defer`; se um evento disparar antes
+    // dele estar pronto (ex.: artigo curto, marco de 25% já na abertura),
+    // guarda na fila e tenta de novo por até ~10s.
+    let flushTries = 0;
+    function send(name: string) {
+      const umami = (window as any).umami;
+      if (umami?.track) {
+        umami.track(name);
+      } else if (import.meta.env.DEV) {
+        console.log(`[analytics] evento: ${name} (dev — não enviado)`);
+      } else {
+        queue.push(name);
+        scheduleFlush();
+      }
+    }
+    function scheduleFlush() {
+      if (flushTries >= 20) return;
+      flushTries++;
+      setTimeout(() => {
+        const umami = (window as any).umami;
+        if (umami?.track) {
+          while (queue.length) umami.track(queue.shift());
+        } else if (queue.length) {
+          scheduleFlush();
+        }
+      }, 500);
+    }
+
+    let ticking = false;
+    function measure() {
+      ticking = false;
+      const el = body as HTMLElement;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const height = el.offsetHeight;
+      if (height <= 0) return;
+      const seen = window.scrollY + window.innerHeight - top;
+      const progress = Math.min(100, (seen / height) * 100);
+      for (const m of marks) {
+        if (progress >= m && !fired.has(m)) {
+          fired.add(m);
+          send(`scroll-${m}`);
+        }
+      }
+      if (fired.size === marks.length) {
+        window.removeEventListener('scroll', onScroll);
+      }
+    }
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(measure);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Mede uma vez na abertura (cobre o que já aparece sem scroll).
+    measure();
+  }
+</script>
