@@ -50,7 +50,8 @@ function parseInlineMd(text: string): string {
 const titleHtml = parseInlineMd(data.title);
 const dekHtml = parseInlineMd(data.dek);
 const titlePlain = data.title.replace(/\*/g, '');
-const dekPlain = data.dek.replace(/\*/g, '');
+// Dek dots-only ('...', '…') é tapume legado — trata como vazio pra não renderizar.
+const dekPlain = /^[.…\s]*$/.test(data.dek) ? '' : data.dek.replace(/\*/g, '');
 // Dek é opcional: sem ele, a meta description cai pra linha-fina (ou título).
 const descriptionPlain = dekPlain || (data.linhaFina ?? '').replace(/\*/g, '') || titlePlain;
 

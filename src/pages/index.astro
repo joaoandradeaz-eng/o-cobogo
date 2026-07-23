@@ -10,6 +10,11 @@ function parseInlineMd(text: string): string {
   return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
+// dek só é "real" se tiver conteúdo além de pontos/reticências (tapume legado '...')
+function hasDek(v?: string): boolean {
+  return !!v && !/^[.…\s]*$/.test(v);
+}
+
 const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 // "12 mar 2026 · 14 min" (UTC pra evitar timezone shift)
 function fmtMeta(date: Date, readTime: string): string {
@@ -48,7 +53,7 @@ const hasMore = published.length > 7;
           <div class="tags">{hero.data.categories.map((c) => <Tag slug={c} link />)}</div>
           <div class="rule"></div>
           <h2><a href={`/${hero.id}`} set:html={parseInlineMd(hero.data.title)}></a></h2>
-          {hero.data.dek && <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>}
+          {hasDek(hero.data.dek) && <p class="dek" set:html={parseInlineMd(hero.data.dek)}></p>}
           <p class="by">
             <span class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="eager" decoding="async" width="24" height="24" />
@@ -74,7 +79,7 @@ const hasMore = published.length > 7;
           <div class="tags">{a.data.categories.map((c) => <Tag slug={c} link />)}</div>
           <div class="rule"></div>
           <h2><a href={`/${a.id}`} set:html={parseInlineMd(a.data.title)}></a></h2>
-          {a.data.dek && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
+          {hasDek(a.data.dek) && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
           <p class="by">
             <span class="by-author">
               <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
@@ -101,7 +106,7 @@ const hasMore = published.length > 7;
           <div class="rule"></div>
           <article class="card">
             <h2><a href={`/${big.id}`} set:html={parseInlineMd(big.data.title)}></a></h2>
-            {big.data.dek && <p class="dek" set:html={parseInlineMd(big.data.dek)}></p>}
+            {hasDek(big.data.dek) && <p class="dek" set:html={parseInlineMd(big.data.dek)}></p>}
             <p class="by">
               <span class="by-author">
                 <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />
@@ -133,7 +138,7 @@ const hasMore = published.length > 7;
                 <div class="date">{sd.day}<br/>{sd.year}</div>
                 <div class="body">
                   <h2 set:html={parseInlineMd(a.data.title)}></h2>
-                  {a.data.dek && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
+                  {hasDek(a.data.dek) && <p class="dek" set:html={parseInlineMd(a.data.dek)}></p>}
                   <p class="by">
                     <span class="by-author">
                       <img src="/assets/joao-andrade-48.jpg" alt="" loading="lazy" decoding="async" width="24" height="24" />

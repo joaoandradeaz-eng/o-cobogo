@@ -97,7 +97,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const frontmatter: PostFrontmatter = {
     title: titleEffective,
-    dek: dekRaw || '...',
+    dek: dekRaw,
     categories: body.categories?.length ? body.categories : ['opiniao'],
     date: body.date?.trim() || todayISO(),
     readTime: body.readTime?.trim() || estimateReadTime(bodyHtmlRaw),
