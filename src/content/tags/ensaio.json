@@ -1,9 +1,9 @@
 {
   "name": "Ensaio",
-  "color": "#E5C9B0",
-  "textColor": "#8C3F12",
+  "color": "#C73838",
+  "textColor": "#FFFFFF",
   "parent": null,
   "description": "Reflexões longas em primeira pessoa sobre cultura, política, cidade.",
-  "piece": "grade",
+  "piece": "barroca",
   "order": 1
 }
