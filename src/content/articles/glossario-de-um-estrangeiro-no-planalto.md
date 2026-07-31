@@ -25,7 +25,7 @@ De um lado, fica o que eu trazia na mala. Do outro, o que a cidade cobrou na che
 
 Brasília trabalha em dois dias. O parlamentar desembarca na terça e vai embora na quinta, porque sexta é dia de base e a base quase nunca é aqui. A cidade foi erguida no meio do mapa para ficar perto de tudo, mas acabou não ficando perto de quase nada. O que sobra são quarenta e oito horas por semana em que tudo o que exige gente presente precisa caber. Um paulistano entende de primeira: oferta curta, demanda de um país inteiro. **O que se negocia aqui não é informação, é meia hora de reunião numa terça-feira**.
 
-E, falando em meia hora, tem um verbete que não é, nem de perto, o mesmo por aqui.
+E, reunião, por outro lado, também não é, nem de perto, o mesmo por aqui.
 
 **Reunião (s.f.)**  
 **O que eu achava**: o lugar onde se decide.  
