@@ -21,7 +21,7 @@ Aprender a cidade foi rápido: no final das contas, ela é planta baixa e tudo e
 
 De um lado, fica o que eu trazia na mala. Do outro, o que a cidade cobrou na chegada. E este glossário começa, como quase tudo por aqui, numa terça-feira.
 
-<p style="text-align: left;"><strong><u>Terça-feira (s.f.)</u></strong><br><strong>O que eu achava</strong>: um dia útil.<br><strong>O que é</strong>: o dia em que a cidade inteira acontece de uma vez.</p>
+<p style="text-align: left;"><strong>Terça-feira (s.f.)</strong><br><strong>O que eu achava</strong>: um dia útil.<br><strong>O que é</strong>: o dia em que a cidade inteira acontece de uma vez.</p>
 
 Brasília trabalha em dois dias. O parlamentar desembarca na terça e vai embora na quinta, porque sexta é dia de base e a base quase nunca é aqui. A cidade foi erguida no meio do mapa para ficar perto de tudo, mas acabou não ficando perto de quase nada. O que sobra são quarenta e oito horas por semana em que tudo o que exige gente presente precisa caber. Um paulistano entende de primeira: oferta curta, demanda de um país inteiro. **O que se negocia aqui não é informação, é meia hora de reunião numa terça-feira**.
 
