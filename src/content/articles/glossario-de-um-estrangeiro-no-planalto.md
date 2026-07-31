@@ -31,7 +31,7 @@ E uma reunião, por outro lado, também não é, nem de perto, a mesma coisa por
 **O que eu achava**: o lugar onde se decide.  
 **O que é**: o lugar onde se confirma o que já foi decidido em outro lugar.
 
-A decisão chega pronta. Ela foi tomada no corredor, no elevador ou em um jantar privado nas famosas casa do Lago Sul. Já a reunião existe para que alguém a diga em voz alta diante de quem precisa ouvir. **E há uma razão para isso, a mesma do verbete anterior: quando a semana tem quarenta e oito horas, ninguém gasta uma delas sequer decidindo em público. Decide-se antes, a dois,** **e, enquanto essa conversa acontece em algum lugar, alguém espera.**
+A decisão chega pronta. Ela foi tomada no corredor, no elevador ou em um jantar privado nas famosas casas do Lago Sul. Já a reunião existe para que alguém a diga em voz alta diante de quem precisa ouvir. **E há uma razão para isso, a mesma do verbete anterior: quando a semana tem quarenta e oito horas, ninguém gasta uma delas sequer decidindo em público. Decide-se antes, a dois,** **e, enquanto essa conversa acontece em algum lugar, alguém espera.**
 
 **Atraso (s.m.)**  
 **O que eu achava**: falta de educação.  
