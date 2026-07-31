@@ -4,7 +4,7 @@ categories:
   - opiniao
 author: João Andrade
 date: 2026-07-29T00:00:00.000Z
-readTime: 7 min
+readTime: 6 min
 heroImage: >-
   https://res.cloudinary.com/dqyjyl8ff/image/upload/v1785452744/esyxx4kt03wvdexoml2b.png
 heroPosition: 0% 74%
@@ -42,7 +42,7 @@ E a mesma hierarquia que está no relógio também está no vocativo.
 **O que eu achava**: um cargo.  
 **O que é**: um prenome (levado muito a sério)
 
-A autoridade é tratada pelo título antes do nome, sempre. Descobri isso do jeito mais barato disponível, cumprimentando alguém pelo primeiro nome seco na minha primeira semana. O silêncio que se fez em volta foi mais didático que qualquer manual. E o título, aqui, não expira: quem presidiu alguma coisa segue presidente anos depois, em qualquer sala, mesmo que a coisa presidida não exista mais. E existe uma regra de etiqueta a mais: você sempre deve usar o maior cargo que a autoridade já teve. Vale para presidentes, mas também para deputados, senadores, ministros... E a lista vai longe.
+A autoridade é tratada pelo título antes do nome, sempre. Descobri isso do jeito mais barato disponível, cumprimentando alguém pelo primeiro nome seco na minha primeira semana. O silêncio que se fez em volta foi mais didático que qualquer manual. **E o título, aqui, não expira: quem presidiu alguma coisa segue presidente anos depois, em qualquer sala, mesmo que a coisa presidida não exista mais. E existe uma regra de etiqueta a mais: você sempre deve usar o maior cargo que a autoridade já teve. Vale para presidentes, mas também para deputados, senadores, ministros... E a lista vai longe**.
 
 Sei que pode ser complicado, caro leitor, mas ainda tá na dúvida? Arrisca para cima, pelo menos. E não sou eu quem estou falando, isso é aprendizado da "rua" que te passo junto com este glossário.
 
@@ -50,30 +50,18 @@ Sei que pode ser complicado, caro leitor, mas ainda tá na dúvida? Arrisca para
 **O que eu achava**: o começo do trabalho.  
 **O que é**: uma forma cara de se decepcionar.
 
-Cheguei com mentalidade de São Paulo e um instinto automático: montar o plano do ano, com metas, marcos e acompanhamento mensal. Durou exato um mês. Aqui a agenda não é sua, é do calendário político, e o calendário político responde a coisas que ninguém controla. O que funciona é outra coisa: conhecer a pauta melhor do que os outros, estar por perto quando ela se move e ter o argumento pronto no dia em que a janela abre. Parei de planejar
+Cheguei com mentalidade de São Paulo e um instinto automático: montar o plano do ano, com metas, marcos e acompanhamento mensal. Durou exato um mês. **Aqui a agenda não é sua, é do calendário político, e o calendário político responde a coisas que ninguém controla. O que funciona é outra coisa: conhecer a pauta melhor do que os outros, estar por perto quando ela se move e ter o argumento pronto no dia em que a janela abre. Parei de planejar e ganhei efetividade.**
 
-E aqui eu paro, porque de expediente já basta. Nada disso explica por que eu fiquei.
+Mas por aqui eu paro, pois hoje é sexta-feira e de expediente já basta. Nada disso explica por que eu fiquei em Brasília, e vou tentar explicar sem me alongar por demais.
 
-Ninguém vem morar em Brasília. As pessoas vêm passar dois anos. Dizem isso no aeroporto, dizem no primeiro aluguel, dizem para a família que ficou, e depois estão aqui há doze. Eu vim por dois anos.
+**Brasília (s.f.)**  
+**O que eu achava**: a capital federal do Brasil, inaugurada em 1960.  
+**O que é**: casa.
 
-O que segura é banal e é difícil de explicar para quem não morou. É que aqui tudo é a quinze minutos de tudo, e quinze minutos de carro é uma moeda que só quem já morou em São Paulo sabe contar. É que você estaciona. É que dá para voltar andando do restaurante, e a gente volta andando. É que sábado de manhã a cidade fica em silêncio de um jeito que não parece capital. É que as crianças ainda brincam embaixo do bloco, no vão dos pilotis, e a mãe olha da janela do quarto andar, e isso existe em 2026 porque um arquiteto desenhou assim em 1957 e a cidade teimou em obedecer.
+Tudo o que o dicionário diz sobre Brasília é verdade, e nada disso ajuda. E eu fui aprender a definição que importa no lugar errado: passei um ano entrando e saindo das duas Casas, de terno nas terças, chamando cada um pelo título antes do nome, convencido de que a cidade ficava ali dentro. E leva um tempo até você notar a piada que a língua faz sem querer: Brasília chama de Casa exatamente os dois lugares onde ninguém mora.
 
-É o calendário, também. Brasília não tem quatro estações, tem duas, e não precisa de folhinha para saber em qual está. Em julho a umidade cai para doze por cento, o ar racha o lábio, e o céu fica de um azul que não tem nuvem nenhuma para atrapalhar. Em agosto os ipês entendem que ninguém está aguentando mais e explodem de amarelo na L2, no eixinho, na entrequadra, sem que ninguém tenha plantado nada com esse propósito. Depois vem o roxo. Depois vem a chuva, e a chuva de Brasília chega às cinco da tarde com hora marcada, derruba o mundo em quarenta minutos e vai embora, e às seis o cerrado inteiro cheira a terra molhada.
+Ela não fica ali. Fica no caminho de volta, que aqui tem quinze minutos e nenhum congestionamento, e essa é a sorte que eu não havia calculado: um dos ofícios mais importantes deste país é praticado a quinze minutos de onde eu durmo. Nada disso se enxerga de avião, nem de visita de três dias.
 
-É a maritaca das seis, que passa gritando em bando por cima do bloco e que ninguém aqui acha bonita nem acha feia, apenas sabe a hora que é.
+Falta a razão que não cabe em glossário nenhum, e é a única que eu não vou definir para você. Digo apenas que ela é a única coisa desta cidade que eu já conhecia acordada. Por cinco anos foi por ela, e não por Brasília, que eu embarquei duas vezes por mês, sempre na sexta, sempre de volta no domingo. A cidade veio por tabela, e só acordou para mim quando eu vim para ficar, e então me mostrou numa terça-feira tudo o que nunca havia me mostrado num daquele finais de semana.
 
-E é o horizonte. Esse é o ponto. Brasília não tem morro, não tem prédio alto no Plano, não tem nada entre você e a linha onde o chapadão encontra o resto. Às seis da tarde a cidade devolve o céu inteiro, todos os dias, sem pedir nada em troca — e é a única coisa por aqui que não pede credencial, não chega pronta e não tem lista de convidados.
-
-Casa (s.f.)
-
-O que eu achava: o prédio onde se votam as leis.
-
-O que é: isto.
-
-Aqui a palavra vem com maiúscula, e quase sempre no plural. As duas Casas. O Regimento da Casa. O Presidente da Casa. Passei um ano inteiro entrando e saindo daquelas duas, de terno nas terças, aprendendo a chamar cada um pelo título antes do nome, convencido de que era ali que ficava a cidade. E leva um tempo até você notar a piada que a língua faz sem querer: Brasília chama de Casa justamente os dois lugares onde ninguém mora.
-
-Ela não fica ali. Ela fica no caminho de volta, que aqui tem quinze minutos e nenhum congestionamento, e é essa a sorte que eu não tinha calculado — o ofício mais importante deste país é praticado a quinze minutos de onde eu durmo. Em São Paulo eu aprendi errado que estresse era o preço da relevância, e levei dez anos pagando. Aqui eu faço mais e vivo melhor, e essas duas coisas nunca deveriam ter sido inimigas.
-
-E há uma razão a mais, que não caberia num glossário e não vou explicar ao leitor. Digo apenas que ela já estava aqui antes de mim, que é por ela que eu vinha nos fins de semana, e que a política, por mais importante que seja, chegou depois — no mesmo endereço, por acaso, o que dispensou qualquer escolha difícil.
-
-Depois que entendi isso, entendi Brasília e casei com ela.
+**Depois que entendi isso, entendi Brasília e casei com Ela**.
