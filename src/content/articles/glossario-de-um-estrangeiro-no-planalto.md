@@ -42,15 +42,15 @@ E a mesma hierarquia que está no relógio também está no vocativo.
 **O que eu achava**: um cargo.  
 **O que é**: um prenome (levado muito a sério)
 
-A autoridade é tratada pelo título antes do nome, sempre. Descobri isso do jeito mais barato disponível, cumprimentando alguém pelo primeiro nome seco na minha primeira semana. O silêncio que se fez em volta foi mais didático que qualquer manual. E o título, aqui, não expira: quem presidiu alguma coisa segue presidente anos depois, em qualquer sala, mesmo que a coisa presidida não exista mais. Em algum momento deixa de ser função e passa a ser parte do nome, e a cidade inteira concorda com isso sem nunca ter combinado. Vale também para deputados, senadores, ministros... E a lista vai longe.
+A autoridade é tratada pelo título antes do nome, sempre. Descobri isso do jeito mais barato disponível, cumprimentando alguém pelo primeiro nome seco na minha primeira semana. O silêncio que se fez em volta foi mais didático que qualquer manual. E o título, aqui, não expira: quem presidiu alguma coisa segue presidente anos depois, em qualquer sala, mesmo que a coisa presidida não exista mais. E existe uma regra de etiqueta a mais: você sempre deve usar o maior cargo que a autoridade já teve. Vale para presidentes, mas também para deputados, senadores, ministros... E a lista vai longe.
 
-Planejamento (s.m.)
+Sei que pode ser complicado, caro leitor, mas ainda tá na dúvida? Arrisca para cima, pelo menos. E não sou eu quem estou falando, isso é aprendizado da "rua" que te passo junto com este glossário.
 
-O que eu achava: o começo do trabalho.
+**Planejamento (s.m.)**  
+**O que eu achava**: o começo do trabalho.  
+**O que é**: uma forma cara de se decepcionar.
 
-O que é: uma forma cara de se decepcionar.
-
-Cheguei com dez anos de mercado e um instinto automático: montar o plano do ano, com metas, marcos e acompanhamento mensal. Durou até o terceiro mês. Aqui a agenda não é sua, é do calendário político, e o calendário político responde a coisas que ninguém controla. O que funciona é outra coisa: conhecer a pauta melhor do que os outros, estar por perto quando ela se mexe e ter o argumento pronto no dia em que a janela abre. Parei de planejar o ano e virei uma pessoa consideravelmente mais feliz.
+Cheguei com mentalidade de São Paulo e um instinto automático: montar o plano do ano, com metas, marcos e acompanhamento mensal. Durou exato um mês. Aqui a agenda não é sua, é do calendário político, e o calendário político responde a coisas que ninguém controla. O que funciona é outra coisa: conhecer a pauta melhor do que os outros, estar por perto quando ela se move e ter o argumento pronto no dia em que a janela abre. Parei de planejar
 
 E aqui eu paro, porque de expediente já basta. Nada disso explica por que eu fiquei.
 
