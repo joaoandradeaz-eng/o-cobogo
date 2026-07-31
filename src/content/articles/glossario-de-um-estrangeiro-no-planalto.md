@@ -1,7 +1,7 @@
 ---
 title: Glossário de um estrangeiro no Planalto
 categories:
-  - opiniao
+  - ensaio
 author: João Andrade
 date: 2026-07-31T00:00:00.000Z
 readTime: 5 min
