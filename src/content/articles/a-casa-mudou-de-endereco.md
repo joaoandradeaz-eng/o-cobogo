@@ -6,7 +6,7 @@ author: João Andrade
 date: 2026-08-07T00:00:00.000Z
 readTime: 6 min
 heroImage: >-
-  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1786080112/vduff5unrekg5lhumbqf.png
+  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1786081305/a1oyka4xla9uxnode0e4.png
 linhaFina: >-
   Em 1946 o Brasil fechou os salões, despejou as roletas e mandou os crupiês
   para casa. Oitenta anos depois o jogo voltou, mas não foi pela porta da
