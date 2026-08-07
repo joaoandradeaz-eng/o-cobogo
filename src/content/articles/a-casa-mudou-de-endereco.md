@@ -5,12 +5,13 @@ categories:
 author: João Andrade
 date: 2026-08-07T00:00:00.000Z
 readTime: 6 min
+heroImage: >-
+  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1786080112/vduff5unrekg5lhumbqf.png
 linhaFina: >-
   Em 1946 o Brasil fechou os salões, despejou as roletas e mandou os crupiês
   para casa. Oitenta anos depois o jogo voltou, mas não foi pela porta da
   frente.
 linhaFinaLabel: ''
-draft: true
 ---
 Na noite de trinta de abril de 1946, as luzes se apagaram na Urca. Menos de cem dias depois de assumir, o presidente Eurico Gaspar Dutra assina um decreto fechando todos os cassinos do país, e a justificativa escrita invoca a tradição moral, jurídica e religiosa do povo brasileiro. Consta que houve influência doméstica e episcopal na decisão, mas isso é assunto para outro texto. **Passou uma geração e o mesmo inquilino que foi posto na rua naquela noite levou quase oitenta anos para conseguir endereço legal neste país, e conseguiu exatamente quando endereço físico já não fazia muita diferença.**
 
