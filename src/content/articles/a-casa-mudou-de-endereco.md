@@ -31,7 +31,7 @@ A desproporção entre os dois lados, porém, é bem mais antiga que aquela vota
 
 **A questão, caro leitor, é que esse nunca foi o problema de verdade.**
 
-Diante de um mercado desses cabem duas perguntas. Uma é sobre o quanto se movimenta e a arrecadação. A outra é sobre o que acontece com quem está do outro lado da tela. As duas foram feitas, é justo reconhecer, e a lei tem um conjunto de regras sobre proteção do apostador. Só que as duas foram entregues à mesma casa. Quem cuida de nos proteger da aposta é a mesma secretaria que licencia a aposta e calcula o imposto sobre ela. Para o cigarro havia a saúde pública. Para a bebida havia o trânsito. Para o cassino houve, à sua maneira, a moral de 1946.
+Diante de um mercado desses cabem duas perguntas. Uma é sobre o quanto se movimenta e sobre a arrecadação. A outra é sobre o que acontece com quem está do outro lado da tela. As duas foram feitas, é justo reconhecer, e a lei tem um conjunto de regras sobre proteção do apostador. Só que as duas foram entregues à mesma casa. Quem cuida de nos proteger da aposta é a mesma secretaria que licencia a aposta e calcula o imposto sobre ela. Para o cigarro havia a saúde pública. Para a bebida havia o trânsito. Para o cassino houve, à sua maneira, a moral de 1946.
 
 **Talvez a pergunta estivesse errada. Apostar em alguém pressupõe ter olhado para essa pessoa, e ninguém olhou. O país não apostou em nós. A gente não estava na mesa.**
 
