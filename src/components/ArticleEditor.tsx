@@ -8,6 +8,9 @@ import { estimateReadTime } from '../lib/readtime';
 type TagOption = { value: string; label: string; color?: string; textColor?: string };
 
 const STORAGE_KEY = 'ocobogo_draft_v3';
+// Marca, só nesta aba, um rascunho cuja restauração foi recusada. Serve para não
+// repetir a pergunta sem precisar apagar o rascunho, que é a única cópia local.
+const DISMISS_KEY = 'ocobogo_draft_dismissed_v3';
 
 const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
@@ -195,10 +198,19 @@ export default function ArticleEditor({
       return;
     }
     const draft = loadDraft();
-    if (draft && (draft.title || draft.bodyHtml || draft.dek)) {
+    let dispensado: string | null = null;
+    try {
+      dispensado = sessionStorage.getItem(DISMISS_KEY);
+    } catch {}
+    if (
+      draft &&
+      (draft.title || draft.bodyHtml || draft.dek) &&
+      dispensado !== String(draft.savedAt)
+    ) {
       const ageMin = Math.round((Date.now() - draft.savedAt) / 60000);
       const proceed = window.confirm(
-        `Você tem um rascunho salvo localmente (${ageMin} min atrás).\n\nRestaurar?`
+        `Você tem um rascunho salvo localmente (${ageMin} min atrás).\n\n` +
+          `Restaurar?\n\n(Cancelar não apaga nada: o rascunho continua guardado.)`
       );
       if (proceed) {
         setTitle(draft.title);
@@ -217,7 +229,13 @@ export default function ArticleEditor({
         setHeroZoom(typeof draft.heroZoom === 'number' ? draft.heroZoom : 1);
         setRestoredFromDraft(true);
       } else {
-        clearDraft();
+        // NÃO apagar o rascunho aqui. Ele é a única cópia local do texto, e um
+        // Cancelar sem querer custava o artigo inteiro. Só silenciamos a
+        // pergunta nesta aba; o rascunho segue guardado e some sozinho quando
+        // um post é salvo com sucesso.
+        try {
+          sessionStorage.setItem(DISMISS_KEY, String(draft.savedAt));
+        } catch {}
       }
     }
     initialMountedRef.current = true;
@@ -415,9 +433,26 @@ export default function ArticleEditor({
           notas: notas.filter((n) => n.trim()).length ? notas.filter((n) => n.trim()) : undefined,
         }),
       });
-      const data = await res.json();
+      // Lê como texto antes de tentar JSON: quando a função do servidor quebra,
+      // a plataforma devolve uma página HTML, e o res.json() cego estourava com
+      // "Unexpected token '<'" — mensagem que escondia a causa real.
+      const raw = await res.text();
+      let data: any = null;
+      try {
+        data = raw ? JSON.parse(raw) : null;
+      } catch {
+        /* resposta não era JSON; tratado abaixo */
+      }
       if (!res.ok) {
-        setError(data.error ?? `Erro ${res.status}`);
+        setError(
+          data?.error ??
+            `Erro ${res.status} no servidor, e a resposta não veio em JSON. ` +
+              `Isso costuma significar que a função quebrou — o suspeito de sempre é o GITHUB_TOKEN expirado na Vercel.`
+        );
+        return;
+      }
+      if (!data) {
+        setError('O servidor respondeu OK, mas sem JSON. Confira se o post foi criado antes de tentar de novo.');
         return;
       }
       if (!isEdit) clearDraft();
