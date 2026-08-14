@@ -1,12 +1,11 @@
 ---
-title: Todas as projeções erraram, menos uma
+title: 'Todas as projeções erraram, menos uma'
 categories:
   - opiniao
 author: João Andrade
 date: 2026-08-14T00:00:00.000Z
 readTime: 7 min
 heroImage: /assets/capa-bandeira.jpg
-heroCaption: Bandeira gerada por máquina
 linhaFina: >-
   Enquanto o mundo projeta o que a inteligência artificial fará com as eleições,
   uma projeção já aconteceu: num ginásio lotado, quem não podia falar apresentou
