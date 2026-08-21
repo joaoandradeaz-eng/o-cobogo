@@ -5,6 +5,8 @@ categories:
 author: João Andrade
 date: 2026-08-21T00:00:00.000Z
 readTime: 6 min
+heroImage: >-
+  https://res.cloudinary.com/dqyjyl8ff/image/upload/v1787274234/joyfkwyaecwyzzlxbrdg.png
 linhaFina: >-
   No dia 13 de agosto, duas notícias chegaram: do Planalto, o governo gritou
   soberania contra as tarifas americanas; do chão das fábricas, o próprio setor
