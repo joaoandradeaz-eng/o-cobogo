@@ -2,6 +2,7 @@
 title: A 6x1 no relógio do Senado
 categories:
   - politica
+  - opiniao
 author: João Andrade
 date: 2026-08-31T00:00:00.000Z
 readTime: 6 min
