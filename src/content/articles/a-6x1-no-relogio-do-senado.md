@@ -6,6 +6,7 @@ author: João Andrade
 date: 2026-08-31T00:00:00.000Z
 readTime: 6 min
 heroImage: /assets/capa-relogio.jpg
+heroPosition: 50% 72%
 linhaFina: >-
   A PEC do fim da escala 6x1 dormiu quase três meses no Senado e acordou numa sexta-feira, às quatro e dezessete da tarde. Desde já o aviso: deixe o relógio à mão, porque nesta história ele é o personagem principal.
 linhaFinaLabel: ''
