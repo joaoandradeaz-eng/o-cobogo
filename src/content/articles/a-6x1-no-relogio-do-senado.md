@@ -35,7 +35,7 @@ Vieram as reuniões públicas, no dia 12 e no dia 14, e com elas o anúncio de q
 
 Devolvo agora a palavra que pedi ao leitor para guardar. Açodamento foi o nome que a demora recebeu como justificativa. **Se oitenta e cinco dias parados eram prudência, o que são cinco dias úteis para mudar a Constituição?** Uma emenda que reescreve a jornada de trabalho do país não deveria caber numa semana de expediente concentrado, e não digo isso por ser contra ou a favor do que ela propõe. Digo porque coisa desse tamanho não se decide em cinco dias, e porque pressa, em matéria constitucional, é o tipo de erro que só aparece anos depois, quando já não há a quem reclamar.
 
-Volto, como prometido, à frase da sexta-feira. O relator tinha razão: esta é uma PEC com prazo a ser cumprido. Só que o prazo não é dele.
+Volto, como prometido, à frase da sexta-feira. O relator tinha razão: esta é uma PEC com prazo a ser cumprido. Ele só não disse qual prazo.
 
 Repare, para terminar, em quantas casas coube esta história. A do ministro, onde se jantou no dia 4. A do presidente, onde se almoçou no dia 26. E a Casa onde a proposta espera desde maio, cujo dono decide sozinho o que entra em pauta e quando. Se na quarta-feira ela passar na comissão e o plenário não for chamado, terá cumprido apenas mais um turno de espera na própria escala, e quem bate o ponto do turno seguinte é um homem só.
 
