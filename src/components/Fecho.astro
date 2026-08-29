@@ -17,15 +17,12 @@ import Reactions from './Reactions.astro';
 interface Props {
   /** slug do artigo — liga conversa + reações; sem ele, só inscrição */
   slug?: string;
-  /** título do artigo, pra mensagem pré-começada do WhatsApp */
-  titulo?: string;
 }
-const { slug, titulo } = Astro.props;
+const { slug } = Astro.props;
 const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 
-const waHref =
-  'https://wa.me/5511993060198?text=' +
-  encodeURIComponent(titulo ? `Oi, João! Li "${titulo}" no Cobogó e ` : 'Oi, João! Vim do Cobogó e ');
+// Link puro pro WhatsApp, sem mensagem pré-preenchida: a pessoa escreve do jeito dela.
+const waHref = 'https://wa.me/5511993060198';
 ---
 
 {ativa && (
