@@ -202,7 +202,9 @@ footer.site .foot-row .rt{
 /* ---------- insert "Sobre o autor" (Home + Artigo) ---------- */
 .insert.autor{
   max-width:1280px;margin:0 auto;
-  padding:0 var(--edge);background:transparent;position:relative;
+  /* mesma margem editorial do título e do "Continue lendo" (a home,
+     via .in-feed, tem padding próprio e não é afetada) */
+  padding:0 var(--gutter);background:transparent;position:relative;
 }
 .insert.autor .rule{
   height:12px;background:#000;
@@ -245,7 +247,7 @@ footer.site .foot-row .rt{
 }
 .insert.autor .more:hover{color:var(--terra-deep);border-color:var(--terra-deep)}
 @media (max-width:760px){
-  .insert.autor{padding:0 20px}
+  .insert.autor{padding:0 28px}
   .insert.autor .pad{
     grid-template-columns:1fr;padding:20px 0 40px;gap:24px;
   }
