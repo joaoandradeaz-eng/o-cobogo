@@ -36,6 +36,9 @@ async function lerDoGitHub(): Promise<{ tudo: Record<string, Contagens>; sha?: s
       owner: cfg.owner,
       repo: cfg.repo,
       path: JSON_PATH,
+      // leitura sempre fresca: com resposta em cache, a releitura depois de
+      // um conflito devolveria o sha velho e a corrida nunca se resolveria
+      headers: { 'If-None-Match': '', 'cache-control': 'no-cache' },
     });
     if (Array.isArray(res.data) || res.data.type !== 'file') return { tudo: {} };
     const texto = Buffer.from(res.data.content, 'base64').toString('utf-8');
