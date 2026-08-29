@@ -2,7 +2,7 @@
 
 /* ========== ARTICLE HEADER ========== */
 /* abertura compacta: título, byline e foto bem próximos na vertical */
-.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 12px}
+.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 16px}
 .art-hd .tags{
   display:flex;flex-wrap:wrap;align-items:center;gap:16px;
   margin-bottom:14px;
