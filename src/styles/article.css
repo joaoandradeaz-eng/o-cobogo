@@ -168,6 +168,10 @@
 .to-top:hover{ background: #000; color: #fff; }
 .to-top[hidden]{ display: none; }
 
+/* ===== Reações no ponto final do texto, na margem direita ===== */
+.art-body .fim-reacoes{ margin-top: 40px; display: flex; justify-content: flex-end; }
+.art-body .fim-reacoes:not(:has(.reacoes)){ display: none; }
+
 /* ===== Reações: logo abaixo da foto, no canto esquerdo dela =====
    Respiro maior pro lado da foto (32px) que pro lado da linha fina (22px). */
 .art-reacoes{ max-width: 1280px; margin: 0 auto; padding: 32px var(--gutter) 0; }
