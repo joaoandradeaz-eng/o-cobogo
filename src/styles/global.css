@@ -233,7 +233,8 @@ footer.site .foot-row .rt{
 .insert.autor p{
   margin-top:14px;font-family:var(--serif);font-style:italic;
   font-size:18px;line-height:1.5;color:var(--ink-2);
-  max-width:54ch;font-weight:400;
+  /* o texto se apossa da margem até o fim dela (antes travava em 54ch) */
+  max-width:none;font-weight:400;
 }
 .insert.autor .more{
   margin-top:22px;display:inline-flex;align-items:center;gap:12px;
