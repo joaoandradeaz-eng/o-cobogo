@@ -1,8 +1,9 @@
 ---
 /**
- * Caixa de inscrição da newsletter (e-mail OU WhatsApp), no padrão dos
- * inserts editoriais da casa (régua preta + rótulo + grid), com uma
- * parede de cobogós decorativa. Envia pra /api/inscrever.
+ * Caixa de inscrição da newsletter (e-mail OU WhatsApp) — versão
+ * minimalista: uma caixa com borda fina, um cobogó solo à esquerda e o
+ * formulário. Entra sempre DEPOIS do insert "Sobre o autor". Envia pra
+ * /api/inscrever.
  *
  * Só aparece quando há onde salvar: em dev (CSV local) ou quando o
  * INSCRITOS_GITHUB_TOKEN existe no build (repo privado). Assim dá pra
@@ -12,15 +13,15 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 ---
 
 {ativa && (
-<section class="insert inscreva" id="inscreva" aria-label="Receber os próximos textos">
-  <div class="rule"></div>
-  <span class="label">Receba o próximo texto</span>
-  <div class="pad">
+<section class="inscreva" id="inscreva" aria-label="Receber os próximos textos">
+  <div class="caixa">
+    <div class="peca-solo" aria-hidden="true">
+      <svg viewBox="0 0 177 177"><use href="#cobogo-flor" width="177" height="177" /></svg>
+    </div>
+
     <div class="txt">
-      <h3>Quer receber os <em>próximos textos</em>?</h3>
-      <p class="sub">
-        Deixe seu e-mail ou seu WhatsApp — eu aviso quando um ensaio novo sair, e só.
-      </p>
+      <h3>Quer que eu te mande sempre que tiver coisa nova?</h3>
+      <p class="sub">Deixe seu e-mail ou seu WhatsApp que eu te mando por lá.</p>
 
       <form id="inscreva-form" novalidate>
         <fieldset class="canais">
@@ -55,7 +56,7 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
         </div>
 
         <p class="erro" role="alert" hidden></p>
-        <p class="lgpd">Seu contato fica só comigo — sem spam, e você sai da lista quando quiser.</p>
+        <p class="lgpd">Seu contato fica só comigo e você sai da lista quando quiser.</p>
       </form>
 
       <div class="sucesso" hidden tabindex="-1">
@@ -65,18 +66,10 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
             stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <div>
-          <h3 class="ok-titulo">Pronto — <em>você está na lista!</em></h3>
+          <h3 class="ok-titulo">Pronto — você está na lista!</h3>
           <p class="ok-sub"></p>
         </div>
       </div>
-    </div>
-
-    <div class="parede" aria-hidden="true">
-      {Array.from({ length: 9 }).map((_, i) => (
-        <svg viewBox="0 0 177 177" class={i === 4 ? 'peca destaque' : 'peca'}>
-          <use href="#cobogo-flor" width="177" height="177" />
-        </svg>
-      ))}
     </div>
   </div>
 </section>
@@ -85,39 +78,42 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 <style>
   .inscreva{
     max-width:1280px;margin:0 auto;
-    padding:0 var(--edge);position:relative;
+    padding:24px var(--edge) 64px;
     /* na Home o insert vive dentro da grade de 12 colunas do .feed */
     grid-column:1 / -1;
     width:100%;
   }
-  .inscreva .rule{height:12px;background:#000}
-  .inscreva .label{
-    font-family:var(--mono);font-size:11px;
-    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
-    padding:14px 0 0;display:block;
+  .caixa{
+    max-width:720px;
+    border:1px solid var(--ink);border-radius:2px;
+    background:var(--paper);
+    padding:26px 28px;
+    display:grid;grid-template-columns:auto 1fr;gap:24px;
+    align-items:start;
   }
-  .inscreva .pad{
-    padding:26px 0 56px;
-    display:grid;grid-template-columns:1fr auto;
-    gap:48px;align-items:center;
+  /* um cobogó solo, como uma peça assentada */
+  .peca-solo{
+    width:72px;height:72px;background:var(--paper-2);
+    display:flex;align-items:center;justify-content:center;
   }
-  .inscreva .txt{max-width:600px}
+  .peca-solo svg{width:54px;height:54px;color:var(--terra);transition:color .6s ease}
+  .inscreva.feita .peca-solo svg{color:#2F7D3B}
+
   .inscreva h3{
-    font-family:var(--serif);font-weight:500;
-    font-size:clamp(30px,4.2vw,44px);letter-spacing:-.018em;line-height:1.05;
+    font-family:var(--serif);font-weight:600;
+    font-size:23px;letter-spacing:-.012em;line-height:1.2;
     color:#000;text-wrap:balance;
   }
-  .inscreva h3 em{font-style:italic;font-weight:400}
-  .inscreva .sub{
-    margin-top:12px;font-family:var(--serif);font-style:italic;
-    font-size:17px;line-height:1.5;color:var(--ink-2);max-width:52ch;
+  .sub{
+    margin-top:6px;font-family:var(--serif);font-style:italic;
+    font-size:15.5px;line-height:1.5;color:var(--ink-2);
   }
 
   /* ---- formulário ---- */
-  form{margin-top:22px}
+  form{margin-top:16px}
   .canais{
     border:1px solid var(--ink);border-radius:2px;
-    display:inline-flex;padding:0;margin:0 0 14px;
+    display:inline-flex;padding:0;margin:0 0 12px;
     background:var(--paper);
   }
   .canais label{position:relative;display:block;cursor:pointer}
@@ -125,8 +121,8 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
     position:absolute;inset:0;opacity:0;cursor:pointer;
   }
   .canais span{
-    display:block;padding:9px 18px 8px;
-    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    display:block;padding:8px 16px 7px;
+    font-family:var(--mono);font-size:10px;font-weight:600;
     letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
     transition:background .18s ease,color .18s ease;
   }
@@ -136,17 +132,17 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 
   .linha{display:flex;gap:10px;flex-wrap:wrap}
   .linha input{
-    flex:1;min-width:220px;
-    font-family:var(--serif);font-size:17px;color:var(--ink);
+    flex:1;min-width:200px;
+    font-family:var(--serif);font-size:16px;color:var(--ink);
     background:#fff;border:1px solid var(--rule-strong);border-radius:2px;
-    padding:13px 14px;
+    padding:11px 13px;
   }
   .linha input::placeholder{color:#5A5148;opacity:1}
   .linha button{
-    font-family:var(--mono);font-size:11px;font-weight:600;
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
     letter-spacing:.14em;text-transform:uppercase;
     background:#000;color:#fff;border:1px solid #000;border-radius:2px;
-    padding:13px 22px;cursor:pointer;white-space:nowrap;
+    padding:11px 18px;cursor:pointer;white-space:nowrap;
     transition:background .2s ease,border-color .2s ease;
   }
   .linha button:hover{background:var(--terra-deep);border-color:var(--terra-deep)}
@@ -159,30 +155,29 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
   }
 
   .erro{
-    margin-top:12px;font-family:var(--serif);font-size:15px;
+    margin-top:10px;font-family:var(--serif);font-size:14.5px;
     color:var(--terra-deep);
   }
   .lgpd{
-    margin-top:14px;font-family:var(--serif);font-style:italic;
-    font-size:13.5px;color:var(--ink-3);
+    margin-top:12px;font-family:var(--serif);font-style:italic;
+    font-size:13px;color:var(--ink-3);
   }
 
   /* ---- sucesso ---- */
-  .sucesso{
-    display:flex;align-items:center;gap:22px;
-    margin-top:26px;outline:none;
-  }
-  /* com a inscrição feita, o convite sai de cena e fica só a confirmação */
   .inscreva.feita .sub{display:none}
+  .sucesso{
+    display:flex;align-items:center;gap:18px;
+    margin-top:16px;outline:none;
+  }
   .sucesso[hidden]{display:none}
-  .check{width:64px;height:64px;flex-shrink:0;color:#2F7D3B}
+  .check{width:48px;height:48px;flex-shrink:0;color:#2F7D3B}
   .check .c,.check .v{stroke:currentColor}
   .check .c{--traco:183;stroke-dasharray:183;stroke-dashoffset:0}
   .check .v{--traco:37;stroke-dasharray:37;stroke-dashoffset:0}
-  .ok-titulo{font-size:clamp(26px,3.4vw,36px)}
+  .ok-titulo{font-size:21px}
   .ok-sub{
-    margin-top:8px;font-family:var(--serif);font-style:italic;
-    font-size:16px;color:var(--ink-2);
+    margin-top:4px;font-family:var(--serif);font-style:italic;
+    font-size:15px;color:var(--ink-2);
   }
   /* animação de desenho: círculo primeiro, depois o traço do check */
   .inscreva.feita .check .c{animation:desenha .55s cubic-bezier(.22,1,.36,1) both}
@@ -196,36 +191,16 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
     .inscreva.feita .check .v{animation:none}
   }
 
-  /* ---- parede de cobogós ---- */
-  .parede{
-    display:grid;grid-template-columns:repeat(3,74px);
-    gap:10px;padding:18px;background:var(--paper-2);
-    align-self:center;
-  }
-  .peca{width:74px;height:74px;display:block;color:var(--terra-tint);transition:color .6s ease}
-  .peca.destaque{color:var(--terra)}
-  .inscreva.feita .peca.destaque{color:#2F7D3B}
-
-  @media (max-width:960px){
-    .inscreva .pad{grid-template-columns:1fr;gap:28px}
-    /* no empilhado, a parede vira uma faixa de 3 peças acima do título */
-    .parede{
-      order:-1;grid-template-columns:repeat(3,48px);
-      padding:12px;width:max-content;
-    }
-    .peca{width:48px;height:48px}
-    .peca:nth-child(n+4){display:none}
-    /* a peça de destaque (5ª) some na faixa de 3; o do meio assume o terracota */
-    .peca:nth-child(2){color:var(--terra)}
-    .inscreva.feita .peca:nth-child(2){color:#2F7D3B}
-  }
   @media (max-width:760px){
-    .inscreva{padding:0 20px}
-    .inscreva .pad{padding:20px 0 44px}
+    .inscreva{padding:12px 20px 48px}
+  }
+  @media (max-width:560px){
+    .caixa{grid-template-columns:1fr;gap:16px;padding:20px}
+    .peca-solo{width:56px;height:56px}
+    .peca-solo svg{width:42px;height:42px}
     /* botão desce pra linha de baixo, largura cheia */
     .linha button{flex:1 1 100%}
     .sucesso{align-items:flex-start}
-    .check{width:52px;height:52px}
   }
 </style>
 

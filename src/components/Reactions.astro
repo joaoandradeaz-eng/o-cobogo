@@ -1,0 +1,156 @@
+---
+/**
+ * Reações do artigo (estilo Instagram/WhatsApp): três positivas e
+ * diferentes — Adorei, Aplausos, Me fez pensar. Aparece no topo e no fim
+ * do artigo; as duas instâncias ficam sincronizadas pelo mesmo script.
+ * Contagem global via /api/reacoes; o "já reagi" fica no localStorage.
+ *
+ * Mesma trava do SubscribeBox: sem armazenamento configurado, não renderiza.
+ */
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
+
+const OPCOES = [
+  { id: 'adorei', emoji: '❤️', rotulo: 'Adorei' },
+  { id: 'aplausos', emoji: '👏', rotulo: 'Aplausos' },
+  { id: 'pensei', emoji: '💡', rotulo: 'Me fez pensar' },
+];
+---
+
+{ativa && (
+<div class="reacoes" data-reacoes data-slug={slug} aria-label="Reagir ao texto">
+  {OPCOES.map((o) => (
+    <button type="button" data-reacao={o.id} aria-pressed="false">
+      <span class="emo" aria-hidden="true">{o.emoji}</span>
+      <span class="rot">{o.rotulo}</span>
+      <span class="num" hidden></span>
+    </button>
+  ))}
+</div>
+)}
+
+<style>
+  .reacoes{display:flex;gap:10px;flex-wrap:wrap}
+  .reacoes button{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+    background:transparent;border:1px solid var(--rule-strong);
+    border-radius:999px;padding:8px 16px;cursor:pointer;
+    transition:background .18s ease,color .18s ease,border-color .18s ease;
+  }
+  .reacoes button:hover{border-color:var(--ink);color:#000}
+  .reacoes button[aria-pressed="true"]{
+    background:#000;border-color:#000;color:var(--paper);
+  }
+  .reacoes .emo{font-size:15px;line-height:1}
+  .reacoes .num{font-weight:600}
+  .reacoes .num[hidden]{display:none}
+  /* pop do emoji ao reagir */
+  .reacoes button.pop .emo{animation:pop .45s cubic-bezier(.22,1,.36,1)}
+  @keyframes pop{
+    0%{transform:scale(1)}
+    40%{transform:scale(1.45)}
+    100%{transform:scale(1)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reacoes button.pop .emo{animation:none}
+  }
+  @media (max-width:760px){
+    .reacoes{gap:8px}
+    .reacoes button{padding:8px 13px}
+  }
+</style>
+
+<script>
+  const grupos = Array.from(document.querySelectorAll<HTMLElement>('[data-reacoes]'));
+
+  if (grupos.length) {
+    const slug = grupos[0].dataset.slug!;
+    const CHAVE = `cobogo-reacoes:${slug}`;
+
+    function minhas(): Set<string> {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(CHAVE) || '[]'));
+      } catch {
+        return new Set();
+      }
+    }
+    function guardar(s: Set<string>) {
+      try {
+        localStorage.setItem(CHAVE, JSON.stringify([...s]));
+      } catch {}
+    }
+
+    function pintar(contagens: Record<string, number> | null) {
+      const feitas = minhas();
+      grupos.forEach((g) =>
+        g.querySelectorAll<HTMLButtonElement>('button[data-reacao]').forEach((b) => {
+          const id = b.dataset.reacao!;
+          b.setAttribute('aria-pressed', String(feitas.has(id)));
+          if (contagens) {
+            const n = contagens[id] ?? 0;
+            const num = b.querySelector<HTMLElement>('.num')!;
+            num.textContent = String(n);
+            num.hidden = n === 0;
+          }
+        })
+      );
+    }
+
+    // enquanto houver clique em trânsito, os números do servidor não
+    // sobrescrevem o ajuste otimista da tela
+    let pendentes = 0;
+
+    // estado local imediato; números globais chegam em seguida
+    pintar(null);
+    fetch(`/api/reacoes?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && pendentes === 0) pintar(d.contagens); })
+      .catch(() => {});
+
+    grupos.forEach((g) =>
+      g.addEventListener('click', async (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-reacao]');
+        if (!b) return;
+        const id = b.dataset.reacao!;
+        const feitas = minhas();
+        const removendo = feitas.has(id);
+        removendo ? feitas.delete(id) : feitas.add(id);
+        guardar(feitas);
+
+        // otimista: ajusta os números na tela antes da resposta
+        grupos.forEach((gr) => {
+          const num = gr.querySelector<HTMLElement>(`button[data-reacao="${id}"] .num`)!;
+          const n = Math.max(0, (parseInt(num.textContent || '0', 10) || 0) + (removendo ? -1 : 1));
+          num.textContent = String(n);
+          num.hidden = n === 0;
+        });
+        pintar(null);
+        if (!removendo) {
+          const alvo = b.querySelector('.emo')!.parentElement!;
+          alvo.classList.remove('pop');
+          void (alvo as HTMLElement).offsetWidth;
+          alvo.classList.add('pop');
+          (window as any).umami?.track('reacao', { slug, reacao: id });
+        }
+
+        pendentes++;
+        try {
+          const res = await fetch('/api/reacoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug, reacao: id, delta: removendo ? -1 : 1 }),
+          });
+          const d = await res.json();
+          if (d.ok && pendentes === 1) pintar(d.contagens);
+        } catch {} finally {
+          pendentes--;
+        }
+      })
+    );
+  }
+</script>
