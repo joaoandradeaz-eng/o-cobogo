@@ -2,7 +2,7 @@
 
 /* ========== ARTICLE HEADER ========== */
 /* abertura compacta: título, byline e foto bem próximos na vertical */
-.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 18px}
+.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 12px}
 .art-hd .tags{
   display:flex;flex-wrap:wrap;align-items:center;gap:16px;
   margin-bottom:14px;
@@ -30,7 +30,7 @@
   margin-top:28px;
   font-family:var(--serif);font-size:17px;line-height:1.45;
   color:var(--ink-2);
-  display:flex;flex-wrap:nowrap;align-items:center;gap:0 12px;
+  display:flex;flex-wrap:nowrap;align-items:center;gap:0 9px;
   letter-spacing:0;text-transform:none;
 }
 .art-hd .byline .bit{display:inline-flex;align-items:center;gap:6px}
@@ -50,7 +50,7 @@
   .art-hd .dek{font-size:20px}
 }
 @media (max-width:760px){
-  .art-hd{padding:20px 28px 12px}
+  .art-hd{padding:20px 28px 8px}
   .art-hd h1{font-size:38px}
   /* byline numa linha só: fonte menor + nowrap, sem caixa. Cabe num 360px. */
   .art-hd .byline{font-size:12.5px;gap:0 8px;white-space:nowrap}
@@ -175,7 +175,7 @@
 
 /* ===== Reações na linha da byline, encostadas na margem direita ===== */
 .art-hd .byline-row{
-  margin-top: 14px;
+  margin-top: 8px;
   display: flex; align-items: center; justify-content: space-between;
   gap: 14px 24px; flex-wrap: wrap;
 }
