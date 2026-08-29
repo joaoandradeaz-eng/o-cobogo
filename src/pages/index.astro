@@ -2,7 +2,7 @@
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
-import SubscribeBox from '../components/SubscribeBox.astro';
+import Fecho from '../components/Fecho.astro';
 import Tag from '../components/Tag.astro';
 import { getCollection } from 'astro:content';
 
@@ -172,11 +172,11 @@ const hasMore = published.length > 7;
       <!-- INSERT: SOBRE O AUTOR -->
       <AuthorInsert inFeed={true} />
 
-      <!-- INSERT: RECEBA OS PRÓXIMOS TEXTOS (fim da página) -->
-      <SubscribeBox />
-
     </div>
   </div>
+
+  <!-- O FECHO: inscrição, de ponta a ponta (fora do shell pra sangrar inteiro) -->
+  <Fecho />
 </BaseLayout>
 
 <style is:global>
