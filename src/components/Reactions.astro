@@ -95,25 +95,37 @@ const OPCOES = [
     const slug = grupos[0].dataset.slug!;
     const CHAVE = `cobogo-reacoes:${slug}`;
 
-    function minhas(): Set<string> {
+    /**
+     * Uma reação por pessoa: coração OU faísca OU lâmpada. Guardamos só
+     * a escolhida (string) — versões antigas guardavam um array, então
+     * um valor legado vira a primeira que a pessoa tinha marcado.
+     */
+    function minha(): string | null {
       try {
-        return new Set(JSON.parse(localStorage.getItem(CHAVE) || '[]'));
+        const bruto = localStorage.getItem(CHAVE);
+        if (!bruto) return null;
+        if (bruto.startsWith('[')) {
+          const antigo = JSON.parse(bruto);
+          return Array.isArray(antigo) && antigo.length ? String(antigo[0]) : null;
+        }
+        return bruto;
       } catch {
-        return new Set();
+        return null;
       }
     }
-    function guardar(s: Set<string>) {
+    function guardar(id: string | null) {
       try {
-        localStorage.setItem(CHAVE, JSON.stringify([...s]));
+        if (id) localStorage.setItem(CHAVE, id);
+        else localStorage.removeItem(CHAVE);
       } catch {}
     }
 
     function pintar(contagens: Record<string, number> | null) {
-      const feitas = minhas();
+      const escolhida = minha();
       grupos.forEach((g) =>
         g.querySelectorAll<HTMLButtonElement>('button[data-reacao]').forEach((b) => {
           const id = b.dataset.reacao!;
-          b.setAttribute('aria-pressed', String(feitas.has(id)));
+          b.setAttribute('aria-pressed', String(escolhida === id));
           if (contagens) {
             const n = contagens[id] ?? 0;
             const num = b.querySelector<HTMLElement>('.num')!;
@@ -122,6 +134,17 @@ const OPCOES = [
           }
         })
       );
+    }
+
+    /** ajusta o número de uma reação em todos os grupos, na hora */
+    function somaNaTela(id: string, delta: number) {
+      grupos.forEach((gr) => {
+        const num = gr.querySelector<HTMLElement>(`button[data-reacao="${id}"] .num`);
+        if (!num) return;
+        const n = Math.max(0, (parseInt(num.textContent || '0', 10) || 0) + delta);
+        num.textContent = String(n);
+        num.hidden = n === 0;
+      });
     }
 
     // enquanto houver clique em trânsito, os números do servidor não
@@ -135,43 +158,56 @@ const OPCOES = [
       .then((d) => { if (d.ok && pendentes === 0) pintar(d.contagens); })
       .catch(() => {});
 
+    async function registra(reacao: string, delta: 1 | -1) {
+      pendentes++;
+      try {
+        const res = await fetch('/api/reacoes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, reacao, delta }),
+        });
+        const d = await res.json();
+        if (d.ok && pendentes === 1) pintar(d.contagens);
+      } catch {} finally {
+        pendentes--;
+      }
+    }
+
     grupos.forEach((g) =>
       g.addEventListener('click', async (e) => {
         const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-reacao]');
         if (!b) return;
         const id = b.dataset.reacao!;
-        const feitas = minhas();
-        const removendo = feitas.has(id);
-        removendo ? feitas.delete(id) : feitas.add(id);
-        guardar(feitas);
+        const anterior = minha();
 
-        // otimista: ajusta os números na tela antes da resposta
-        grupos.forEach((gr) => {
-          const num = gr.querySelector<HTMLElement>(`button[data-reacao="${id}"] .num`)!;
-          const n = Math.max(0, (parseInt(num.textContent || '0', 10) || 0) + (removendo ? -1 : 1));
-          num.textContent = String(n);
-          num.hidden = n === 0;
-        });
+        // clicar na que já está escolhida desmarca; clicar noutra TROCA
+        const desmarcando = anterior === id;
+        guardar(desmarcando ? null : id);
+
+        if (desmarcando) {
+          somaNaTela(id, -1);
+        } else {
+          if (anterior) somaNaTela(anterior, -1);
+          somaNaTela(id, +1);
+        }
         pintar(null);
-        if (!removendo) {
-          const alvo = b.querySelector('.emo')!.parentElement!;
-          alvo.classList.remove('pop');
-          void (alvo as HTMLElement).offsetWidth;
-          alvo.classList.add('pop');
+
+        if (!desmarcando) {
+          const alvo = b.querySelector('.emo') as HTMLElement | null;
+          if (alvo) {
+            b.classList.remove('pop');
+            void b.offsetWidth;
+            b.classList.add('pop');
+          }
           (window as any).umami?.track('reacao', { slug, reacao: id });
         }
 
-        pendentes++;
-        try {
-          const res = await fetch('/api/reacoes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ slug, reacao: id, delta: removendo ? -1 : 1 }),
-          });
-          const d = await res.json();
-          if (d.ok && pendentes === 1) pintar(d.contagens);
-        } catch {} finally {
-          pendentes--;
+        // servidor: tira a anterior (se havia) e põe a nova
+        if (desmarcando) {
+          await registra(id, -1);
+        } else {
+          if (anterior) await registra(anterior, -1);
+          await registra(id, +1);
         }
       })
     );
