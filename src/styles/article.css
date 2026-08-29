@@ -1,7 +1,8 @@
 /* ========== ARTICLE LAYOUT — usado em /[slug] e em /admin/novo, /admin/edit ========== */
 
 /* ========== ARTICLE HEADER ========== */
-.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 40px}
+/* abertura compacta: título, byline e foto bem próximos na vertical */
+.art-hd{max-width:1280px;margin:0 auto;padding:64px var(--gutter) 18px}
 .art-hd .tags{
   display:flex;flex-wrap:wrap;align-items:center;gap:16px;
   margin-bottom:14px;
@@ -18,7 +19,7 @@
 }
 .art-hd h1 em{font-style:normal;font-weight:700}
 .art-hd .dek{
-  margin-top:24px;
+  margin-top:16px;
   font-family:var(--serif);font-style:italic;
   font-size:22px;line-height:1.35;color:var(--ink-2);
   font-weight:400;
@@ -49,7 +50,7 @@
   .art-hd .dek{font-size:20px}
 }
 @media (max-width:760px){
-  .art-hd{padding:20px 28px 24px}
+  .art-hd{padding:20px 28px 12px}
   .art-hd h1{font-size:38px}
   /* byline numa linha só: fonte menor + nowrap, sem caixa. Cabe num 360px. */
   .art-hd .byline{font-size:12.5px;gap:0 8px;white-space:nowrap}
@@ -174,7 +175,7 @@
 
 /* ===== Reações na linha da byline, encostadas na margem direita ===== */
 .art-hd .byline-row{
-  margin-top: 28px;
+  margin-top: 14px;
   display: flex; align-items: center; justify-content: space-between;
   gap: 14px 24px; flex-wrap: wrap;
 }
