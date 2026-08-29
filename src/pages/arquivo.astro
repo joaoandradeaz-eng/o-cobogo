@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SubscribeBox from '../components/SubscribeBox.astro';
 import { getCollection } from 'astro:content';
 
 // converte *texto* (markdown emphasis) em <em>texto</em>
@@ -60,6 +61,9 @@ const total = articles.length;
       </div>
     )}
   </section>
+
+  <!-- INSERT: RECEBA OS PRÓXIMOS TEXTOS (fim da página) -->
+  <SubscribeBox />
 
 </BaseLayout>
 

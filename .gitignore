@@ -16,6 +16,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# dados locais de dev (inscritos de teste etc.) — nunca commitar
+.data/
+
 # macOS
 .DS_Store
 

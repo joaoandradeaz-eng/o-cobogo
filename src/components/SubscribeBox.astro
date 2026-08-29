@@ -1,0 +1,336 @@
+---
+/**
+ * Caixa de inscrição da newsletter (e-mail OU WhatsApp), no padrão dos
+ * inserts editoriais da casa (régua preta + rótulo + grid), com uma
+ * parede de cobogós decorativa. Envia pra /api/inscrever.
+ *
+ * Só aparece quando há onde salvar: em dev (CSV local) ou quando o
+ * INSCRITOS_GITHUB_TOKEN existe no build (repo privado). Assim dá pra
+ * subir o código pra main sem estrear um formulário quebrado.
+ */
+const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
+---
+
+{ativa && (
+<section class="insert inscreva" id="inscreva" aria-label="Receber os próximos textos">
+  <div class="rule"></div>
+  <span class="label">Receba o próximo texto</span>
+  <div class="pad">
+    <div class="txt">
+      <h3>Quer receber os <em>próximos textos</em>?</h3>
+      <p class="sub">
+        Deixe seu e-mail ou seu WhatsApp — eu aviso quando um ensaio novo sair, e só.
+      </p>
+
+      <form id="inscreva-form" novalidate>
+        <fieldset class="canais">
+          <legend class="sr-only">Como você quer receber</legend>
+          <label>
+            <input type="radio" name="canal" value="email" checked />
+            <span>E-mail</span>
+          </label>
+          <label>
+            <input type="radio" name="canal" value="whatsapp" />
+            <span>WhatsApp</span>
+          </label>
+        </fieldset>
+
+        <div class="linha">
+          <input
+            id="inscreva-contato"
+            name="contato"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            placeholder="seu@email.com"
+            aria-label="Seu contato"
+            required
+          />
+          <button type="submit">Quero receber&nbsp;→</button>
+        </div>
+
+        <!-- honeypot: humano não vê nem preenche -->
+        <div class="hp" aria-hidden="true">
+          <label>Deixe este campo vazio<input type="text" name="site" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <p class="erro" role="alert" hidden></p>
+        <p class="lgpd">Seu contato fica só comigo — sem spam, e você sai da lista quando quiser.</p>
+      </form>
+
+      <div class="sucesso" hidden tabindex="-1">
+        <svg class="check" viewBox="0 0 64 64" aria-hidden="true">
+          <circle class="c" cx="32" cy="32" r="29" fill="none" stroke-width="2.5" />
+          <path class="v" d="M20 33.5 L28.5 42 L44.5 24" fill="none" stroke-width="4"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div>
+          <h3 class="ok-titulo">Pronto — <em>você está na lista!</em></h3>
+          <p class="ok-sub"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="parede" aria-hidden="true">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <svg viewBox="0 0 177 177" class={i === 4 ? 'peca destaque' : 'peca'}>
+          <use href="#cobogo-flor" width="177" height="177" />
+        </svg>
+      ))}
+    </div>
+  </div>
+</section>
+)}
+
+<style>
+  .inscreva{
+    max-width:1280px;margin:0 auto;
+    padding:0 var(--edge);position:relative;
+    /* na Home o insert vive dentro da grade de 12 colunas do .feed */
+    grid-column:1 / -1;
+    width:100%;
+  }
+  .inscreva .rule{height:12px;background:#000}
+  .inscreva .label{
+    font-family:var(--mono);font-size:11px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+    padding:14px 0 0;display:block;
+  }
+  .inscreva .pad{
+    padding:26px 0 56px;
+    display:grid;grid-template-columns:1fr auto;
+    gap:48px;align-items:center;
+  }
+  .inscreva .txt{max-width:600px}
+  .inscreva h3{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(30px,4.2vw,44px);letter-spacing:-.018em;line-height:1.05;
+    color:#000;text-wrap:balance;
+  }
+  .inscreva h3 em{font-style:italic;font-weight:400}
+  .inscreva .sub{
+    margin-top:12px;font-family:var(--serif);font-style:italic;
+    font-size:17px;line-height:1.5;color:var(--ink-2);max-width:52ch;
+  }
+
+  /* ---- formulário ---- */
+  form{margin-top:22px}
+  .canais{
+    border:1px solid var(--ink);border-radius:2px;
+    display:inline-flex;padding:0;margin:0 0 14px;
+    background:var(--paper);
+  }
+  .canais label{position:relative;display:block;cursor:pointer}
+  .canais input{
+    position:absolute;inset:0;opacity:0;cursor:pointer;
+  }
+  .canais span{
+    display:block;padding:9px 18px 8px;
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+    transition:background .18s ease,color .18s ease;
+  }
+  .canais label + label span{border-left:1px solid var(--ink)}
+  .canais input:checked + span{background:#000;color:var(--paper)}
+  .canais input:focus-visible + span{outline:2px solid var(--terra);outline-offset:3px;border-radius:2px}
+
+  .linha{display:flex;gap:10px;flex-wrap:wrap}
+  .linha input{
+    flex:1;min-width:220px;
+    font-family:var(--serif);font-size:17px;color:var(--ink);
+    background:#fff;border:1px solid var(--rule-strong);border-radius:2px;
+    padding:13px 14px;
+  }
+  .linha input::placeholder{color:#5A5148;opacity:1}
+  .linha button{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;
+    background:#000;color:#fff;border:1px solid #000;border-radius:2px;
+    padding:13px 22px;cursor:pointer;white-space:nowrap;
+    transition:background .2s ease,border-color .2s ease;
+  }
+  .linha button:hover{background:var(--terra-deep);border-color:var(--terra-deep)}
+  .linha button:disabled{opacity:.55;cursor:default}
+
+  .hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+  .sr-only{
+    position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+  }
+
+  .erro{
+    margin-top:12px;font-family:var(--serif);font-size:15px;
+    color:var(--terra-deep);
+  }
+  .lgpd{
+    margin-top:14px;font-family:var(--serif);font-style:italic;
+    font-size:13.5px;color:var(--ink-3);
+  }
+
+  /* ---- sucesso ---- */
+  .sucesso{
+    display:flex;align-items:center;gap:22px;
+    margin-top:26px;outline:none;
+  }
+  /* com a inscrição feita, o convite sai de cena e fica só a confirmação */
+  .inscreva.feita .sub{display:none}
+  .sucesso[hidden]{display:none}
+  .check{width:64px;height:64px;flex-shrink:0;color:#2F7D3B}
+  .check .c,.check .v{stroke:currentColor}
+  .check .c{--traco:183;stroke-dasharray:183;stroke-dashoffset:0}
+  .check .v{--traco:37;stroke-dasharray:37;stroke-dashoffset:0}
+  .ok-titulo{font-size:clamp(26px,3.4vw,36px)}
+  .ok-sub{
+    margin-top:8px;font-family:var(--serif);font-style:italic;
+    font-size:16px;color:var(--ink-2);
+  }
+  /* animação de desenho: círculo primeiro, depois o traço do check */
+  .inscreva.feita .check .c{animation:desenha .55s cubic-bezier(.22,1,.36,1) both}
+  .inscreva.feita .check .v{animation:desenha .4s cubic-bezier(.22,1,.36,1) .4s both}
+  @keyframes desenha{
+    from{stroke-dashoffset:var(--traco)}
+    to{stroke-dashoffset:0}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .inscreva.feita .check .c,
+    .inscreva.feita .check .v{animation:none}
+  }
+
+  /* ---- parede de cobogós ---- */
+  .parede{
+    display:grid;grid-template-columns:repeat(3,74px);
+    gap:10px;padding:18px;background:var(--paper-2);
+    align-self:center;
+  }
+  .peca{width:74px;height:74px;display:block;color:var(--terra-tint);transition:color .6s ease}
+  .peca.destaque{color:var(--terra)}
+  .inscreva.feita .peca.destaque{color:#2F7D3B}
+
+  @media (max-width:960px){
+    .inscreva .pad{grid-template-columns:1fr;gap:28px}
+    /* no empilhado, a parede vira uma faixa de 3 peças acima do título */
+    .parede{
+      order:-1;grid-template-columns:repeat(3,48px);
+      padding:12px;width:max-content;
+    }
+    .peca{width:48px;height:48px}
+    .peca:nth-child(n+4){display:none}
+    /* a peça de destaque (5ª) some na faixa de 3; o do meio assume o terracota */
+    .peca:nth-child(2){color:var(--terra)}
+    .inscreva.feita .peca:nth-child(2){color:#2F7D3B}
+  }
+  @media (max-width:760px){
+    .inscreva{padding:0 20px}
+    .inscreva .pad{padding:20px 0 44px}
+    /* botão desce pra linha de baixo, largura cheia */
+    .linha button{flex:1 1 100%}
+    .sucesso{align-items:flex-start}
+    .check{width:52px;height:52px}
+  }
+</style>
+
+<script>
+  const raiz = document.getElementById('inscreva');
+  const form = document.getElementById('inscreva-form') as HTMLFormElement | null;
+
+  if (raiz && form) {
+    const campo = form.querySelector<HTMLInputElement>('#inscreva-contato')!;
+    const erro = form.querySelector<HTMLParagraphElement>('.erro')!;
+    const botao = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const sucesso = raiz.querySelector<HTMLDivElement>('.sucesso')!;
+    const okSub = sucesso.querySelector<HTMLParagraphElement>('.ok-sub')!;
+
+    const ATTRS: Record<string, Record<string, string>> = {
+      email: { type: 'email', inputmode: 'email', autocomplete: 'email', placeholder: 'seu@email.com' },
+      whatsapp: { type: 'tel', inputmode: 'tel', autocomplete: 'tel-national', placeholder: '(61) 99999-9999' },
+    };
+
+    function canalAtual(): string {
+      return (form!.querySelector<HTMLInputElement>('input[name=canal]:checked')?.value) || 'email';
+    }
+
+    form.querySelectorAll<HTMLInputElement>('input[name=canal]').forEach((r) =>
+      r.addEventListener('change', () => {
+        const a = ATTRS[canalAtual()];
+        Object.entries(a).forEach(([k, v]) => campo.setAttribute(k, v));
+        erro.hidden = true;
+        campo.focus();
+      })
+    );
+
+    function valida(canal: string, v: string): string | null {
+      if (canal === 'email') {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()))
+          return 'Esse e-mail não parece válido. Confere pra mim?';
+      } else {
+        const d = v.replace(/\D/g, '');
+        if (d.length < 10 || d.length > 13)
+          return 'Esse número não parece válido. Use DDD + celular, tipo (61) 99999-9999.';
+      }
+      return null;
+    }
+
+    // Pré-visualização do estado de sucesso SÓ em dev: /?sucesso
+    if (import.meta.env.DEV && new URLSearchParams(location.search).has('sucesso')) {
+      okSub.textContent = 'O próximo ensaio chega direto no seu e-mail.';
+      form.hidden = true;
+      sucesso.hidden = false;
+      raiz.classList.add('feita');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const canal = canalAtual();
+      const contato = campo.value;
+
+      const msg = valida(canal, contato);
+      if (msg) {
+        erro.textContent = msg;
+        erro.hidden = false;
+        campo.focus();
+        return;
+      }
+
+      erro.hidden = true;
+      botao.disabled = true;
+      const rotulo = botao.textContent;
+      botao.textContent = 'Enviando…';
+
+      try {
+        const res = await fetch('/api/inscrever', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            canal,
+            contato,
+            origem: location.pathname,
+            site: (form.querySelector<HTMLInputElement>('input[name=site]')?.value) || '',
+          }),
+        });
+        const dados = await res.json().catch(() => ({}));
+
+        if (res.ok && dados.ok) {
+          okSub.textContent = dados.jaExistia
+            ? 'Você já estava na lista — tudo certo, o combinado segue de pé.'
+            : canal === 'email'
+              ? 'O próximo ensaio chega direto no seu e-mail.'
+              : 'O próximo ensaio chega direto no seu WhatsApp.';
+          form.hidden = true;
+          sucesso.hidden = false;
+          raiz.classList.add('feita');
+          sucesso.focus({ preventScroll: true });
+          (window as any).umami?.track('inscricao', { canal });
+        } else {
+          erro.textContent = dados.erro || 'Não consegui salvar agora. Tenta de novo?';
+          erro.hidden = false;
+        }
+      } catch {
+        erro.textContent = 'Sem conexão agora. Tenta de novo em instantes?';
+        erro.hidden = false;
+      } finally {
+        botao.disabled = false;
+        botao.textContent = rotulo;
+      }
+    });
+  }
+</script>

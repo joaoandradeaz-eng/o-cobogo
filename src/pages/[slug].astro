@@ -2,6 +2,7 @@
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
+import SubscribeBox from '../components/SubscribeBox.astro';
 import { getCollection, render } from 'astro:content';
 import { cloudinaryOgUrl } from '../lib/social-image';
 import '../styles/article.css';
@@ -179,6 +180,9 @@ function fmtCardDate(date: Date): string {
     </div>
 
   </section>
+
+  <!-- INSERT: RECEBA OS PRÓXIMOS TEXTOS -->
+  <SubscribeBox />
 
   <!-- INSERT: SOBRE O AUTOR -->
   <AuthorInsert />
