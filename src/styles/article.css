@@ -182,6 +182,10 @@
 .art-hd .byline-row .byline{ margin-top: 0; }
 .art-hd .hd-reacoes{ margin-left: auto; }
 .art-hd .hd-reacoes:not(:has(.reacoes)){ display: none; }
+/* no mobile a abertura fica limpa: reagir só no fim do texto e no fecho */
+@media (max-width: 760px){
+  .art-hd .hd-reacoes{ display: none; }
+}
 
 /* === Hand-drawn highlights (mark element, multicolor) ===
    Cada cor usa o mesmo SVG path com Bézier irregular nas bordas, sobreposto
