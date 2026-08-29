@@ -172,16 +172,15 @@
 .art-body .fim-reacoes{ margin-top: 40px; display: flex; justify-content: flex-end; }
 .art-body .fim-reacoes:not(:has(.reacoes)){ display: none; }
 
-/* ===== Reações: logo abaixo da foto, no canto esquerdo dela =====
-   Respiro maior pro lado da foto (32px) que pro lado da linha fina (22px). */
-.art-reacoes{ max-width: 1280px; margin: 0 auto; padding: 32px var(--gutter) 0; }
-.art-reacoes:has(.reacoes) + .art-body{ padding-top: 22px; }
-/* sem reações renderizadas (armazenamento desligado), o wrapper some */
-.art-reacoes:not(:has(.reacoes)){ display: none; }
-@media (max-width:760px){
-  .art-reacoes{ padding: 24px 28px 0; }
-  .art-reacoes:has(.reacoes) + .art-body{ padding-top: 20px; }
+/* ===== Reações na linha da byline, encostadas na margem direita ===== */
+.art-hd .byline-row{
+  margin-top: 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px 24px; flex-wrap: wrap;
 }
+.art-hd .byline-row .byline{ margin-top: 0; }
+.art-hd .hd-reacoes{ margin-left: auto; }
+.art-hd .hd-reacoes:not(:has(.reacoes)){ display: none; }
 
 /* === Hand-drawn highlights (mark element, multicolor) ===
    Cada cor usa o mesmo SVG path com Bézier irregular nas bordas, sobreposto
