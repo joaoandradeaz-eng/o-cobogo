@@ -101,8 +101,15 @@ async function gravarReacao(
 
   const cfg = configGitHub();
   if (cfg) {
-    // read-modify-write com sha; em corrida (409), relê e tenta de novo
-    for (let tentativa = 0; tentativa < 3; tentativa++) {
+    /**
+     * read-modify-write com sha. Sob concorrência (várias pessoas reagindo
+     * ao mesmo tempo, em instâncias serverless diferentes), o GitHub recusa
+     * a escrita com sha desatualizado — 409, e às vezes 422. Aí relemos e
+     * tentamos de novo, com espera crescente e um tanto de aleatoriedade
+     * pra duas tentativas não voltarem juntas de novo.
+     */
+    const MAX = 8;
+    for (let tentativa = 0; tentativa < MAX; tentativa++) {
       const { tudo, sha } = await lerDoGitHub();
       const c = aplicar(tudo);
       try {
@@ -116,8 +123,10 @@ async function gravarReacao(
         });
         return c;
       } catch (err: any) {
-        if (err.status === 409 && tentativa < 2) continue;
-        throw err;
+        const conflito = err.status === 409 || err.status === 422;
+        if (!conflito || tentativa === MAX - 1) throw err;
+        const espera = Math.min(80 * 2 ** tentativa, 1500) + Math.floor(Math.random() * 120);
+        await new Promise((r) => setTimeout(r, espera));
       }
     }
     throw new Error('conflito persistente ao gravar reação');
