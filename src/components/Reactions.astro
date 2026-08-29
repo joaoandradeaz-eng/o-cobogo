@@ -16,20 +16,25 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 // Marcas tipográficas próprias (SVG monocromático, na tinta do site) em vez
 // de emoji colorido — mais a cara do Cobogó. Sem rótulo visível; o nome fica
 // no title/aria pra acessibilidade e tooltip.
+// Cada símbolo tem cor própria, sempre visível (com e sem clique):
+// coração vermelho, faísca amarelo clarinho, lâmpada âmbar.
 const OPCOES = [
   {
     id: 'adorei',
     rotulo: 'Adorei',
+    cor: '#C0392B',
     path: 'M12 21s-6.9-4.6-9.4-8.3C.5 9.6 2.2 5.9 5.6 5.9c2 0 3.2 1.1 4 2.3.4.7 1.7.7 2.1 0 .8-1.2 2-2.3 4-2.3 3.4 0 5.1 3.7 3 6.8C18.9 16.4 12 21 12 21z',
   },
   {
     id: 'aplausos',
     rotulo: 'Brilhante',
+    cor: '#E6C14A',
     path: 'M12 2l2.3 7.7L22 12l-7.7 2.3L12 22l-2.3-7.7L2 12l7.7-2.3z',
   },
   {
     id: 'pensei',
     rotulo: 'Me fez pensar',
+    cor: '#CE8F1F',
     path: 'M12 2.6a6.6 6.6 0 0 0-3.8 12c.7.5 1.1 1.2 1.2 2h5.2c.1-.8.5-1.5 1.2-2a6.6 6.6 0 0 0-3.8-12zM9.6 18.4h4.8v1a1.7 1.7 0 0 1-1.7 1.5h-1.4a1.7 1.7 0 0 1-1.7-1.5z',
   },
 ];
@@ -40,7 +45,7 @@ const OPCOES = [
   {OPCOES.map((o) => (
     <button type="button" data-reacao={o.id} aria-pressed="false" aria-label={o.rotulo} title={o.rotulo}>
       <span class="emo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d={o.path} /></svg>
+        <svg viewBox="0 0 24 24" width="17" height="17"><path fill={o.cor} d={o.path} /></svg>
       </span>
       <span class="num" hidden></span>
     </button>

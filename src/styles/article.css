@@ -179,6 +179,8 @@
   border-top: 1px solid var(--rule);
   display: flex; flex-direction: column; gap: 28px;
 }
+/* no fim do texto, as reações ficam encostadas na direita (no topo, não) */
+.art-body .art-fim .reacoes{ align-self: flex-end; }
 .art-body .art-fim .conversa .titulo{
   font-family: var(--serif); font-weight: 600;
   font-size: 24px; letter-spacing: -.012em; color: #000;
