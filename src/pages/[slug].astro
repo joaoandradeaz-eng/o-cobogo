@@ -131,10 +131,6 @@ function fmtCardDate(date: Date): string {
       <span class="sep">·</span>
       <span class="bit">{data.readTime}</span>
     </div>
-
-    <div class="reacoes-topo">
-      <Reactions slug={article.id} />
-    </div>
   </header>
 
   <!-- HERO IMAGE -->
@@ -147,6 +143,11 @@ function fmtCardDate(date: Date): string {
     {data.heroCaption && (
       <figcaption><span>{data.heroCaption}</span></figcaption>
     )}
+  </div>
+
+  <!-- REAÇÕES: logo abaixo da foto, encostadas na esquerda dela -->
+  <div class="art-reacoes">
+    <Reactions slug={article.id} />
   </div>
 
   <!-- BODY -->

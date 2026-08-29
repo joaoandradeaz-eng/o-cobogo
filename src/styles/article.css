@@ -168,10 +168,16 @@
 .to-top:hover{ background: #000; color: #fff; }
 .to-top[hidden]{ display: none; }
 
-/* ===== Reações no topo (abaixo da byline) ===== */
-.art-hd .reacoes-topo{ margin-top: 20px; }
+/* ===== Reações: logo abaixo da foto, no canto esquerdo dela =====
+   Respiro maior pro lado da foto (32px) que pro lado da linha fina (22px). */
+.art-reacoes{ max-width: 1280px; margin: 0 auto; padding: 32px var(--gutter) 0; }
+.art-reacoes:has(.reacoes) + .art-body{ padding-top: 22px; }
 /* sem reações renderizadas (armazenamento desligado), o wrapper some */
-.art-hd .reacoes-topo:not(:has(.reacoes)){ display: none; }
+.art-reacoes:not(:has(.reacoes)){ display: none; }
+@media (max-width:760px){
+  .art-reacoes{ padding: 24px 28px 0; }
+  .art-reacoes:has(.reacoes) + .art-body{ padding-top: 20px; }
+}
 
 /* === Hand-drawn highlights (mark element, multicolor) ===
    Cada cor usa o mesmo SVG path com Bézier irregular nas bordas, sobreposto
