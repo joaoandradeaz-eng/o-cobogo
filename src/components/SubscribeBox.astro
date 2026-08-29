@@ -78,25 +78,27 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 <style>
   .inscreva{
     max-width:1280px;margin:0 auto;
-    padding:24px var(--edge) 64px;
+    padding:32px var(--edge) 80px;
     /* na Home o insert vive dentro da grade de 12 colunas do .feed */
     grid-column:1 / -1;
     width:100%;
   }
+  /* caixa cinza bem clarinha, centralizada, com bastante respiro */
   .caixa{
-    max-width:720px;
-    border:1px solid var(--ink);border-radius:2px;
-    background:var(--paper);
-    padding:26px 28px;
-    display:grid;grid-template-columns:auto 1fr;gap:24px;
-    align-items:start;
+    max-width:760px;margin:0 auto;
+    border:1px solid rgba(27,22,18,.10);border-radius:2px;
+    background:rgba(27,22,18,.04);
+    padding:44px 48px;
+    display:grid;grid-template-columns:auto 1fr;gap:40px;
+    align-items:center;
   }
-  /* um cobogó solo, como uma peça assentada */
+  /* um cobogó solo, como uma peça assentada, centralizado na vertical */
   .peca-solo{
-    width:72px;height:72px;background:var(--paper-2);
+    width:84px;height:84px;background:var(--paper-2);
     display:flex;align-items:center;justify-content:center;
+    align-self:center;
   }
-  .peca-solo svg{width:54px;height:54px;color:var(--terra);transition:color .6s ease}
+  .peca-solo svg{width:62px;height:62px;color:var(--terra);transition:color .6s ease}
   .inscreva.feita .peca-solo svg{color:#2F7D3B}
 
   .inscreva h3{
@@ -114,7 +116,7 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
   .canais{
     border:1px solid var(--ink);border-radius:2px;
     display:inline-flex;padding:0;margin:0 0 12px;
-    background:var(--paper);
+    background:#fff;
   }
   .canais label{position:relative;display:block;cursor:pointer}
   .canais input{
@@ -192,12 +194,13 @@ const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
   }
 
   @media (max-width:760px){
-    .inscreva{padding:12px 20px 48px}
+    .inscreva{padding:16px 20px 56px}
+    .caixa{padding:32px 28px;gap:28px}
   }
   @media (max-width:560px){
-    .caixa{grid-template-columns:1fr;gap:16px;padding:20px}
-    .peca-solo{width:56px;height:56px}
-    .peca-solo svg{width:42px;height:42px}
+    .caixa{grid-template-columns:1fr;gap:20px;padding:26px 22px}
+    .peca-solo{width:60px;height:60px}
+    .peca-solo svg{width:45px;height:45px}
     /* botão desce pra linha de baixo, largura cheia */
     .linha button{flex:1 1 100%}
     .sucesso{align-items:flex-start}

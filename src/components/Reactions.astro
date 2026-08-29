@@ -13,19 +13,35 @@ interface Props {
 const { slug } = Astro.props;
 const ativa = import.meta.env.DEV || !!import.meta.env.INSCRITOS_GITHUB_TOKEN;
 
+// Marcas tipográficas próprias (SVG monocromático, na tinta do site) em vez
+// de emoji colorido — mais a cara do Cobogó. Sem rótulo visível; o nome fica
+// no title/aria pra acessibilidade e tooltip.
 const OPCOES = [
-  { id: 'adorei', emoji: '❤️', rotulo: 'Adorei' },
-  { id: 'aplausos', emoji: '👏', rotulo: 'Aplausos' },
-  { id: 'pensei', emoji: '💡', rotulo: 'Me fez pensar' },
+  {
+    id: 'adorei',
+    rotulo: 'Adorei',
+    path: 'M12 21s-6.9-4.6-9.4-8.3C.5 9.6 2.2 5.9 5.6 5.9c2 0 3.2 1.1 4 2.3.4.7 1.7.7 2.1 0 .8-1.2 2-2.3 4-2.3 3.4 0 5.1 3.7 3 6.8C18.9 16.4 12 21 12 21z',
+  },
+  {
+    id: 'aplausos',
+    rotulo: 'Brilhante',
+    path: 'M12 2l2.3 7.7L22 12l-7.7 2.3L12 22l-2.3-7.7L2 12l7.7-2.3z',
+  },
+  {
+    id: 'pensei',
+    rotulo: 'Me fez pensar',
+    path: 'M12 2.6a6.6 6.6 0 0 0-3.8 12c.7.5 1.1 1.2 1.2 2h5.2c.1-.8.5-1.5 1.2-2a6.6 6.6 0 0 0-3.8-12zM9.6 18.4h4.8v1a1.7 1.7 0 0 1-1.7 1.5h-1.4a1.7 1.7 0 0 1-1.7-1.5z',
+  },
 ];
 ---
 
 {ativa && (
 <div class="reacoes" data-reacoes data-slug={slug} aria-label="Reagir ao texto">
   {OPCOES.map((o) => (
-    <button type="button" data-reacao={o.id} aria-pressed="false">
-      <span class="emo" aria-hidden="true">{o.emoji}</span>
-      <span class="rot">{o.rotulo}</span>
+    <button type="button" data-reacao={o.id} aria-pressed="false" aria-label={o.rotulo} title={o.rotulo}>
+      <span class="emo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="17" height="17"><path fill="currentColor" d={o.path} /></svg>
+      </span>
       <span class="num" hidden></span>
     </button>
   ))}
@@ -33,20 +49,23 @@ const OPCOES = [
 )}
 
 <style>
-  .reacoes{display:flex;gap:10px;flex-wrap:wrap}
+  .reacoes{display:flex;gap:8px;flex-wrap:wrap}
+  /* célula de cobogó: quadradinho cinza bem clarinho, sem borda, só o símbolo */
   .reacoes button{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--mono);font-size:10.5px;font-weight:600;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
-    background:transparent;border:1px solid var(--rule-strong);
-    border-radius:999px;padding:8px 16px;cursor:pointer;
-    transition:background .18s ease,color .18s ease,border-color .18s ease;
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    min-width:40px;height:40px;padding:0 12px;
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    color:var(--ink-2);
+    background:rgba(27,22,18,.05);border:none;
+    border-radius:2px;cursor:pointer;
+    transition:background .18s ease,color .18s ease;
   }
-  .reacoes button:hover{border-color:var(--ink);color:#000}
+  .reacoes button:hover{background:rgba(27,22,18,.09);color:#000}
   .reacoes button[aria-pressed="true"]{
-    background:#000;border-color:#000;color:var(--paper);
+    background:#000;color:var(--paper);
   }
-  .reacoes .emo{font-size:15px;line-height:1}
+  .reacoes .emo{display:flex;line-height:1}
+  .reacoes .emo svg{display:block}
   .reacoes .num{font-weight:600}
   .reacoes .num[hidden]{display:none}
   /* pop do emoji ao reagir */
@@ -61,7 +80,6 @@ const OPCOES = [
   }
   @media (max-width:760px){
     .reacoes{gap:8px}
-    .reacoes button{padding:8px 13px}
   }
 </style>
 
