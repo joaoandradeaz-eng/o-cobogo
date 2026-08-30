@@ -161,6 +161,10 @@ const waHref = 'https://wa.me/5511993060198';
     display:flex;gap:10px;flex-wrap:wrap;
     align-items:stretch;justify-content:center;
   }
+  /* sem isto, o display:flex acima vence o atributo `hidden` e o
+     formulário continua na tela depois da inscrição dar certo */
+  form[hidden]{display:none}
+  .lgpd[hidden],.erro[hidden]{display:none}
   .canais{
     border:1px solid var(--ink);border-radius:2px;
     display:inline-flex;padding:0;background:#fff;
