@@ -1,15 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
-
 interface Props {
   active?: 'home' | 'arquivo' | 'sobre';
 }
 const { active = 'home' } = Astro.props;
 
-// O link "Arquivo" só aparece quando a home transborda (mais de 7 artigos) —
-// abaixo disso a /arquivo só repetiria a home. Mesmo limite do botão "Ver mais".
-const published = await getCollection('articles', ({ data }) => !data.draft);
-const showArchive = published.length > 7;
+// Nav enxuta: só "Home". O "Arquivo" segue existindo em /arquivo (e no botão
+// "Ver todos os artigos" da home), mas fora do menu — basta trocar para true.
+const showArchive = false;
 
 // Cor do header fixa por página: azul (navy) como padrão; verde no "Sobre".
 const headerBg = active === 'sobre' ? '#2E4A3C' : '#2B3F6E';
