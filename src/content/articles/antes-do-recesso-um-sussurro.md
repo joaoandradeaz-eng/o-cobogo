@@ -1,7 +1,7 @@
 ---
 title: 'Antes do recesso, um sussurro'
 categories:
-  - opiniao
+  - ensaio
   - politica
 author: João Andrade
 date: 2026-07-16T00:00:00.000Z

@@ -1,8 +1,7 @@
 ---
 title: A emenda ficou pior que o soneto
 categories:
-  - opiniao
-  - analise
+  - ensaio
   - politica
 author: João Andrade
 date: 2026-07-23T00:00:00.000Z

@@ -1,8 +1,8 @@
 ---
 title: Quando crescer é um mau negócio
 categories:
-  - opiniao
-  - politica
+  - ensaio
+  - economia
 author: João Andrade
 date: 2026-07-08T00:00:00.000Z
 readTime: 4 min

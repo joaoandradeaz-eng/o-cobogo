@@ -1,7 +1,7 @@
 ---
 title: A verídica história de Rui Vaz Wanderley
 categories:
-  - ensaio
+  - conto
   - politica
 author: João Andrade
 date: 2026-09-04T00:00:00.000Z

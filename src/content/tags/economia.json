@@ -1,0 +1,9 @@
+{
+  "name": "Economia",
+  "color": "#3A6B47",
+  "textColor": "#FFFFFF",
+  "parent": null,
+  "description": "Impostos, empresas, comércio e o que o Estado faz com o dinheiro dos outros.",
+  "piece": "octogonos",
+  "order": 11
+}

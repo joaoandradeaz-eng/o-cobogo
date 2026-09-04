@@ -1,7 +1,8 @@
 ---
 title: A casa mudou de endereço
 categories:
-  - opiniao
+  - ensaio
+  - politica
 author: João Andrade
 date: 2026-08-07T00:00:00.000Z
 readTime: 6 min

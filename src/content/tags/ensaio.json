@@ -1,9 +1,9 @@
 {
   "name": "Ensaio",
-  "color": "#C73838",
+  "color": "#2B3F6E",
   "textColor": "#FFFFFF",
   "parent": null,
-  "description": "Reflexões longas em primeira pessoa sobre cultura, política, cidade.",
+  "description": "Reflexões em primeira pessoa, com régua declarada. O formato da casa.",
   "piece": "barroca",
   "order": 1
 }

@@ -1,9 +1,9 @@
 {
   "name": "Política",
-  "color": "#3A6B47",
+  "color": "#C73838",
   "textColor": "#FFFFFF",
   "parent": null,
-  "description": "",
+  "description": "Poder, Congresso, eleições e o desenho das instituições.",
   "piece": "grade",
-  "order": 100
+  "order": 10
 }

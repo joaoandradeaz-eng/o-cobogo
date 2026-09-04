@@ -1,7 +1,8 @@
 ---
 title: 'Franca, soberana'
 categories:
-  - opiniao
+  - ensaio
+  - economia
 author: João Andrade
 date: 2026-08-21T00:00:00.000Z
 readTime: 6 min

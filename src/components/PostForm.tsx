@@ -3,11 +3,10 @@ import PostEditor from './PostEditor';
 
 const CATEGORIES = [
   { value: 'ensaio', label: 'Ensaio' },
-  { value: 'reportagem', label: 'Reportagem' },
-  { value: 'critica', label: 'Crítica' },
-  { value: 'entrevista', label: 'Entrevista' },
-  { value: 'memoria', label: 'Memória' },
-  { value: 'cidade-casa', label: 'Cidade & Casa' },
+  { value: 'conto', label: 'Conto' },
+  { value: 'politica', label: 'Política' },
+  { value: 'economia', label: 'Economia' },
+  { value: 'brasilia', label: 'Brasília' },
 ];
 
 const STORAGE_KEY = 'ocobogo_draft_v1';
