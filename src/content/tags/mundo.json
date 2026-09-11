@@ -1,0 +1,9 @@
+{
+  "name": "Mundo",
+  "color": "#5B92E5",
+  "textColor": "#FFFFFF",
+  "parent": null,
+  "description": "O Brasil lá fora: diplomacia, organismos internacionais e o que o mundo decide sem nos perguntar.",
+  "piece": "circulos",
+  "order": 13
+}
