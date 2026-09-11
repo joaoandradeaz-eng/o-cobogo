@@ -9,7 +9,7 @@ readTime: 6 min
 heroImage: /assets/capa-onu.jpg
 heroPosition: 50% 45%
 linhaFina: >-
-  Lula e Trump discursam em sequência na ONU, a doze dias do primeiro turno das eleições. O Brasil **será o primeiro a falar**, por um costume que regra nenhuma escreveu. E, numa casa em que outros decidem, quanto vale falar primeiro?
+  Lula e Trump discursam em sequência na ONU, a doze dias do primeiro turno das eleições. O Brasil será o primeiro a falar, por um costume que regra nenhuma escreveu. E, numa casa em que outros decidem, quanto vale falar primeiro?
 linhaFinaLabel: ''
 ---
 Todo setembro, na sede da ONU em Nova York, o presidente da Assembleia Geral anuncia o Brasil antes de anunciar qualquer outro país. Em seguida, anuncia o anfitrião, os Estados Unidos. Repare na ordem. Meses antes, nos bastidores, o Secretário-Geral escreve à Missão do Brasil, a nossa embaixada junto à ONU, perguntando se, de acordo com a praxe, o chefe da nossa delegação deseja ser o primeiro orador. A resposta é sempre sim. É assim desde os anos 1950, e não há uma linha da Carta da ONU que o determine. **O Brasil tem a primeira palavra do mundo por costume, e o costume vive de uma pergunta educada.**
