@@ -3,6 +3,7 @@ title: 'Com a palavra, o Brasil'
 categories:
   - ensaio
   - politica
+  - mundo
 author: João Andrade
 date: 2026-09-11T00:00:00.000Z
 readTime: 6 min
