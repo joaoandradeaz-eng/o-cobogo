@@ -13,6 +13,9 @@ linhaFina: >-
   sexta-feira, às quatro e dezessete da tarde. Desde já o aviso: deixe o relógio
   à mão, porque nesta história ele é o personagem principal.
 linhaFinaLabel: ''
+audio: /audio/a-6x1-no-relogio-do-senado.mp3
+audioDuracao: 8 min
+audioVoz: 'elevenlabs:eleven_v3:CstacWqMhJQlnfLPxRG4'
 ---
 Na sexta-feira 21 de agosto, minutos depois de receber a relatoria da proposta que acaba com a escala 6x1, um senador definiu o objetivo a ser alcançado: tratava-se, disse, de uma PEC com prazo a ser cumprido. Li a frase duas vezes, e recomendo que o leitor faça o mesmo. Proposta de emenda constitucional não tem prazo. Não há lei que dê, não há regimento que imponha. O prazo do relator não consta de norma nenhuma e, ainda assim, existe, e Brasília inteira sabe a data. **Este texto é a biografia desse prazo.**
 

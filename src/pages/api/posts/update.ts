@@ -2,6 +2,20 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { getSession, isAuthorized } from '../../../lib/session';
 import { htmlToMarkdown, buildMarkdownFile, type PostFrontmatter } from '../../../lib/markdown';
+import matter from 'gray-matter';
+
+function audioExistente(fileContent: string): Pick<PostFrontmatter, 'audio' | 'audioDuracao' | 'audioVoz'> {
+  try {
+    const { data } = matter(fileContent);
+    return {
+      audio: typeof data.audio === 'string' ? data.audio : undefined,
+      audioDuracao: typeof data.audioDuracao === 'string' ? data.audioDuracao : undefined,
+      audioVoz: typeof data.audioVoz === 'string' ? data.audioVoz : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
 import { estimateReadTime } from '../../../lib/readtime';
 import { getFile, updateFile } from '../../../lib/github';
 
@@ -103,6 +117,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     linhaFina: body.linhaFina?.trim() || undefined,
     linhaFinaLabel: body.linhaFinaLabel,
     notas: body.notas?.length ? body.notas.map((n) => n.trim()).filter(Boolean) : undefined,
+    // A narração é gerada por script (npm run audio); o formulário não a conhece.
+    // Lê do arquivo atual e repassa, senão uma edição de texto apagaria o "Ouvir".
+    ...audioExistente(existing.content),
   };
 
   const markdownBody = bodyHtmlRaw ? htmlToMarkdown(bodyHtmlRaw) : '';

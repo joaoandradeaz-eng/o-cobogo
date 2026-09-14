@@ -86,6 +86,13 @@
   padding:64px 68px 64px;
 }
 
+/* OUVIR: o fone sozinho, entre a foto e a linha-fina, na margem direita do texto */
+.art-body .ouvir-row{
+  display:flex;justify-content:flex-end;
+  margin:-40px 0 18px; /* sobe pra ficar a ~24px da foto; a linha-fina segue na mesma altura de antes */
+}
+@media (max-width:760px){ .art-body .ouvir-row{margin:-24px 0 14px} }
+
 /* LINHA-FINA: bloco acima do texto */
 .art-body .linha-fina{
   margin-bottom:48px;

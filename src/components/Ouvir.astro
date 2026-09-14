@@ -1,0 +1,226 @@
+---
+/**
+ * "Ouvir": versão narrada do artigo.
+ *
+ * Renderiza duas coisas: (1) o fone de ouvido, sozinho, logo abaixo da foto
+ * na margem direita do texto (decisões do João, 13/09/2026: fone em vez de
+ * play, sem rótulo nem duração — o tempo só aparece dentro do player) e
+ * (2) uma pílula de player, quase preta e pequena, fixa no canto inferior
+ * esquerdo, que só aparece quando o leitor aperta play. Decisão do João
+ * (14/09/2026): nada de barra atravessando a página — a visão do leitor manda,
+ * e quem ouve lendo precisa da tela livre. Só play/pausa, progresso, tempo e fechar.
+ *
+ * Só renderiza se o artigo tem `audio` no frontmatter (gerado por
+ * `npm run audio -- <slug>`). Sem áudio, o artigo fica exatamente como era.
+ */
+interface Props {
+  src: string;
+  duracao?: string;
+  titulo: string;
+}
+const { src, duracao, titulo } = Astro.props;
+---
+
+<button type="button" class="ouvir-btn" data-ouvir-abrir aria-label="Ouvir o texto" title="Ouvir o texto">
+  <!-- só o fone de ouvido, sem rótulo (decisão do João: fone, não play; e sem texto) -->
+  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 14v-2a8 8 0 0 1 16 0v2"/><path fill="currentColor" d="M3 14h3a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2v-4zm18 0h-3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h1a2 2 0 0 0 2-2v-4z"/></svg>
+</button>
+
+<div class="ouvir-pill" data-ouvir-bar hidden role="region" aria-label="Player da narração">
+  <audio preload="none" src={src} data-ouvir-audio></audio>
+  <button type="button" class="op-play" data-ouvir-play aria-label="Tocar">
+    <svg class="i-play" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M7 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 7 5.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+  </button>
+  <input type="range" class="op-range" data-ouvir-range min="0" max="1000" value="0" step="1" aria-label="Posição na narração" />
+  <span class="op-t"><span data-ouvir-atual>0:00</span><span class="op-sep">/</span><span data-ouvir-total>{duracao ?? '–'}</span></span>
+  <button type="button" class="op-vel" data-ouvir-vel aria-label="Velocidade da narração: 1 vez" title="Velocidade">1×</button>
+  <button type="button" class="op-fechar" data-ouvir-fechar aria-label="Fechar o player">×</button>
+  <span class="op-titulo" hidden>{titulo}</span>
+</div>
+
+<style>
+  /* ---- o fone: ícone solto, na tinta do site; terracota ao passar o mouse e enquanto toca ---- */
+  .ouvir-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;margin-right:-6px; /* a borda do desenho encosta na margem do texto */
+    color:var(--ink-2);background:none;border:none;padding:0;cursor:pointer;border-radius:50%;
+    transition:color .2s ease,background .2s ease;
+  }
+  .ouvir-btn:hover{color:var(--terra);background:var(--paper-2)}
+  .ouvir-btn[data-tocando="1"]{color:var(--terra-deep)}
+
+  /* ---- a pílula: quase preta (a tinta do site), pequena, no canto inferior esquerdo.
+     Não atravessa a página nem cobre o texto: quem lê e ouve ao mesmo tempo segue lendo. ---- */
+  .ouvir-pill{
+    position:fixed;left:24px;bottom:24px;z-index:150;
+    display:flex;align-items:center;gap:8px;
+    height:36px;padding:0 4px;border-radius:18px;
+    background:var(--ink);color:var(--paper);
+    box-shadow:0 2px 12px rgba(27,22,18,.28);
+    font-family:var(--serif);
+    animation:op-sobe .22s ease;
+  }
+  /* display:flex acima venceria o [hidden] do navegador: reafirma o escondido */
+  .ouvir-pill[hidden]{display:none}
+  @keyframes op-sobe{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .ouvir-pill button{
+    font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0;
+    display:inline-flex;align-items:center;justify-content:center;flex:none;
+  }
+  .op-play{width:28px;height:28px;border-radius:50%;background:var(--paper);color:var(--ink)}
+  .op-play:hover{background:var(--terra-tint)}
+  .op-play .i-pause{display:none}
+  .ouvir-pill[data-tocando="1"] .op-play .i-play{display:none}
+  .ouvir-pill[data-tocando="1"] .op-play .i-pause{display:block}
+  .op-range{
+    width:78px;flex:none;-webkit-appearance:none;appearance:none;height:2px;border-radius:1px;margin:0;
+    background:linear-gradient(to right,var(--terra) 0 var(--p,0%),rgba(249,249,246,.35) var(--p,0%) 100%);
+    cursor:pointer;
+  }
+  .op-range::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:var(--paper);border:none}
+  .op-range::-moz-range-thumb{width:8px;height:8px;border-radius:50%;background:var(--paper);border:none}
+  .op-t{font-size:10.5px;color:rgba(249,249,246,.8);font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:.02em}
+  .op-sep{margin:0 2px;opacity:.5}
+  /* velocidade: um botão só, gira 1× → 1,25× → 1,5× → 1,75× → 2× → 1× (decisão do João, 14/09/2026) */
+  .ouvir-pill .op-vel{
+    height:22px;min-width:34px;padding:0 5px;border-radius:11px;
+    font-size:10.5px;font-weight:700;letter-spacing:.02em;font-variant-numeric:tabular-nums;
+    color:var(--paper);background:rgba(249,249,246,.14);
+  }
+  .ouvir-pill .op-vel:hover{background:rgba(249,249,246,.26)}
+  .ouvir-pill .op-vel[data-ativa="1"]{background:var(--terra);color:#fff}
+  .ouvir-pill .op-fechar{width:22px;height:22px;border-radius:50%;font-size:17px;line-height:1;color:rgba(249,249,246,.7)}
+  .ouvir-pill .op-fechar:hover{color:var(--paper);background:rgba(249,249,246,.12)}
+  .op-carregando .op-play{opacity:.6}
+
+  @media (max-width:760px){
+    .ouvir-pill{left:16px;bottom:16px;height:36px;gap:7px}
+    .op-range{width:58px}
+  }
+  @media (prefers-reduced-motion:reduce){ .ouvir-pill{animation:none} }
+</style>
+
+<script is:inline>
+  (function () {
+    const abrir = document.querySelector('[data-ouvir-abrir]');
+    const bar = document.querySelector('[data-ouvir-bar]');
+    if (!abrir || !bar) return;
+    const audio = bar.querySelector('[data-ouvir-audio]');
+    const play = bar.querySelector('[data-ouvir-play]');
+    const range = bar.querySelector('[data-ouvir-range]');
+    const tAtual = bar.querySelector('[data-ouvir-atual]');
+    const tTotal = bar.querySelector('[data-ouvir-total]');
+    const fechar = bar.querySelector('[data-ouvir-fechar]');
+    const vel = bar.querySelector('[data-ouvir-vel]');
+    const VELS = [1, 1.25, 1.5, 1.75, 2];
+    let iVel = 0;
+    let arrastando = false;
+
+    function fmt(s) {
+      if (!isFinite(s)) return '–';
+      s = Math.max(0, Math.round(s));
+      return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    }
+    function marca(nome) {
+      try { if (window.umami && window.umami.track) window.umami.track(nome); } catch (e) {}
+    }
+    function setTocando(on) {
+      bar.dataset.tocando = on ? '1' : '0';
+      abrir.dataset.tocando = on ? '1' : '0';
+      play.setAttribute('aria-label', on ? 'Pausar' : 'Tocar');
+    }
+    function atualiza() {
+      if (!audio.duration || arrastando) return;
+      const p = (audio.currentTime / audio.duration) * 1000;
+      range.value = String(p);
+      range.style.setProperty('--p', (p / 10) + '%');
+      tAtual.textContent = fmt(audio.currentTime);
+    }
+
+    // abre a barra e toca; guarda a posição pra retomar em outra visita
+    function abrirETocar() {
+      bar.hidden = false;
+      const chave = 'ouvir:' + location.pathname;
+      const salvo = parseFloat(localStorage.getItem(chave) || '0');
+      const p = audio.play();
+      if (salvo > 5 && audio.readyState === 0) {
+        audio.addEventListener('loadedmetadata', function () {
+          if (salvo < audio.duration - 10) audio.currentTime = salvo;
+        }, { once: true });
+      }
+      if (p && p.catch) p.catch(function () {});
+      marca('ouvir-play');
+    }
+
+    // link direto pro player: /slug#ouvir abre a pílula (o navegador pode
+    // segurar o play até o primeiro toque — aí ela aparece pausada)
+    if (location.hash === '#ouvir') abrirETocar();
+
+    abrir.addEventListener('click', function () {
+      if (bar.hidden) abrirETocar();
+      else if (audio.paused) audio.play();
+      else audio.pause();
+    });
+    play.addEventListener('click', function () { audio.paused ? audio.play() : audio.pause(); });
+    fechar.addEventListener('click', function () {
+      audio.pause();
+      bar.hidden = true;
+    });
+    function aplicaVel() {
+      const v = VELS[iVel];
+      audio.playbackRate = v;
+      vel.textContent = String(v).replace('.', ',') + '×';
+      vel.dataset.ativa = v === 1 ? '0' : '1';
+      vel.setAttribute('aria-label', 'Velocidade da narração: ' + String(v).replace('.', ',') + ' vez' + (v === 1 ? '' : 'es'));
+      try { localStorage.setItem('ouvir:vel', String(v)); } catch (e) {}
+    }
+    vel.addEventListener('click', function () { iVel = (iVel + 1) % VELS.length; aplicaVel(); });
+    // lembra a velocidade preferida do leitor entre textos
+    try {
+      const salva = parseFloat(localStorage.getItem('ouvir:vel') || '1');
+      const i = VELS.indexOf(salva);
+      if (i > 0) { iVel = i; aplicaVel(); }
+    } catch (e) {}
+    range.addEventListener('input', function () {
+      arrastando = true;
+      range.style.setProperty('--p', (range.value / 10) + '%');
+      tAtual.textContent = fmt((range.value / 1000) * (audio.duration || 0));
+    });
+    range.addEventListener('change', function () {
+      arrastando = false;
+      if (audio.duration) audio.currentTime = (range.value / 1000) * audio.duration;
+    });
+
+    audio.addEventListener('play', function () { setTocando(true); });
+    audio.addEventListener('pause', function () { setTocando(false); });
+    audio.addEventListener('waiting', function () { bar.classList.add('op-carregando'); });
+    audio.addEventListener('playing', function () { bar.classList.remove('op-carregando'); });
+    audio.addEventListener('loadedmetadata', function () { tTotal.textContent = fmt(audio.duration); });
+    audio.addEventListener('timeupdate', function () {
+      atualiza();
+      if (Math.floor(audio.currentTime) % 5 === 0) {
+        try { localStorage.setItem('ouvir:' + location.pathname, String(audio.currentTime)); } catch (e) {}
+      }
+    });
+    audio.addEventListener('ended', function () {
+      setTocando(false);
+      try { localStorage.removeItem('ouvir:' + location.pathname); } catch (e) {}
+      marca('ouvir-fim');
+    });
+
+    // tela de bloqueio / fones: título e controles do sistema
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: bar.querySelector('.op-titulo').textContent,
+          artist: 'O Cobogó',
+        });
+        navigator.mediaSession.setActionHandler('play', function () { audio.play(); });
+        navigator.mediaSession.setActionHandler('pause', function () { audio.pause(); });
+        navigator.mediaSession.setActionHandler('seekbackward', function () { audio.currentTime -= 15; });
+        navigator.mediaSession.setActionHandler('seekforward', function () { audio.currentTime += 15; });
+      } catch (e) {}
+    }
+  })();
+</script>

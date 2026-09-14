@@ -17,6 +17,10 @@ export type PostFrontmatter = {
   heroCaption?: string;
   heroPosition?: string;
   heroZoom?: number;
+  /** Narração em áudio — gerada fora do editor; o admin só preserva. */
+  audio?: string;
+  audioDuracao?: string;
+  audioVoz?: string;
 };
 
 const turndown = new TurndownService({
@@ -151,5 +155,9 @@ export function buildMarkdownFile(frontmatter: PostFrontmatter, body: string): s
   if (frontmatter.linhaFinaLabel !== undefined) data.linhaFinaLabel = frontmatter.linhaFinaLabel;
   if (frontmatter.notas?.length) data.notas = frontmatter.notas;
   if (frontmatter.draft) data.draft = true;
+  // Áudio não é editável no admin: entra aqui só pra não se perder numa edição.
+  if (frontmatter.audio) data.audio = frontmatter.audio;
+  if (frontmatter.audioDuracao) data.audioDuracao = frontmatter.audioDuracao;
+  if (frontmatter.audioVoz) data.audioVoz = frontmatter.audioVoz;
   return matter.stringify(body + '\n', data);
 }

@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorInsert from '../components/AuthorInsert.astro';
 import Fecho from '../components/Fecho.astro';
 import Reactions from '../components/Reactions.astro';
+import Ouvir from '../components/Ouvir.astro';
 import { getCollection, render } from 'astro:content';
 import { cloudinaryOgUrl } from '../lib/social-image';
 import '../styles/article.css';
@@ -153,6 +154,14 @@ function fmtCardDate(date: Date): string {
 
   <!-- BODY -->
   <section class="art-body">
+
+    <!-- OUVIR: só o fone, abaixo da foto, encostado na margem direita do texto
+         (lugar escolhido pelo João em 13/09/2026: "bota o headphone lá e está tudo certo") -->
+    {data.audio && (
+      <div class="ouvir-row">
+        <Ouvir src={data.audio} duracao={data.audioDuracao} titulo={titlePlain} />
+      </div>
+    )}
 
     {data.linhaFina && (
       <aside class="linha-fina">

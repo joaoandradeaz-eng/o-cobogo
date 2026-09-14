@@ -43,6 +43,12 @@ const articles = defineCollection({
     notas: z.array(z.string()).optional(),
     /** Se true, não publica o artigo (não aparece em listagens nem é renderizado). */
     draft: z.boolean().default(false),
+    /** Versão narrada (MP3) — caminho em /audio/... gerado por `npm run audio -- <slug>`. Sem ele, o botão "Ouvir" não aparece. */
+    audio: z.string().optional(),
+    /** Duração da narração já formatada, ex: "7 min". */
+    audioDuracao: z.string().optional(),
+    /** Voz usada na narração (provedor:voz), só pra registro. */
+    audioVoz: z.string().optional(),
   }),
 });
 
