@@ -20,7 +20,7 @@ linhaFinaLabel: ''
 
 Essa terça ficará na história. O problema é que o país a viu por uma fresta, e fresta mostra muito bem o que está logo à frente, mas esconde tudo o que está em volta. Quem quiser saber quem tem razão entre os ministros tem bons meios à sua disposição. **Por aqui, só posso adiantar uma coisa: o problema não é a briga que você viu. É a paz que você não viu**.
 
-Duas palavras atravessaram aquele dia. De manhã, memória. Do meio-dia em diante, respeito. A terceira eu procurei o dia inteiro e não ouvi uma única vez: harmonia. É a palavra que a Constituição escolheu, desde 1891, para dizer como os três Poderes devem agir entre si. Guarde a palavra, caro leitor. Ela vem conosco até o fim.
+Duas palavras atravessaram aquele dia. De manhã, memória. Do meio-dia em diante, respeito. **A terceira eu procurei o dia inteiro e não ouvi uma única vez: harmonia.** É a palavra que a Constituição escolheu, desde 1891, para dizer como os três Poderes devem agir entre si. Guarde a palavra, caro leitor. Ela vem conosco até o fim.
 
 Convém desconfiar dessa palavra, e a razão é antiga. A pergunta que funda toda teoria do poder é quem fiscaliza o fiscal, e a resposta honesta sempre foi ninguém. Por isso não se entregou o poder inteiro a ninguém: dividiu-se em três, de modo que nenhum decidisse sozinho e cada um pudesse ser derrubado pelo outro. **Repare no que esse arranjo pressupõe. Ele não pressupõe boa convivência. Pressupõe pressão e contrapressão, um equilíbrio que se mexe o tempo todo, com alguém sempre ganhando.** Madison resumiu em 1788, ao dizer que a ambição precisa ser posta para conter a ambição. Não vim julgar ministro nenhum. Vim olhar o desenho.
 
