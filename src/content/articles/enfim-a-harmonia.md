@@ -14,7 +14,7 @@ linhaFina: >-
   viu, mas só a que coube na tela. A outra crise atende por harmonia.
 linhaFinaLabel: ''
 ---
-**Terça de manhã, a palavra era memória**. O presidente do Supremo abriu a sessão pedindo aos colegas sensatez, decoro e serenidade, e dizendo que a divergência é legítima e o confronto pessoal não. Lembrou os três ministros que a ditadura aposentou à força em 1969. Avisou que a história estava olhando e levou oito minutos.
+**Terça de manhã, a palavra era memória**. O presidente do Supremo abriu a sessão pedindo aos colegas sensatez, decoro e serenidade, e dizendo que a divergência é legítima e o confronto pessoal não. Evocou os três ministros que a ditadura aposentou à força em 1969. Avisou que a história estava olhando e levou oito minutos.
 
 **Do meio-dia em diante, foi a vez do respeito**. Um ministro disse ter testemunhas de que o colega mandou a Polícia Federal incluí-lo numa delação, e o colega respondeu mentira, quatro vezes seguidas. Minutos depois, o ministro acusado de mentir pediu que não lhe apontassem o dedo e mandou respeitar o tribunal, e logo ouviu do decano que quem não se dá respeito não merece respeito. Perto das treze horas, a sessão parou para o horário eleitoral. Mais tarde, a coisa voltou pior: o decano falou em desfaçatez, e o colega devolveu a palavra, pedindo que o respeitassem novamente. Com a sessão nesse ponto, um terceiro ministro disse que não ia continuar assistindo àquilo e pediu vista. **A única ministra da Corte foi também a única a pedir desculpas ao povo brasileiro.**
 
