@@ -13,6 +13,9 @@ linhaFina: >-
   Supremo brigar consigo mesmo, e saiu de lá achando que tinha visto a crise. E
   viu, mas só a que coube na tela. A outra crise atende por harmonia.
 linhaFinaLabel: ''
+audio: /audio/enfim-a-harmonia.mp3
+audioDuracao: 7 min
+audioVoz: 'elevenlabs:eleven_v3:CstacWqMhJQlnfLPxRG4'
 ---
 **Terça de manhã, a palavra era memória**. O presidente do Supremo abriu a sessão pedindo aos colegas sensatez, decoro e serenidade, e dizendo que a divergência é legítima e o confronto pessoal não. Evocou os três ministros que a ditadura aposentou à força em 1969. Avisou que a história estava olhando. Levou oito minutos.
 
