@@ -28,7 +28,7 @@ O fato é simples: há três anos seguidos o governo gasta mais do que arrecada.
 
 Aviso logo o que este texto não é. Não vou somar o pacote de bondades das últimas semanas. Vou fazer algo mais modesto: abrir a caderneta. **A pergunta que me acompanha até o fim é outra: o que pode o dono do bar diante de um freguês assim?**
 
-Chegue mais, caro leitor. A caderneta está aqui, aberta. Tem três colunas, como toda caderneta honesta: pago, a prazo, fiado. Leia comigo, que no dia 4 quem assina embaixo é você.
+*Chegue mais, caro leitor. A caderneta está aqui, aberta. Tem três colunas, como toda caderneta honesta: pago, a prazo, fiado. Leia comigo, que no dia 4 quem assina embaixo é você.*
 
 Pago, o que chegou antes do voto. Um aviso: esta coluna registra entrega, não mérito. Não estou julgando se as medidas são boas, nem para quem; de várias delas discordo. A régua aqui é outra, e mais simples: o que se prometeu ao eleitor e o que chegou à mão dele. Pago é pago, mesmo quando a nota, conferida depois, vale menos do que diz. A taxa das blusinhas, zerada desde maio por medida provisória, virou lei em 10 de setembro. O Move Brasil, de crédito para motorista, virou lei no dia 14. E a fila do INSS foi dada como zerada no dia 3. Nada a lançar: o freguês pagou no balcão. Com que moeda, o dono do bar descobre depois.
 
