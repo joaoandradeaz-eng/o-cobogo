@@ -6,6 +6,8 @@ categories:
 author: João Andrade
 date: 2026-09-25T00:00:00.000Z
 readTime: 6 min
+heroImage: /assets/capa-fiado.jpg
+heroPosition: 30% 45%
 linhaFina: >-
   Nos botequins de antigamente havia uma placa que todo freguês entendia sem ler
   duas vezes, porque o amanhã dela nunca chegava. O cartão e o Pix a aposentaram
