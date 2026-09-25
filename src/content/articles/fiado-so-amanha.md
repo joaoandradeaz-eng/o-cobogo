@@ -1,5 +1,5 @@
 ---
-title: 'Fiado? Só amanhã'
+title: Fiado? Só amanhã
 categories:
   - ensaio
   - politica
@@ -7,8 +7,14 @@ author: João Andrade
 date: 2026-09-25T00:00:00.000Z
 readTime: 6 min
 linhaFina: >-
-  Nos botequins de antigamente havia uma placa que todo freguês entendia sem ler duas vezes, porque o amanhã dela nunca chegava. O cartão e o Pix a aposentaram do comércio. Hoje ela ainda está pendurada num único balcão, e outubro é a data de olhar para ela.
+  Nos botequins de antigamente havia uma placa que todo freguês entendia sem ler
+  duas vezes, porque o amanhã dela nunca chegava. O cartão e o Pix a aposentaram
+  do comércio. Hoje ela ainda está pendurada num único balcão, e outubro é a
+  data de olhar para ela.
 linhaFinaLabel: ''
+audio: /audio/fiado-so-amanha.mp3
+audioDuracao: 7 min
+audioVoz: 'elevenlabs:eleven_v3:CstacWqMhJQlnfLPxRG4'
 ---
 Em alguns botequins de antigamente havia uma placa atrás do balcão que todo freguês entendia sem precisar ler duas vezes. Dizia: Fiado? Só amanhã. Era um não com educação, porque aquele amanhã não chegava nunca. Embaixo dela, para os poucos que mereciam, ficava a caderneta, com o nome de cada um e o que cada um devia. O cartão aposentou a placa; o Pix enterrou a caderneta. Hoje quase ninguém vende fiado. Sobrou um único balcão onde a placa continua na parede, e ele só abre de quatro em quatro anos.
 
