@@ -2,12 +2,10 @@
 title: Conselhos a um jovem eleitor
 categories:
   - conto
-  - politica
 author: João Andrade
 date: 2026-10-02T00:00:00.000Z
 readTime: 5 min
 heroImage: /assets/capa-conselhos-guarda-chuva.jpg
-heroCaption: 'Foto: Chuangxin Zhou, iStock, com cor alterada'
 heroPosition: 50% 80%
 linhaFina: >-
   Sábado à noite, véspera de eleição. Um pai chama o filho de dezesseis anos,
