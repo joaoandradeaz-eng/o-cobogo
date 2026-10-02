@@ -8,6 +8,10 @@ export default defineConfig({
   site: 'https://ocobogo.com.br',
   output: 'server',
   adapter: vercel(),
+  // Endereços antigos de textos que mudaram de título depois de publicados.
+  redirects: {
+    '/conselhos-a-um-jovem-eleitor': '/teoria-do-bom-eleitor',
+  },
   integrations: [
     react(),
     sitemap({

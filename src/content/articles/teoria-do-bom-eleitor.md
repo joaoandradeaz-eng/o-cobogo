@@ -1,5 +1,5 @@
 ---
-title: Conselhos a um jovem eleitor
+title: Teoria do bom eleitor
 categories:
   - conto
 author: João Andrade
