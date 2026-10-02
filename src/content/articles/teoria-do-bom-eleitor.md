@@ -13,6 +13,8 @@ linhaFina: >-
   puxe uma cadeira e não interrompa: o homem parece saber o que diz.
 linhaFinaLabel: ''
 ---
+<div style="text-align: right; font-style: italic; font-size: 0.85em; color: rgb(107, 96, 85); margin: 0 0 28px;">À maneira da "Teoria do medalhão", de Machado de Assis (1881).</div>
+
 — Está com sono?
 
 — Não, senhor.
