@@ -172,7 +172,8 @@ function fmtCardDate(date: Date): string {
       </aside>
     )}
 
-    <article class="col">
+    {/* Texto que abre em fala (travessão) dispensa a capitular: o traço viraria a "letra grande". */}
+    <article class:list={['col', { 'sem-capitular': (article.body ?? '').trimStart().startsWith('—') }]}>
       <Content />
     </article>
 

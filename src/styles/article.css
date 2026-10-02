@@ -397,6 +397,10 @@
   font-size:140px;line-height:.85;float:left;
   padding:8px 14px 0 0;color:#000;
 }
+/* texto que abre em fala (travessão): sem capitular, primeira linha igual às demais */
+.art-body .col.sem-capitular p:first-of-type::first-letter{
+  font:inherit;float:none;padding:0;color:inherit;
+}
 .art-body .col h2{
   font-family:var(--serif);font-weight:500;
   font-size:38px;line-height:1.05;letter-spacing:-.018em;

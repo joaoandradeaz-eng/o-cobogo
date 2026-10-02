@@ -8,7 +8,7 @@ date: 2026-10-02T00:00:00.000Z
 readTime: 5 min
 heroImage: /assets/capa-conselhos.jpg
 heroCaption: 'Foto: Ejla, iStock'
-heroPosition: 57% 45%
+heroPosition: 70% 28%
 linhaFina: >-
   Sábado à noite, véspera de eleição. Um pai chama o filho de dezesseis anos,
   que vota amanhã pela primeira vez, para lhe ensinar o ofício. Caro leitor,
@@ -156,3 +156,5 @@ linhaFinaLabel: ''
 — E a senhora?
 
 — Eu resolvi em agosto, como seu pai. — A mãe olhou para o teto. — Vamos dormir, que amanhã tem almoço de família.
+
+<p style="text-align: justify;"><span style="color: rgb(107, 96, 85);"><em>Este diálogo é neto da "Teoria do medalhão", que Machado de Assis publicou em 1881. Lá, um pai ensina ao filho de vinte e um anos a arte de vencer na vida sem ter ideias. O ofício mudou. O método, não.</em></span></p>
