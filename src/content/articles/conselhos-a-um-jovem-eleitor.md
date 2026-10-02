@@ -6,9 +6,9 @@ categories:
 author: João Andrade
 date: 2026-10-02T00:00:00.000Z
 readTime: 5 min
-heroImage: /assets/capa-conselhos.jpg
-heroCaption: 'Foto: Ejla, iStock'
-heroPosition: 70% 28%
+heroImage: /assets/capa-conselhos-guarda-chuva.jpg
+heroCaption: 'Foto: Chuangxin Zhou, iStock, com cor alterada'
+heroPosition: 50% 80%
 linhaFina: >-
   Sábado à noite, véspera de eleição. Um pai chama o filho de dezesseis anos,
   que vota amanhã pela primeira vez, para lhe ensinar o ofício. Caro leitor,
